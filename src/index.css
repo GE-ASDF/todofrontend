@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,body{
+    overflow: hidden;
+}
+.alert-container{
+    position: absolute;
+    background-color: rgba(0,0,0,.2);
+    top:0;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+    right:0;
+    max-height: 100vh;
+    height: 100vh;
+    width: max-content;
+    max-width: 300px;
+    overflow-x: auto;
+    padding:10px;
+}
