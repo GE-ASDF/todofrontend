@@ -46,8 +46,5 @@ export const AlertProvider = (props)=>{
     )
 }
 
-AlertProvider.propTypes = {
-    children: PropTypes.elements
-}
 
 export const useAlert = () => useContext(AlertContext)

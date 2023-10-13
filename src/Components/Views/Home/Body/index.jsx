@@ -1,17 +1,23 @@
-import { useState } from "react";
-import { Link, Outlet, useLocation } from "react-router-dom";
+import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import Dashboard from "../Dashboard";
 import Menu from "../../../UI/Menu";
-import {useMenu} from "../../../../Contexts/MenuContext"
+import {useMenu} from "../../../../Contexts/MenuContext";
+import Cookies from "js-cookies";
 
 import "./style.css";
-import { useTheme } from "../../../../Contexts/ThemeContext";
+import { useTheme } from "../../../../Contexts/ContextsLoaders/useTheme";
 export default function Body(){
     const {theme} = useTheme();
     const {showMenu, setShowMenu} = useMenu();
     const local = useLocation().pathname.split("/app").filter((l) => l);
+    const navigate = useNavigate();
     const handleShowMenu = ()=>{
         setShowMenu(!showMenu)
+    }
+    const handleLogout = ()=>{
+        localStorage.removeItem("logged");
+        Cookies.removeItem("token");
+        navigate("/")
     }
     return(
         <>
@@ -24,7 +30,7 @@ export default function Body(){
                     </div>
                     <div className="p-1">
                         <p className="text-sm py-2">Tarefas</p>
-                        <div className="flex flex-col justify-start items-start">
+                        <div className="flex h-100 flex-col justify-start items-start">
                             <ul className="w-100 list-group">
                                 <li className="list-group-item">
                                     <Link className="d-flex gap-2" to="/app/today">
@@ -33,6 +39,10 @@ export default function Body(){
                                     </Link>
                                 </li>
                             </ul>
+                            <div onClick={handleLogout} className="flex align-self-start my-2 gap-1 cursor-pointer">
+                                <i className="bi bi-box-arrow-left"></i>
+                                <span>Sair</span>
+                            </div>
                         </div>
                     </div>
                 </div>

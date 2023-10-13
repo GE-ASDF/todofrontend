@@ -7,7 +7,6 @@ html,body{
 }
 .alert-container{
     position: absolute;
-    background-color: rgba(0,0,0,.2);
     top:0;
     border-top-left-radius: 20px;
     border-bottom-left-radius: 20px;

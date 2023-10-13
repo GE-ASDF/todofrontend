@@ -1,0 +1,12 @@
+@keyframes showMenu{
+    from{
+        transform: translate(-10px);
+    }
+    to{
+        transform: translate(0px);
+    }
+}
+
+.animationMenu{
+    animation: showMenu 0.5s forwards ease-in-out;
+}
