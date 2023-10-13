@@ -19,3 +19,23 @@ html,body{
     overflow-x: auto;
     padding:10px;
 }
+
+:root {
+    --clr-bg-dark: #1f2937; /* gray-800 */
+    --clr-bg-light: #fafafa; /* zinc-50 */
+  
+    --clr-text-dark: #1f2937; /* gray-200 */
+    --clr-text-light: #fafafa; /* zinc-50 */
+  }
+  
+  .dark {
+    background-color: var(--clr-bg-dark);
+    color: var(--clr-text-dark);
+  }
+  .dark {
+    @apply bg-gray-800 text-zinc-50;
+ }
+  .light {
+    background-color: var(--clr-bg-light);
+    color: var(--clr-text-light);
+  }
