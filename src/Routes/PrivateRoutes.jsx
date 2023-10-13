@@ -1,6 +1,6 @@
 import { Navigate } from "react-router-dom";
 import Template from "../views/Template";
-
+import Today from "../views/app/pages/Today";
 export default function PrivateRoutes(){
     return [
         {
@@ -8,7 +8,8 @@ export default function PrivateRoutes(){
             element:<Template />,
             children:[
                 {
-                    path:"todaytasks",
+                    path:"today",
+                    element:<Today />
                 }
             ]
         },

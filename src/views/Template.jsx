@@ -1,16 +1,13 @@
 import Cookies from "js-cookies";
-import {useNavigate, Navigate} from "react-router-dom"
+import {Navigate} from "react-router-dom"
 import HTTP from "../api/http";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import Home from "./app/Home";
 
 const Template = ()=>{
     const token = Cookies.getItem("token");
     const http = new HTTP('/token');
     
-    if(!token){
-        return <Navigate to="/" />;
-    }
-
     useEffect(()=>{
         const handleLogged = async()=>{
             const response = await http.http();
@@ -20,8 +17,12 @@ const Template = ()=>{
         }
         handleLogged()
     })
-    
-    return  <>Template</>
+
+    if(!token){
+        return <Navigate to="/" />;
+    }
+
+    return  <Home />
 }
 
 export default Template;

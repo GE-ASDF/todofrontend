@@ -1,32 +1,39 @@
-import { useState } from "react";
-import Input from "../Components/Forms/Input";
+import Input from "../Components/UI/Forms/Input";
 import HTTP from "../api/http";
 import Cookies from "js-cookies";
-import {useNavigate, Navigate} from "react-router-dom"
+import {useNavigate} from "react-router-dom"
 import {useForm} from "react-hook-form";
 import { useAlert } from "../Contexts/AlertContext";
 import { useLogged } from "../Contexts/LoggedContext";
+import { useState } from "react";
+import Loader from "../Components/UI/Loader"
+
 const Login = ()=>{
     const {setUserLogged} = useLogged();
-
-    const {alerts, setAlert} = useAlert();
+    const [loading, setLoading] = useState(false);
+    const {handleSetAlert} = useAlert();
     const {control, handleSubmit} = useForm();
     const navigate = useNavigate();
+    
     const authenticate = async ()=>{
+        setLoading(true);
         const http = new HTTP("/auth", 'POST', control._formValues);
         const response = await http.http();
- 
         if(response.error){
-            setAlert([...alerts, {type:'danger', message:response.message}])
+            handleSetAlert({type:'danger', message:response.message})
+            setLoading(false);
         }else{
             Cookies.setItem('token',response.token);
             setUserLogged(JSON.stringify(response.user))
-            setAlert([...alerts, {type:'success', message:response.message}])
+            handleSetAlert({type:'success', message:response.message})
+            setLoading(false);
             return navigate("/app")
         }
     }
 
     return(
+        <>
+        {loading && <Loader />}
         <div className="container-fluid p-2 flex h-screen items-center justify-center bg-danger">
             <form className="" onSubmit={handleSubmit(authenticate)}>
                 <div className="justify-center items-start bg-purple-950 text-white rounded-lg px-8 py-8 flex flex-col gap-3 form-group">
@@ -39,6 +46,7 @@ const Login = ()=>{
                 </div>
             </form>
         </div>
+        </>
     )
 }
 

@@ -1,11 +1,23 @@
-import { createContext, useContext, useEffect, useState } from "react";
-import Alert from "../Components/Alert";
+import { createContext,  useContext, useEffect, useState } from "react";
+import Alert from "../Components/UI/Alert";
+import PropTypes from "prop-types";
 
 export const AlertContext = createContext();
 
+
 export const AlertProvider = (props)=>{
+   
     const [alerts, setAlert] = useState([])
     
+     /**
+      * Esta função cria um novo alert do tipo alert
+     * @param {alert} alert - um objeto do tipo alert
+     * @returns void
+     */
+    const handleSetAlert = (alert)=>{
+        setAlert([...alerts, alert])
+    }
+
     const closeAlert = (key)=>{
         const newAlerts = alerts.filter((alert, id) => id != key)        
         setAlert(newAlerts);
@@ -19,7 +31,7 @@ export const AlertProvider = (props)=>{
     },[alerts])
 
     return (
-        <AlertContext.Provider value={{setAlert, alerts}}>
+        <AlertContext.Provider value={{handleSetAlert, alerts}}>
             {alerts.length > 0 && 
                 <div className="alert-container">
                     {alerts.map((alert, key)=>{
@@ -32,6 +44,10 @@ export const AlertProvider = (props)=>{
             {props.children}
         </AlertContext.Provider>
     )
+}
+
+AlertProvider.propTypes = {
+    children: PropTypes.elements
 }
 
 export const useAlert = () => useContext(AlertContext)
