@@ -4,9 +4,7 @@ import Menu from "../../../UI/Menu";
 import {Link} from "react-router-dom"
 import {useTheme} from "../../../../Contexts/ContextsLoaders/useTheme"
 import {useForm} from "react-hook-form"
-import Input, { Select, Option } from "../../../UI/Forms/Input";
-import HTTP from "../../../../api/http";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useLogged } from "../../../../Contexts/LoggedContext";
 import {useAlert} from "../../../../Contexts/AlertContext";
 import FormAddTask from "../FormAddTask";
@@ -17,14 +15,12 @@ import { convertDate } from "../../../../utils/utils";
 export default function Header(props){
     const data = useTasks();
     const tasks = data.tasks.length > 0 ? data.tasks.filter((task)=>{
-        if(convertDate( new Date(task.enddate).toLocaleDateString('pt-br')) == '2023-10-14'){
+        if(convertDate( new Date(task.enddate).toLocaleDateString('pt-br')) <= convertDate(new Date().toLocaleDateString('pt-br'))){
             return task;
         }
     }):[];
     const todayTasksQtd = tasks.length;
-    console.log(todayTasksQtd)
     const [addTaskForm, setAddTaskForm] = useState(false);
-    const {handleSetAlert} = useAlert();
     const {user} = useLogged();
     const dataUser = JSON.parse(user);
     const {reset} = useForm();
