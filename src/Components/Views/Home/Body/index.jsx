@@ -31,11 +31,17 @@ export default function Body(){
                     <div className="p-1">
                         <p className="text-sm py-2">Tarefas</p>
                         <div className="flex h-100 flex-col justify-start items-start">
-                            <ul className="w-100 list-group">
+                            <ul className="w-100 flex gap-1 list-group">
                                 <li className="list-group-item">
                                     <Link className="d-flex gap-2" to="/app/today">
                                         <i className="bi bi-card-checklist"></i>
                                         <span>Hoje</span>
+                                    </Link>
+                                </li>
+                                <li className="list-group-item">
+                                    <Link className="d-flex gap-2" to="/app/stickywall">
+                                        <i className="bi bi-card-checklist"></i>
+                                        <span>Anotações</span>
                                     </Link>
                                 </li>
                             </ul>

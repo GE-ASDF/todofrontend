@@ -2,6 +2,7 @@ import { Navigate } from "react-router-dom";
 import Template from "../views/Template";
 import Today from "../views/app/pages/Today";
 import { todayTasksLoader } from "../Loaders/todayTasksLoader";
+import StickyWall from "../views/app/pages/StickyWall";
 
 export default function PrivateRoutes(){
     return [
@@ -13,6 +14,10 @@ export default function PrivateRoutes(){
                     path:"today",
                     element:<Today />,
                     loader: todayTasksLoader,
+                },
+                {
+                    path:"stickywall",
+                    element:<StickyWall />,
                 }
             ]
         },
