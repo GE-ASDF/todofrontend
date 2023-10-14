@@ -47,7 +47,7 @@ export default function Body(){
                     </div>
                 </div>
             }
-            <div className={`overflow-auto p-4 right-side flex-1 p-1 ${theme == 'dark' ? 'dark':''}`}>
+            <div className={`overflow-auto p-4 right-side flex-1  ${theme == 'dark' ? 'dark':''}`}>
                 {local.length <= 0 && <Dashboard />}
                 {local.length > 0 && <Outlet />}
             </div>
