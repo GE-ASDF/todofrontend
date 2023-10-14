@@ -31,8 +31,25 @@ const Login = ()=>{
             return navigate("/app")
         }
     }
-    const cadastre = ()=>{
-        console.log(control._formValues)
+    const cadastre = async ()=>{
+        setLoading(true);
+        const http = new HTTP("/admin/users/create", 'POST', control._formValues);
+        const response = await http.http();
+        console.log(response);
+        if(response.error){
+            if(response.type == "fields"){
+                response.errors.forEach((erro)=>{
+                    handleSetAlert({type:'danger', message:erro.msg})
+                })
+                setLoading(false);
+            }else{
+                handleSetAlert({type:'danger', message:response.message})
+                setLoading(false);
+            }
+        }else if(response.affectedRows > 0){
+            handleSetAlert({type:'success', message:response.message})
+            setLoading(false);
+        }
     }
     return(
         <>

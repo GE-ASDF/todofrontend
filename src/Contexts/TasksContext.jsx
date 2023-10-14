@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import {todayTasksLoader} from "../Loaders/todayTasksLoader";
 import HTTP from "../api/http";
+import { useLogged } from "./LoggedContext";
 
 export const TasksContext = createContext();
 const TASKS_ID = 'tasks'
@@ -10,9 +11,11 @@ const TASKS_ID = 'tasks'
 export const TasksProvider = ({children})=>{
     const [task, setTask] = useState(true);
     const [tasks, setTasks] = useState([])
+    const data = useLogged();
+    const user = JSON.parse(data.user);
 
     const getTasks = async ()=>{
-        const http = new HTTP('/admin/tasks/all')
+        const http = new HTTP('/admin/tasks/all/'+user.id)
         const response = await http.http()
         setTasks(response);
     }

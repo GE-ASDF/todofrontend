@@ -8,7 +8,6 @@ import { TasksProvider } from "../../Contexts/TasksContext";
 export default function Home(){
     return (
         <TasksProvider>
-
         <MenuProvider>
             <div className="h-screen w-screen overflow-hidden">
                 <Header />
