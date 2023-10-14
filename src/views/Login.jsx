@@ -46,7 +46,7 @@ const Login = ()=>{
                 handleSetAlert({type:'danger', message:response.message})
                 setLoading(false);
             }
-        }else if(response.affectedRows > 0){
+        }else if(response.error == false){
             handleSetAlert({type:'success', message:response.message})
             setLoading(false);
         }
