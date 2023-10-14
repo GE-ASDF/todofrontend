@@ -9,7 +9,7 @@ import { useState } from "react";
 import Loader from "../Components/UI/Loader"
 
 const Login = ()=>{
-    const [form, setForm] = useState(0);
+    const [form, setForm] = useState('login');
     const {setUserLogged} = useLogged();
     const [loading, setLoading] = useState(false);
     const {handleSetAlert} = useAlert();
@@ -39,7 +39,7 @@ const Login = ()=>{
         <div className="container-fluid p-2 flex h-screen items-center justify-center bg-danger">
         <div>
 
-        {form == 0 &&
+        {form == 'login' &&
             <form className="" onSubmit={handleSubmit(authenticate)}>
                 <div className="justify-center items-start bg-purple-950 text-white rounded-lg px-8 py-8 flex flex-col gap-3 form-group">
                     <h1 className="text-3xl text-center">ToDo</h1>
@@ -51,7 +51,7 @@ const Login = ()=>{
                 </div>
             </form>
         }
-        {form == 1 &&
+        {form == 'cadastre' &&
             <form className="" onSubmit={handleSubmit(authenticate)}>
             <div className="justify-center items-start bg-purple-950 text-white rounded-lg px-8 py-8 flex flex-col gap-3 form-group">
                 <h1 className="text-3xl text-center">ToDo</h1>
@@ -69,11 +69,11 @@ const Login = ()=>{
         </form>
         }
         <div>
-            {form == 0 &&
-                <p className="btn btn-sm btn-light mt-2 cursor-pointer" onClick={()=> setForm(form + 1)} >Cadastre-se</p>
+            {form == 'login' &&
+                <p className="btn btn-sm btn-light mt-2 cursor-pointer" onClick={()=> setForm('cadastre')} >Cadastre-se</p>
             }
-            {form == 1 &&
-                <p className="btn btn-sm btn-light mt-2 cursor-pointer" onClick={()=> setForm(form - 1)} >Já tenho cadastro</p>
+            {form == 'cadastre' &&
+                <p className="btn btn-sm btn-light mt-2 cursor-pointer" onClick={()=> setForm('login')} >Já tenho cadastro</p>
             }
         </div>
         </div>
