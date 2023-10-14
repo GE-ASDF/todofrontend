@@ -5,11 +5,7 @@ import { convertDate, dateISOString, getDate } from "../../../utils/utils";
 
 export default function Today(){
     const data = useTasks();
-    const tasks = data.tasks.length > 0 ? data.tasks.filter((task)=>{
-        if(convertDate( new Date(task.enddate).toLocaleDateString('pt-br')) == '2023-10-14'){
-            return task;
-        }
-    }):[];
+    const [tasks, setTasks] = useState([]);
     
     const [detailsShow, setDetails] = useState({
         show:false,
@@ -30,8 +26,14 @@ export default function Today(){
         setTasks(newTasks)
     }
     useEffect(()=>{
-        console.log("Efeito colateral")
-    },[])
+        const taskss = data.tasks.length > 0 ? data.tasks.filter((task)=>{
+            if(convertDate( new Date(task.enddate).toLocaleDateString('pt-br')) == '2023-10-14'){
+                return task;
+            }
+        }):[];
+        return ()=> setTasks(taskss)
+    },[data])
+    
     const showDetails = (id)=>{
         setDetails({show: !detailsShow.show, id})
     }
@@ -40,20 +42,20 @@ export default function Today(){
         <h1 className="text-5xl fw-bold">Tasks de hoje</h1>
             {tasks.map(task =>{
                 return (
-                    <div key={task.id} onClick={()=> showDetails(task.id)} className="flex cursor-pointer flex-row border p-2 mt-4">
-                    <p className="flex w-100 flex-col">
+                    <div key={task.id}  className="flex cursor-pointer flex-row border p-2 mt-4">
+                    <div onClick={() => showDetails(task.id)} className="flex w-100 flex-col">
                         <h5 className="fw-bold text-sm">{task.title} - {new Date(task.enddate).toLocaleDateString('pt-br')}</h5>
                         {detailsShow.show && detailsShow.id == task.id && 
                             <>
                                 <span className="mx-2">Descrição: {task.description}</span>
                             </>
                         }
-                    </p>
-                        <div className="flex flex-row justify-start items-start gap-2">
-                            {task.done == 0 && <span className="btn btn-sm btn-warning" onClick={()=> done(task.id)}>{task.done == 0 && 'Pending'}</span>}
-                            {task.done > 0 && <span className="btn btn-sm btn-success" onClick={()=> done(task.id)}>{task.done > 0 && 'Done'}</span>}
-                            <span className="btn btn-sm btn-danger" onClick={()=> done(task.id)}>Remover</span>
-                        </div>
+                    </div>
+                    <div className="flex flex-row justify-start items-start gap-2">
+                        {task.done == 0 && <span className="btn btn-sm btn-warning" onClick={()=> done(task.id)}>{task.done == 0 && 'Pending'}</span>}
+                        {task.done > 0 && <span className="btn btn-sm btn-success" onClick={()=> done(task.id)}>{task.done > 0 && 'Done'}</span>}
+                        <span className="btn btn-sm btn-danger" onClick={()=> done(task.id)}>Remover</span>
+                    </div>
                     </div>
                 )
             })}
