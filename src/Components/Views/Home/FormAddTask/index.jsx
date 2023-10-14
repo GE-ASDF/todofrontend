@@ -5,9 +5,11 @@ import Input, { Select, Option } from "../../../UI/Forms/Input"
 import { useEffect, useState } from "react";
 import { useTheme } from "../../../../Contexts/ContextsLoaders/useTheme";
 import { useLogged } from "../../../../Contexts/LoggedContext";
+import { useTasks } from "../../../../Contexts/TasksContext";
 
 export default function FormAddTask({iduser, setAddTaskForm, addTaskForm}){
     const [categories, setCategories] = useState(()=>[]);
+    const {setTask} = useTasks();
     const {handleSetAlert} = useAlert();
     const {theme} = useTheme();
     const {control, handleSubmit, reset} = useForm({description:'',title:'',enddate:'',idcategory:'',priority:''});
@@ -18,6 +20,7 @@ export default function FormAddTask({iduser, setAddTaskForm, addTaskForm}){
         const response = await http.http();
         if(response.error == false){
             handleSetAlert({type:'success', message:'Uma tarefa foi adicionada com sucesso!'})
+            setTask(true);
             reset();
         }else if(response.error){
             if(response.type == 'fields'){
@@ -28,7 +31,6 @@ export default function FormAddTask({iduser, setAddTaskForm, addTaskForm}){
                 handleSetAlert({type:'danger', message:'A tarefa não foi inserida.'})
             }
         }
-
     }
     const getCategories = async()=>{
         const http = new HTTP('/admin/categories/all');

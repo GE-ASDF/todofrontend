@@ -21,7 +21,7 @@ export default function Body(){
     }
     return(
         <>
-        <div className="flex w-100 h-100">    
+        <div className="flex  w-100 h-100">    
             {showMenu && 
                 <div className={`left-side border-r w-48 p-1 ${theme == 'dark' ? 'dark':''} bg-slate-200`}>
                     <div className="flex m-2 justify-between items-center text-2xl fw-bold p-1">
@@ -47,7 +47,7 @@ export default function Body(){
                     </div>
                 </div>
             }
-            <div className={`right-side flex-1 p-1 ${theme == 'dark' ? 'dark':''}`}>
+            <div className={`overflow-auto p-4 right-side flex-1 p-1 ${theme == 'dark' ? 'dark':''}`}>
                 {local.length <= 0 && <Dashboard />}
                 {local.length > 0 && <Outlet />}
             </div>

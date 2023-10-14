@@ -6,9 +6,11 @@ import { AlertProvider } from "./Contexts/AlertContext";
 import { LoggedProvider } from "./Contexts/LoggedContext";
 import {ThemeProvider} from "./Contexts/ThemeContext";
 
+
 function App() {
 
   const routes = createBrowserRouter([...PublicRoutes(),...PrivateRoutes()])
+ 
   return (
         <LoggedProvider>
           <ThemeProvider>
