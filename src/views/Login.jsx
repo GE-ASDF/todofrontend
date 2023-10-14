@@ -13,7 +13,7 @@ const Login = ()=>{
     const {setUserLogged} = useLogged();
     const [loading, setLoading] = useState(false);
     const {handleSetAlert} = useAlert();
-    const {control, handleSubmit} = useForm();
+    const {control, handleSubmit, reset} = useForm();
     const navigate = useNavigate();
     
     const authenticate = async ()=>{
@@ -31,7 +31,9 @@ const Login = ()=>{
             return navigate("/app")
         }
     }
-
+    const cadastre = ()=>{
+        console.log(control._formValues)
+    }
     return(
         <>
         {loading && <Loader />}
@@ -52,14 +54,14 @@ const Login = ()=>{
             </form>
         }
         {form == 'cadastre' &&
-            <form className="" onSubmit={handleSubmit(authenticate)}>
+            <form className="" onSubmit={handleSubmit(cadastre)}>
             <div className="justify-center items-start bg-purple-950 text-white rounded-lg px-8 py-8 flex flex-col gap-3 form-group">
                 <h1 className="text-3xl text-center">ToDo</h1>
                 <div className="form-group w-100">
-                    <Input  defaultValue="" placeholder="Digite seu nome"  rules={{required:"Este campo é obrigatório.", maxLength:{value:"255", message:"Este campo só suporta 255 caracteres"}}} type="password" label="Nome" name="name" control={control} />
+                    <Input  defaultValue="" autofocus="autofocus" placeholder="Digite seu nome"  rules={{required:"Este campo é obrigatório.", maxLength:{value:"255", message:"Este campo só suporta 255 caracteres"}}} type="text" label="Nome" name="name" control={control} />
                 </div>
                 <div className="form-group flex gap-2">
-                    <Input defaultValue="" autofocus="autofocus" placeholder="Digite seu usuário" rules={{required:"Este campo é obrigatório.", maxLength:{value:"255", message:"Este campo só suporta 255 caracteres"}}} type="text" label="Usuário" name="user" control={control} />
+                    <Input defaultValue=""  placeholder="Digite seu usuário" rules={{required:"Este campo é obrigatório.", maxLength:{value:"255", message:"Este campo só suporta 255 caracteres"}}} type="text" label="Usuário" name="user" control={control} />
                     <Input defaultValue="" placeholder="Digite sua senha"  rules={{required:"Este campo é obrigatório.", maxLength:{value:"255", message:"Este campo só suporta 255 caracteres"}}} type="password" label="Senha" name="password" control={control} />
                 </div>
                 <div>
@@ -70,10 +72,10 @@ const Login = ()=>{
         }
         <div>
             {form == 'login' &&
-                <p className="btn btn-sm btn-light mt-2 cursor-pointer" onClick={()=> setForm('cadastre')} >Cadastre-se</p>
+                <p className="btn btn-sm btn-light mt-2 cursor-pointer" onClick={()=> {setForm('cadastre'); reset()}} >Cadastre-se</p>
             }
             {form == 'cadastre' &&
-                <p className="btn btn-sm btn-light mt-2 cursor-pointer" onClick={()=> setForm('login')} >Já tenho cadastro</p>
+                <p className="btn btn-sm btn-light mt-2 cursor-pointer" onClick={()=> {setForm('login'); reset()}} >Já tenho cadastro</p>
             }
         </div>
         </div>
