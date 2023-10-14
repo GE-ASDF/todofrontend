@@ -10,9 +10,19 @@ import { useEffect, useState } from "react";
 import { useLogged } from "../../../../Contexts/LoggedContext";
 import {useAlert} from "../../../../Contexts/AlertContext";
 import FormAddTask from "../FormAddTask";
+import { useTasks } from "../../../../Contexts/TasksContext";
+import { convertDate } from "../../../../utils/utils";
 
 
 export default function Header(props){
+    const data = useTasks();
+    const tasks = data.tasks.length > 0 ? data.tasks.filter((task)=>{
+        if(convertDate( new Date(task.enddate).toLocaleDateString('pt-br')) == '2023-10-14'){
+            return task;
+        }
+    }):[];
+    const todayTasksQtd = tasks.length;
+    console.log(todayTasksQtd)
     const [addTaskForm, setAddTaskForm] = useState(false);
     const {handleSetAlert} = useAlert();
     const {user} = useLogged();
@@ -49,7 +59,11 @@ export default function Header(props){
             </div>
             <div className="flex gap-2 mx-2">
                 <i onClick={handleShowAddTask} className="bi cursor-pointer bi-plus-lg"></i>
-                <i className="bi cursor-pointer bi-bell"></i>
+                <i className="bi cursor-pointer relative bi-bell">
+                    <span style={{fontSize:'10px'}} className="absolute text-sm text-yellow-300">
+                        {todayTasksQtd > 0 && todayTasksQtd}
+                    </span>
+                </i>
                 {addTaskForm &&
                     <FormAddTask addTaskForm={addTaskForm} setAddTaskForm={setAddTaskForm} iduser={dataUser.id} />
                 }
