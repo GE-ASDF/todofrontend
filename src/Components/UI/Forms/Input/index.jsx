@@ -1,4 +1,5 @@
 import {useController} from "react-hook-form"
+import { useAlert } from "../../../../Contexts/AlertContext";
 const Input = (props)=>{
     const {field, fieldState} = useController(props);
     if(props.type == "radio"){
@@ -8,7 +9,6 @@ const Input = (props)=>{
             <div className={`form-check ${fieldState.invalid ? "border border-red-700" : ""}`}>
                 <label>
                 <input
-                    defaultChecked={props.checked}
                     type="radio"
                     className="form-check-input"
                     value={props.value}

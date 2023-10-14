@@ -5,22 +5,35 @@ import {Link} from "react-router-dom"
 import {useTheme} from "../../../../Contexts/ContextsLoaders/useTheme"
 import {useForm} from "react-hook-form"
 import Input, { Select, Option } from "../../../UI/Forms/Input";
+import HTTP from "../../../../api/http";
+import { useEffect, useState } from "react";
+import { useLogged } from "../../../../Contexts/LoggedContext";
+import {useAlert} from "../../../../Contexts/AlertContext";
+import FormAddTask from "../FormAddTask";
+
+
 export default function Header(props){
-    const {control, handleSubmit} = useForm();
+    const [addTaskForm, setAddTaskForm] = useState(false);
+    const {handleSetAlert} = useAlert();
+    const {user} = useLogged();
+    const dataUser = JSON.parse(user);
+    const {reset} = useForm();
     const {showMenu, setShowMenu} = useMenu();
     const {theme, setTheme} = useTheme();
-    
+     
     const handleShowMenu = ()=>{
         setShowMenu(!showMenu)
     }
-    const saveTask = ()=>{
-        alert(control._formValues.priority)
+    const handleShowAddTask = ()=>{
+        setAddTaskForm(!addTaskForm);
+        reset();
     }
+
     const handleSetTheme = ()=>{
         const themeToSet = theme =='dark' ? 'light':'dark';
         setTheme(themeToSet);
     }
- 
+    
     return (
         <div className={`flex justify-between  text-white bg-orange-700 p-1`}>
             <div className="flex gap-2 mx-2">
@@ -35,29 +48,11 @@ export default function Header(props){
                 
             </div>
             <div className="flex gap-2 mx-2">
-                <i className="bi cursor-pointer bi-plus-lg"></i>
+                <i onClick={handleShowAddTask} className="bi cursor-pointer bi-plus-lg"></i>
                 <i className="bi cursor-pointer bi-bell"></i>
-                <div className={`absolute ${theme == "dark" ? "dark":""} border p-2 rounded-start rounded-b-lg top-6 right-12`}>
-                    <form onSubmit={handleSubmit(saveTask)} className="flex flex-col gap-2">
-                        <h2>Add tarefa</h2>
-                        <Input defaultValue="" label="Título" placeholder="Título da tarefa" name="title" rules={{required:"Este campo é obrigatório"}} control={control}></Input>
-                        <Input defaultValue="" label="Descrição" placeholder="Descrição da tarefa" name="description" control={control} rules={{required:"Este campo é obrigatório"}}></Input>
-                        <Input type="date" defaultValue="" label="Data de fim"  name="enddate" control={control} rules={{required:"Este campo é obrigatório"}}></Input>
-                        <div className="flex gap-2">
-                            <Input checked="checked" type="radio" className={`form-check`} rules={{required:"Escolha uma prioridade"}} value="0" label="Baixa" name="priority" control={control}></Input>
-                            <Input type="radio" className={`form-check`} rules={{required:"Escolha uma prioridade"}} value="1" label="Média" name="priority" control={control}></Input>
-                            <Input type="radio" className={`form-check`} rules={{required:"Escolha uma prioridade"}} value="2" label="Alta" name="priority" control={control}></Input>
-                        </div>
-                         <div>
-                            <Select label="Categoria" name="category" control={control}>
-                                <Option value="trabalho">Trabalho</Option>                                
-                                <Option value="escola">Escola</Option>                                
-                            </Select>
-                         </div>
-                        <button className="btn btn-primary">Add</button>
-                    </form>
-                    
-                </div>
+                {addTaskForm &&
+                    <FormAddTask addTaskForm={addTaskForm} setAddTaskForm={setAddTaskForm} iduser={dataUser.id} />
+                }
             </div>
         </div>
     )
