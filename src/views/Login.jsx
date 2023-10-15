@@ -41,6 +41,7 @@ const Login = ()=>{
                 response.errors.forEach((erro)=>{
                     handleSetAlert({type:'danger', message:erro.msg})
                 })
+                
                 setLoading(false);
             }else{
                 handleSetAlert({type:'danger', message:response.message})
@@ -49,6 +50,8 @@ const Login = ()=>{
         }else if(response.error == false){
             handleSetAlert({type:'success', message:response.message})
             setLoading(false);
+            reset();
+            setForm('login')
         }
     }
     return(

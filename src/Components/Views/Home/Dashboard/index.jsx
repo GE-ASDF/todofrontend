@@ -4,12 +4,12 @@ import { convertDate } from "../../../../utils/utils";
 
 export default function Dashboard(){
     const {tasks} = useTasks();
-    const tarefasConcluidas = tasks.filter((task)=> task.done > 0).length;
-    const tarefasAtrasadas = tasks.filter((task)=> {
+    const tarefasConcluidas = tasks.length > 0 ?  tasks.filter((task)=> task.done > 0).length:[].length;
+    const tarefasAtrasadas =  tasks.length > 0 ? tasks.filter((task)=> {
         if(convertDate(new Date(task.enddate).toLocaleDateString('pt-br')) <= convertDate(new Date().toLocaleDateString('pt-br')) && !task.done){
             return task;
         }
-    }).length
+    }).length:[].length;
     const themeCtx = useTheme();
     return (
         <div className="flex flex-wrap flex-col p-1 m-2">
