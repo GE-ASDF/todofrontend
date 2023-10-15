@@ -39,8 +39,14 @@ export default function Body(){
                                     </Link>
                                 </li>
                                 <li className="list-group-item">
+                                    <Link className="d-flex gap-2" to="/app/today">
+                                        <i className="bi bi-list-task"></i>
+                                        <span>Todas</span>
+                                    </Link>
+                                </li>
+                                <li className="list-group-item">
                                     <Link className="d-flex gap-2" to="/app/stickywall">
-                                        <i className="bi bi-card-checklist"></i>
+                                        <i className="bi bi-sticky"></i>
                                         <span>Anotações</span>
                                     </Link>
                                 </li>

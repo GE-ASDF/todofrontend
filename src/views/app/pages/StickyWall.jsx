@@ -1,13 +1,13 @@
 import { useForm } from "react-hook-form";
 import Input from "../../../Components/UI/Forms/Input";
-
+import DOMPurify from "dompurify";
 
 import { useSticky } from "../../../Contexts/StickyContext";
 export const FormatText = (text)=>{
     const formattedText = text.replace(/\*(.*?)\*/g, "<b>$1</b>").replace(/\n/g, '<br/> ')
-    // const sanitizedData = () => ({
-    //     __html: DOMPurify.sanitize(data)
-    //   })
+    const sanitizedData = () => ({
+        __html: DOMPurify.sanitize(data)
+      })
     
     return formattedText;
 }

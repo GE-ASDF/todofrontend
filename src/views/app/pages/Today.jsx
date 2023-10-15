@@ -28,7 +28,7 @@ export default function Today(){
     }
     useEffect(()=>{
         const taskss = data.tasks.length > 0 ? data.tasks.filter((task)=>{
-            if(convertDate( new Date(task.enddate).toLocaleDateString('pt-br')) == '2023-10-14'){
+            if(convertDate( new Date(task.enddate).toLocaleDateString('pt-br')) == convertDate(new Date().toLocaleDateString('pt-br'))){
                 return task;
             }
         }):[];
@@ -38,8 +38,8 @@ export default function Today(){
         setDetails({show: !detailsShow.show, id})
     }
     return (
-        <div className="flex flex-col p-4">
-        <h1 className="text-5xl fw-bold">Tasks de hoje</h1>
+        <div className="flex flex-wrap flex-col p-4">
+        <h1 className="sm:text-2xl md:text-5xl fw-bold">Tasks de hoje</h1>
             <Tasks tasks={tasks} done={done} detailsShow={detailsShow} onClick={showDetails} />
         </div>
     )
