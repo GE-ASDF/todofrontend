@@ -15,16 +15,12 @@ import { useSticky } from "../../../../Contexts/StickyContext";
 
 
 export default function Header(props){
-    const data = useTasks();
-    const {handleSetAlert} = useAlert();
-    
+    const data = useTasks();    
     const tasks = data.tasks.length > 0 ? data.tasks.filter((task)=>{
         if(convertDate( new Date(task.enddate).toLocaleDateString('pt-br')) <= convertDate(new Date().toLocaleDateString('pt-br'))){
             return task;
         }
     }):[];
-    const local = useLocation().pathname.split("/");
-    const stickies = useSticky();
     const todayTasksQtd = tasks.length;
     const [addTaskForm, setAddTaskForm] = useState(false);
     const {user} = useLogged();
@@ -32,11 +28,7 @@ export default function Header(props){
     const {reset} = useForm();
     const {showMenu, setShowMenu} = useMenu();
     const {theme, setTheme} = useTheme();
-    const [sticky, setSticky] = useState({
-        iduser: dataUser.id,
-        title:'',
-        body:'',
-    })
+
     const handleShowMenu = ()=>{
         setShowMenu(!showMenu)
     }
@@ -44,39 +36,13 @@ export default function Header(props){
         setAddTaskForm(!addTaskForm);
         reset();
     }
-    const handleTypingSticky = (e)=>{
-        if(e.target.value.length <= 1024){
-            setSticky({...sticky, [e.target.name]:e.target.value.trim()})
-        }else{
-            setSticky({...sticky, [e.target.name]:''})
-            e.target.value = ''
-            handleSetAlert({type:"danger", message:"O campo só pode ter 1024 caracteres."})
-            return;
-        }
-    }
+
     const handleSetTheme = ()=>{
         const themeToSet = theme =='dark' ? 'light':'dark';
         setTheme(themeToSet);
     }
 
-    const saveSticky = async (e)=>{
-        e.preventDefault();
-   
-        if(!sticky.title || !sticky.body){
-            handleSetAlert({type:'danger', message:`O campo de título e anotação não podem estar vazios.`})
-            return;
-        }
-        const http = new HTTP('/admin/sticky/create', 'POST', sticky);
-        const response = await http.http();
-        if(response.error){
-            handleSetAlert({type:'danger', message:`Não foi possível inserir a anotação. Verifique os dados e tente novamente.`})
-            return;
-        }else if(response.error == false){
-            handleSetAlert({type:'success', message:response.message})
-            stickies.setSticky(true);
-            return;
-        }
-    }
+
     
     return (
         <div className={`flex justify-between  text-white bg-orange-700 p-1`}>
@@ -98,25 +64,10 @@ export default function Header(props){
                         {todayTasksQtd > 0 && todayTasksQtd}
                     </span>
                 </i>
-                {addTaskForm && !local.includes("stickywall") &&
+                {addTaskForm &&
                     <FormAddTask addTaskForm={addTaskForm} setAddTaskForm={setAddTaskForm} iduser={dataUser.id} />
                 }
-                {addTaskForm && local.includes("stickywall") &&
-                    <div className={`absolute ${theme == "dark" ? "dark":"bg-slate-500 text-light"} border p-2 rounded-start z-1 rounded-b-lg top-6 right-12`}>
-                    <form onSubmit={saveSticky} className="flex flex-col gap-2">
-                        <h2>Add anotação</h2>
-                        <div className="form-group">
-                            <label htmlFor="">Título:</label>
-                            <input onChange={handleTypingSticky} className="form-control" placeholder="Título da anotação" name="title"/>                        
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="">Anotação:</label>
-                            <textarea onChange={handleTypingSticky} placeholder="Digite sua anotação aqui" name="body" id=""  cols="30" rows="5" className="form-control"></textarea>
-                        </div>
-                        <button className="btn btn-primary">Add</button>
-                    </form>
-                </div>
-                }
+         
             </div>
         </div>
     )
