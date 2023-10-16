@@ -1,38 +1,109 @@
-export default function Tasks({tasks,done, detailsShow, onClick}){
+import { useState } from "react";
+import { normalizeString } from "../../../../utils/utils";
+import Task from "../../../UI/Task";
+import Pagination from "../../../UI/Pagination";
+
+export default function Tasks({tasks,search = '',showDone, done, filter, detailsShow, onClick}){
+    const priorities = ['Baixa', 'Média', 'Alta'];
+    const [page, setPage] = useState(1);
+    const itemsPerPage = 10;
+    const startIndex = (page - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const maxPagesItems = tasks.length > 0 && !filter || !priorities[filter] ? tasks.filter((task)=>{
+        if(showDone){
+            if(search != '' && (normalizeString(task.title).includes(normalizeString(search) || normalizeString(task.description).includes(normalizeString(search))))){
+                return task;
+            }else if(!search){
+                return task;
+            }
+        }else{
+            if(task.done == 0){
+                if(search != '' && (normalizeString(task.title).includes(normalizeString(search) || normalizeString(task.description).includes(normalizeString(search))))){
+                    return task;
+                }else if(!search){
+                    return task;
+                }
+            }
+        }
+    }):tasks.filter((task)=>{
+        if(showDone){
+            if(search != '' && (normalizeString(task.title).includes(normalizeString(search) || normalizeString(task.description).includes(normalizeString(search))))){
+                if(filter && priorities[filter] && task.priority == filter){
+                    return task;
+                }
+            }else if(!search){
+                if(filter && priorities[filter] && task.priority == filter){
+                    return task;
+                }
+            }
+        }else{
+            if(task.done == 0){
+                if(search != '' && (normalizeString(task.title).includes(normalizeString(search) || normalizeString(task.description).includes(normalizeString(search))))){
+                    if(filter && priorities[filter] && task.priority == filter){
+                        return task;
+                    }
+                }else if(!search){
+                    if(filter && priorities[filter] && task.priority == filter){
+                        return task;
+                    }
+                }
+            }
+        }
+    });
+    const maxPages = Math.ceil(maxPagesItems.length / itemsPerPage);
+    const newTasks = tasks.length > 0 && !filter || !priorities[filter] ? tasks.filter((task)=>{
+        if(showDone){
+
+            if(search != '' && (normalizeString(task.title).includes(normalizeString(search) || normalizeString(task.description).includes(normalizeString(search))))){
+                return task;
+            }else if(!search){
+                return task
+            }
+        }else{
+            if(task.done == 0){
+                if(search != '' && (normalizeString(task.title).includes(normalizeString(search) || normalizeString(task.description).includes(normalizeString(search))))){
+                    return task;
+                }else if(!search){
+                    return task
+                }
+            }
+        }
+    }).slice(startIndex, endIndex):tasks.filter((task)=>{
+        if(showDone){
+
+            if(search != '' && (normalizeString(task.title).includes(normalizeString(search) || normalizeString(task.description).includes(normalizeString(search))))){
+                if(filter && priorities[filter] && task.priority == filter){
+                    return task;
+                }
+            }else if(!search){
+                if(filter && priorities[filter] && task.priority == filter){
+                    return task;
+                }
+            }
+        }else{
+            if(task.done == 0){
+                if(search != '' && (normalizeString(task.title).includes(normalizeString(search) || normalizeString(task.description).includes(normalizeString(search))))){
+                    if(filter && priorities[filter] && task.priority == filter){
+                        return task;
+                    }
+                }else if(!search){
+                    if(filter && priorities[filter] && task.priority == filter){
+                        return task;
+                    }
+                }
+            }
+        }
+    }).slice(startIndex, endIndex);
+  
     return (
         <>
-            {tasks.length > 0 && tasks.map(task =>{
+            <Pagination maxPages={maxPages} setPage={setPage} page={page} itemsPerPage={itemsPerPage} />
+            {newTasks.length > 0 && newTasks.map(task =>{
                 return (
-                    <div key={task.id}  className="flex flex-wrap gap-2 rounded-md cursor-pointer flex-row border p-2 mt-4">
-                    <div onClick={() => onClick(task.id)} className="flex w-100 flex-col">
-                        <h5 className="fw-bold text-sm">{task.title}</h5>
-                        {detailsShow.show && detailsShow.id == task.id && 
-                            <>
-                                <span className="mx-2">Descrição: {task.description}</span>
-                            </>
-                        }
-                    <div className="flex flex-wrap gap-2">
-                    <div className="flex  items-center gap-1">
-                        <i className="bi bi-calendar-event"></i>
-                        <span className="text-sm">
-                        {new Date(task.enddate).toLocaleDateString('pt-br')}</span>
-                    </div>
-                    <div className="flex  items-center gap-1">
-                        <i className="bi bi-bookmark"></i>
-                        <span className="text-sm">
-                        {task.category_title}</span>
-                    </div>
-                    </div>
-                    
-                    </div>
-                        <div className="flex flex-row justify-start items-start gap-2">
-                            {task.done == 0 && <span className="btn btn-sm btn-warning" onClick={()=> done(task.id)}>{task.done == 0 && 'Pending'}</span>}
-                            {task.done > 0 && <span className="btn btn-sm btn-success" onClick={()=> done(task.id)}>{task.done > 0 && 'Done'}</span>}
-                            <span className="btn btn-sm btn-danger" onClick={()=> done(task.id)}>Remover</span>
-                        </div>
-                    </div>
-                )
+                    <Task onClick={onClick} detailsShow={detailsShow} task={task} done={done} key={task.id} />
+                    )
             })}
+            <Pagination maxPages={maxPages} setPage={setPage} page={page} itemsPerPage={itemsPerPage} />
         </>
     )
 }

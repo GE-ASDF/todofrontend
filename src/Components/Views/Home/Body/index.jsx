@@ -15,8 +15,8 @@ export default function Body(){
         setShowMenu(!showMenu)
     }
     const handleLogout = ()=>{
-        localStorage.removeItem("logged");
         Cookies.removeItem("token");
+        localStorage.removeItem("logged");
         navigate("/")
     }
     return(
@@ -44,6 +44,7 @@ export default function Body(){
                                         <span>Todas</span>
                                     </Link>
                                 </li>
+                                
                                 <li className="list-group-item">
                                     <Link className="d-flex gap-2" to="/app/stickywall">
                                         <i className="bi bi-sticky"></i>

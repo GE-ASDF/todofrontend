@@ -21,7 +21,7 @@ export default function FormAddTask({iduser, setAddTaskForm, addTaskForm}){
         if(response.error == false){
             handleSetAlert({type:'success', message:'Uma tarefa foi adicionada com sucesso!'})
             setTask(true);
-            reset();
+            // reset();
         }else if(response.error){
             if(response.type == 'fields'){
                 response.errors.forEach(erro =>{

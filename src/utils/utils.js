@@ -11,3 +11,7 @@ export const getDate = ()=>{
 export const convertDate = (date)=>{
     return date.split("/").reverse().join("-");
 }
+
+export const normalizeString = (string)=>{
+    return string.normalize('NFD').toLowerCase();
+}
