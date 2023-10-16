@@ -1,9 +1,11 @@
 import { useTheme } from "../../../../Contexts/ContextsLoaders/useTheme";
 import {useTasks} from "../../../../Contexts/TasksContext";
 import { convertDate } from "../../../../utils/utils";
-
+import {RadialBarChart, PolarAngleAxis, RadialBar} from "recharts";
 export default function Dashboard(){
     const {tasks} = useTasks();
+    const concluidas = tasks.length > 0 ? ((tasks.filter((task)=> task.done > 0).length / tasks.length) * 100).toFixed(2):[];
+    console.log(concluidas)
     const tarefasConcluidas = tasks.length > 0 ?  tasks.filter((task)=> task.done > 0).length:[].length;
     const tarefasAtrasadas =  tasks.length > 0 ? tasks.filter((task)=> {
         if(convertDate(new Date(task.enddate).toLocaleDateString('pt-br')) <= convertDate(new Date().toLocaleDateString('pt-br')) && !task.done){
@@ -11,6 +13,7 @@ export default function Dashboard(){
         }
     }).length:[].length;
     const themeCtx = useTheme();
+    const chartData = [{name:'% de conclusão', value:concluidas}]
     return (
         <div className="flex flex-wrap flex-col p-1 m-2">
             <h1 className="sm:text-4xl md:text-5xl fw-bold">Dashboard</h1>
@@ -41,6 +44,18 @@ export default function Dashboard(){
                         <h4 className="text-2xl fw-bold">{tarefasAtrasadas}</h4>
                     </div>
                 </div>
+            </div>
+            <div className="p-2 mt-4">
+                <RadialBarChart layout="radial"  className={`${themeCtx.theme == 'dark' ? 'dark':''}`}  startAngle={0}  endAngle={180} width={250} height={250} cx={125} cy={150} innerRadius={100} outerRadius={500} barSize={15} data={chartData}>
+                    <PolarAngleAxis label={false}  type="number" domain={[0, 100]} />
+                    <RadialBar className="bg-danger" startAngle={0} fill="green" background clockWise dataKey="value" />
+                    <text x="50%" y="50%" textAnchor="middle" fill={`${themeCtx.theme == 'dark' ? '#fff':'#000'}`} dominantBaseline="middle" fontSize="24px">
+                        {`${chartData[0].value}%`}
+                    </text>
+                    <text x="50%" y="40%" textAnchor="middle" fill={`${themeCtx.theme == 'dark' ? '#fff':'#000'}`} dominantBaseline="middle" fontSize="18px">
+                        {`${chartData[0].name}`}
+                    </text>
+                </RadialBarChart>
             </div>
         </div>
     )
