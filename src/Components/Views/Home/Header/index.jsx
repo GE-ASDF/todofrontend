@@ -45,7 +45,14 @@ export default function Header(props){
         reset();
     }
     const handleTypingSticky = (e)=>{
-        setSticky({...sticky, [e.target.name]:e.target.value.trim()})
+        if(e.target.value.length <= 1024){
+            setSticky({...sticky, [e.target.name]:e.target.value.trim()})
+        }else{
+            setSticky({...sticky, [e.target.name]:''})
+            e.target.value = ''
+            handleSetAlert({type:"danger", message:"O campo só pode ter 1024 caracteres."})
+            return;
+        }
     }
     const handleSetTheme = ()=>{
         const themeToSet = theme =='dark' ? 'light':'dark';
@@ -104,7 +111,7 @@ export default function Header(props){
                         </div>
                         <div className="form-group">
                             <label htmlFor="">Anotação:</label>
-                            <textarea onChange={handleTypingSticky} placeholder="Digite sua anotação aqui" name="body" id="" cols="30" rows="5" className="form-control"></textarea>
+                            <textarea onChange={handleTypingSticky} placeholder="Digite sua anotação aqui" name="body" id=""  cols="30" rows="5" className="form-control"></textarea>
                         </div>
                         <button className="btn btn-primary">Add</button>
                     </form>

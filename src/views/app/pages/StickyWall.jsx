@@ -14,9 +14,9 @@ export const FormatText = (text)=>{
 export default function StickyWall(){
     const {control, handleSubmit} = useForm();
     const {stickies} = useSticky();
-    console.log(stickies)
+
     return(
-        <div className="flex flex-col p-4">
+        <div className="flex flex-wrap flex-col p-4">
             <h1 className="lg:text-5xl md:text-3xl text-3xl  fw-bold">Anotações</h1>
             <div className="flex gap-2 flex-wrap mt-4">
                 {stickies.length > 0 && stickies.map(sticky =>{
