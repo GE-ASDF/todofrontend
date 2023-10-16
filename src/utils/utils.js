@@ -15,3 +15,11 @@ export const convertDate = (date)=>{
 export const normalizeString = (string)=>{
     return string.normalize('NFD').toLowerCase();
 }
+
+export const formatText = (text)=>{
+    const formattedText = text.replace(/\*(.*?)\*/g, "<b>$1</b>").replace(/\n/g, '<br/> ')
+    // const sanitizedData = () => ({
+    //     __html: DOMPurify.sanitize(data)
+    //   })
+    return formattedText; 
+}
