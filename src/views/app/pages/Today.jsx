@@ -10,6 +10,7 @@ import hookSetFilter from "../../../hooks/hookSetFilter";
 import HTTP from "../../../api/http";
 import {useAlert} from "../../../Contexts/AlertContext";
 import Loader from "../../../Components/UI/Loader";
+import Alert from "../../../Components/UI/Alert";
 
 export default function Today(){
     const data = useTasks();
@@ -38,8 +39,15 @@ export default function Today(){
         <div className="flex flex-wrap flex-col p-4">
         {loading && <Loader />}
         <h1 className="sm:text-2xl md:text-5xl fw-bold">Tasks de hoje</h1>
+            {tasks.length > 0 &&
+                <>
             <FilterTask showDone={showDone} handleDoneChange={handleDoneChange} handleSetSearch={handleSetSearch} handleSetFilter={handleSetFilter} />
             <Tasks showDone={showDone}  search={search} filter={filter} tasks={tasks} done={done} detailsShow={detailsShow} onClick={showDetails} />
+                </>
+            }
+            {tasks.length <= 0 
+            && <Alert type="danger" className="mt-2" message="Ainda não há tarefas" />
+        } 
         </div>
     )
 }

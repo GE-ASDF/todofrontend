@@ -17,7 +17,11 @@ export const StickyProvider = ({children})=>{
     const getSticky = async ()=>{
         const http = new HTTP('/admin/sticky/all/'+user.id)
         const response = await http.http()
-        setStickies(response);
+        if(response.error){
+            setStickies([])
+        }else{
+            setStickies(response);
+        }
     }
 
     useEffect(()=>{

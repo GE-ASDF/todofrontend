@@ -20,5 +20,5 @@ export default function hookDoneTask(){
             setLoading(false);
         }
     }
-    return {done, loading}
+    return {done, loading, setLoading}
 }

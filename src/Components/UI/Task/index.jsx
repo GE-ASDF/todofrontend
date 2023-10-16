@@ -1,6 +1,6 @@
 import {useTheme} from "../../../Contexts/ContextsLoaders/useTheme";
 
-export default function Task({task, detailsShow, onClick, done, remove}){
+export default function Task({task, detailsShow, onClick,removeTask,done}){
     const priorities = ['Baixa', 'Média', 'Alta'];
     const themeCtx = useTheme();
     return (
@@ -28,9 +28,9 @@ export default function Task({task, detailsShow, onClick, done, remove}){
             
             </div>
                 <div className="flex flex-row justify-start items-start gap-2">
-                    {task.done == 0 && <span className="btn btn-sm btn-warning" onClick={()=> done(task.id)}>{task.done == 0 && 'Pending'}</span>}
-                    {task.done > 0 && <span className="btn btn-sm btn-success" onClick={()=> done(task.id)}>{task.done > 0 && 'Done'}</span>}
-                    <span className="btn btn-sm btn-danger" onClick={()=> done(task.id)}>Remover</span>
+                    {task.done == 0 && <span className="btn btn-sm btn-warning" onClick={()=> done(task.id)}>{task.done == 0 && 'Pendente'}</span>}
+                    {task.done > 0 && <span className="btn btn-sm btn-success" onClick={()=> done(task.id)}>{task.done > 0 && 'Feito'}</span>}
+                    <span className="btn btn-sm btn-danger" onClick={()=> removeTask(task.id)}>Remover</span>
                 </div>
             </div>
     )

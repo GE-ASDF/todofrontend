@@ -17,7 +17,11 @@ export const TasksProvider = ({children})=>{
     const getTasks = async ()=>{
         const http = new HTTP('/admin/tasks/all/'+user.id)
         const response = await http.http()
-        setTasks(response);
+        if(response.error){
+            setTasks([]);
+        }else{
+            setTasks(response);
+        }
     }
 
     useEffect(()=>{
