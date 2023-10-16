@@ -1,8 +1,10 @@
+import { Link } from "react-router-dom";
 import {useTheme} from "../../../Contexts/ContextsLoaders/useTheme";
 
-export default function Task({task, detailsShow, onClick,removeTask,done}){
+export default function Task({task, editTask, detailsShow, onClick,removeTask,done}){
     const priorities = ['Baixa', 'Média', 'Alta'];
     const themeCtx = useTheme();
+    
     return (
         <div key={task.id}  className="flex flex-wrap gap-2 rounded-md cursor-pointer flex-row border p-2 mt-4">
             <h6 className={`${task.priority == 0 ? `${themeCtx.theme == 'dark' ? 'bg-blue-700':'bg-blue-700 text-white'}`:task.priority == 1 ? `${themeCtx.theme == 'dark' ? 'bg-yellow-700 text-white':'bg-yellow-700 text-white'}`:themeCtx.theme == 'dark' ? 'bg-red-600':'bg-red-600 text-white'} p-1 rounded`}>Prioridade: {priorities[task.priority]}</h6>
@@ -31,6 +33,7 @@ export default function Task({task, detailsShow, onClick,removeTask,done}){
                     {task.done == 0 && <span className="btn btn-sm btn-warning" onClick={()=> done(task.id)}>{task.done == 0 && 'Pendente'}</span>}
                     {task.done > 0 && <span className="btn btn-sm btn-success" onClick={()=> done(task.id)}>{task.done > 0 && 'Feito'}</span>}
                     <span className="btn btn-sm btn-danger" onClick={()=> removeTask(task.id)}>Remover</span>
+                    <Link className="btn btn-sm btn-primary" to={`edittask/${task.id}`}>Editar</Link>
                 </div>
             </div>
     )

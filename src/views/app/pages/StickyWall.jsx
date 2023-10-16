@@ -26,10 +26,6 @@ export default function StickyWall(){
                                     {sticky.title}
                                 </div>
                                 <div dangerouslySetInnerHTML={{ __html: FormatText(sticky.body)}} className="card-body max-w-xs" />
-                                
-                                <div className="card-footer">
-                                    footer
-                                </div>
                         </div>
                     )
                 })}

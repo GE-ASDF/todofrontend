@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { useLoaderData } from "react-router-dom"
+import { Outlet, useLoaderData } from "react-router-dom"
 import Tasks from "../../../Components/Views/Home/Tasks";
 import { useTasks } from "../../../Contexts/TasksContext";
 import { convertDate, dateISOString, getDate, normalizeString } from "../../../utils/utils";
@@ -45,9 +45,7 @@ export default function Today(){
             <Tasks showDone={showDone}  search={search} filter={filter} tasks={tasks} done={done} detailsShow={detailsShow} onClick={showDetails} />
                 </>
             }
-            {tasks.length <= 0 
-            && <Alert type="danger" className="mt-2" message="Ainda não há tarefas" />
-        } 
+        <Outlet />
         </div>
     )
 }
