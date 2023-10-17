@@ -61,7 +61,7 @@ export default function FormAddTask({iduser, setAddTaskForm, addTaskForm}){
             <Input defaultValue="" label="Descrição" placeholder="Descrição da tarefa" name="description" control={control}></Input>
             <Input type="date" defaultValue="" label="Data de fim"  name="enddate" control={control} rules={{required:"Este campo é obrigatório"}}></Input>
             <div className="flex gap-2">
-                <Input defaultChecked="0" type="radio" className={`form-check`} rules={{required:"Escolha uma prioridade"}} value="0" label="Baixa" name="priority" control={control}></Input>
+                <Input type="radio" className={`form-check`} rules={{required:"Escolha uma prioridade"}} value="0" label="Baixa" name="priority" control={control}></Input>
                 <Input type="radio" className={`form-check`} rules={{required:"Escolha uma prioridade"}} value="1" label="Média" name="priority" control={control}></Input>
                 <Input type="radio" className={`form-check`} rules={{required:"Escolha uma prioridade"}} value="2" label="Alta" name="priority" control={control}></Input>
             </div>
