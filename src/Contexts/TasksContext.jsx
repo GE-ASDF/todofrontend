@@ -16,6 +16,8 @@ export const TasksProvider = ({children})=>{
 
     const getTasks = async ()=>{
         const http = new HTTP('/admin/tasks/all/'+user.id)
+        
+        console.log(http)
         const response = await http.http()
         if(response.error){
             setTasks([]);
