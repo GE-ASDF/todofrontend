@@ -9,8 +9,6 @@ export default function hookRemoveTask(){
     const {handleSetAlert} = useAlert();
     const {setLoading} = hookDoneTask();
     const removeTask = async (id)=>{
-        const confirm = window.confirm("Deseja apagar o registro?")
-        if(confirm){
             setLoading(true);
             const http = new HTTP("/admin/tasks/delete/"+id);
             const response = await http.http();
@@ -22,7 +20,6 @@ export default function hookRemoveTask(){
                 data.setTask(true);
                 setLoading(false);
             }
-        }
     }
     return {removeTask, setLoading}
 }

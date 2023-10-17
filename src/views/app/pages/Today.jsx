@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { Outlet, useLoaderData } from "react-router-dom"
+import { Outlet } from "react-router-dom"
 import Tasks from "../../../Components/Views/Home/Tasks";
 import { useTasks } from "../../../Contexts/TasksContext";
 import { convertDate, dateISOString, getDate, normalizeString } from "../../../utils/utils";
@@ -7,10 +7,8 @@ import hookShowDetails from "../../../hooks/hookShowDetails";
 import hookDoneTask from "../../../hooks/hookDoneTask";
 import FilterTask from "../../../Components/UI/FilterTask";
 import hookSetFilter from "../../../hooks/hookSetFilter";
-import HTTP from "../../../api/http";
-import {useAlert} from "../../../Contexts/AlertContext";
 import Loader from "../../../Components/UI/Loader";
-import Alert from "../../../Components/UI/Alert";
+
 
 export default function Today(){
     const data = useTasks();

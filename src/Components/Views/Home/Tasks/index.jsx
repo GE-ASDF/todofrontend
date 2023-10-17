@@ -5,9 +5,10 @@ import Pagination from "../../../UI/Pagination";
 import hookRemoveTask from "../../../../hooks/hookRemoveTask";
 import Loader from "../../../UI/Loader";
 import hookDoneTask from "../../../../hooks/hookDoneTask";
+import Alert from "../../../UI/Alert";
 
 export default function Tasks({tasks,search = '',showDone, filter, detailsShow, onClick}){
-    const {removeTask} = hookRemoveTask();
+    // const {removeTask} = hookRemoveTask();
     const {done, loading} = hookDoneTask();
     const priorities = ['Baixa', 'Média', 'Alta'];
     const [page, setPage] = useState(1);
@@ -98,16 +99,17 @@ export default function Tasks({tasks,search = '',showDone, filter, detailsShow, 
             }
         }
     }).slice(startIndex, endIndex):[];
-  
+
     return (
         <>
             {loading && <Loader />}
             <Pagination maxPages={maxPages} setPage={setPage} page={page} itemsPerPage={itemsPerPage} />
             {newTasks.length > 0 && newTasks.map(task =>{
                 return (
-                    <Task removeTask={removeTask} onClick={onClick} detailsShow={detailsShow} task={task} done={done} key={task.id} />
+                    <Task onClick={onClick} detailsShow={detailsShow} task={task} done={done} key={task.id} />
                     )
             })}
+            
             <Pagination maxPages={maxPages} setPage={setPage} page={page} itemsPerPage={itemsPerPage} />
         </>
     )
