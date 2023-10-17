@@ -16,7 +16,7 @@ class HTTP{
         
     }
     async http(){
-        try{
+        try{    
             const response = await fetch(this.endpoint, this.configFetch);
             const data = await response.json();
             return await data;

@@ -17,7 +17,7 @@ import { useSticky } from "../../../../Contexts/StickyContext";
 export default function Header(props){
     const data = useTasks();    
     const tasks = data.tasks.length > 0 ? data.tasks.filter((task)=>{
-        if(convertDate( new Date(task.enddate).toLocaleDateString('pt-br')) <= convertDate(new Date().toLocaleDateString('pt-br'))){
+        if(convertDate( new Date(task.enddate).toLocaleDateString('pt-br')) <= convertDate(new Date().toLocaleDateString('pt-br')) && !task.done){
             return task;
         }
     }):[];
