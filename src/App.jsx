@@ -5,14 +5,10 @@ import PublicRoutes from "./Routes/PublicRoutes";
 import { AlertProvider } from "./Contexts/AlertContext";
 import { LoggedProvider } from "./Contexts/LoggedContext";
 import {ThemeProvider} from "./Contexts/ThemeContext";
-import { useState } from "react";
-import HTTP from "./api/http";
-import { useEffect } from "react";
 
 
 function App() {
-
-  const routes = createBrowserRouter([...PublicRoutes(),...PrivateRoutes()])
+  let routes = createBrowserRouter([...PublicRoutes(), ...PrivateRoutes()])
 
   return (
         <LoggedProvider>

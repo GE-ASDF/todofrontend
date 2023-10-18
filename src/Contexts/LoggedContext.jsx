@@ -1,11 +1,11 @@
 import { createContext, useContext, useEffect, useState } from "react";
+import Cookies from "js-cookies";
 
 export const LoggedContext = createContext();
 const LOGGED_KEY = 'logged';
+
 export const LoggedProvider = (props)=>{
     const [userLogged, setUserLogged] = useState(localStorage.getItem(LOGGED_KEY)); 
-    
-    
     useEffect(()=>{
         localStorage.setItem(LOGGED_KEY, userLogged);
     },[userLogged])

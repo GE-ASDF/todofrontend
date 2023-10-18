@@ -2,7 +2,6 @@ import { createContext, useContext, useEffect, useState } from "react";
 import {todayTasksLoader} from "../Loaders/todayTasksLoader";
 import HTTP from "../api/http";
 import { useLogged } from "./LoggedContext";
-
 export const StickyContext = createContext();
 
 
@@ -11,11 +10,12 @@ export const StickyContext = createContext();
 export const StickyProvider = ({children})=>{
     const [sticky, setSticky] = useState(true);
     const [stickies, setStickies] = useState([])
-    const data = useLogged();
-    const user = JSON.parse(data.user);
+    const {user} = useLogged();
+    const dataUser = JSON.parse(user)
+   
 
     const getSticky = async ()=>{
-        const http = new HTTP('/admin/sticky/all/'+user.id)
+        const http = new HTTP('/admin/sticky/all/'+dataUser.id)
         const response = await http.http()
         if(response.error){
             setStickies([])

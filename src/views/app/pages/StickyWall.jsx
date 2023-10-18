@@ -1,3 +1,7 @@
+import { useForm } from "react-hook-form";
+import Input from "../../../Components/UI/Forms/Input";
+import DOMPurify from "dompurify";
+
 import { useSticky } from "../../../Contexts/StickyContext";
 import { useState } from "react";
 import { useLogged } from "../../../Contexts/LoggedContext";
@@ -7,20 +11,19 @@ import { useAlert } from "../../../Contexts/AlertContext";
 import FormAddSticky from "../../../Components/Views/Home/FormAddSticky";
 import { useEffect } from "react";
 import Stickies from "../../../Components/Views/Home/Stickies";
-import ConfirmationScreen from "../../../Components/UI/ConfirmationScreen";
+
 export default function StickyWall(){
     const {handleSetAlert} = useAlert();
     const {user} = useLogged();
     const[showAddSticky, setShowAddSticky] = useState(false)
     const dataUser = JSON.parse(user);
-    
 
     const [sticky, setSticky] = useState({
         iduser: dataUser.id,
         title:'',
         body:'',
     })
-    
+
     const data = useSticky();
     const handleTypingSticky = (e)=>{
         if(e.target.value.length <= 1024){
@@ -67,7 +70,7 @@ export default function StickyWall(){
             <h1 className="lg:text-5xl md:text-3xl text-3xl  fw-bold">Anotações</h1>
             <Stickies stickies={data.stickies} />
             {showAddSticky &&
-                <FormAddSticky  handleTypingSticky={handleTypingSticky} saveSticky={saveSticky} />
+                <FormAddSticky handleTypingSticky={handleTypingSticky} saveSticky={saveSticky} />
             }
             <div onClick={handleShowAddSticky} className="rounded-full text-3xl cursor-pointer hover:text-purple-500  h-10 w-10 flex items-center justify-center absolute bottom-5  right-5">
                 <i className="bi bi-plus-circle"></i>

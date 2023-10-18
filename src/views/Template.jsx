@@ -1,30 +1,30 @@
 import Cookies from "js-cookies";
-import {Navigate} from "react-router-dom"
+import {Navigate, useNavigate} from "react-router-dom"
 import HTTP from "../api/http";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Home from "./app/Home";
 import { useLogged } from "../Contexts/LoggedContext";
 
 const Template = ()=>{
     const token = Cookies.getItem("token");
-    const http = new HTTP('/token');
-    const logged = useLogged();
+    const navigate = useNavigate();
+    const http = new HTTP('/auth');
+    const {setUserLogged} = useLogged();
 
-    if(!logged.user || logged.user == "null"){
-        Cookies.removeItem("token");
-        return <Navigate to="/" />
-    }
-    
-    useEffect(()=>{
-        const handleLogged = async()=>{
-            const response = await http.http();
-            if(response.error){
-                return <Navigate to="/" />
-            }
+    const handleLogged = async()=>{
+        const response = await http.http();
+        
+        if(response.error == true){
+            setUserLogged('null');
+            Cookies.removeItem("token");
+            return navigate("/")
         }
+    }
+
+    useEffect(()=>{
         handleLogged()
     })
-
+ 
     if(!token){
         return <Navigate to="/" />;
     }

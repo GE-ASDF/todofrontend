@@ -7,6 +7,7 @@ import { useAlert } from "../Contexts/AlertContext";
 import { useLogged } from "../Contexts/LoggedContext";
 import { useState } from "react";
 import Loader from "../Components/UI/Loader"
+import { useEffect } from "react";
 
 const Login = ()=>{
     const [form, setForm] = useState('login');
@@ -15,8 +16,19 @@ const Login = ()=>{
     const {handleSetAlert} = useAlert();
     const {control, handleSubmit, reset} = useForm();
     const navigate = useNavigate();
+    const [_csrfToken, setCsrfToken] = useState();
     
-    const authenticate = async ()=>{
+    useEffect(()=>{
+        const getCsrfToken = async()=>{
+            const http = new HTTP("/csrfToken");
+            const response = await http.http();
+            if(!response.error == true){
+                setCsrfToken(response.csrfToken)
+            }
+        }
+        getCsrfToken();
+    },[])
+    const authenticate = async()=>{ 
         setLoading(true);
         const http = new HTTP("/auth", 'POST', control._formValues);
         const response = await http.http();
@@ -25,8 +37,16 @@ const Login = ()=>{
             setLoading(false);
         }else{
             Cookies.setItem('token',response.token);
-            setUserLogged(JSON.stringify(response.user))
-            handleSetAlert({type:'success', message:response.message})
+    
+            const httpNew = new HTTP('/auth');
+            const verifiyng = await httpNew.http();
+
+            if(verifiyng.error == false){
+                setUserLogged(JSON.stringify(response.user))
+            }else{
+                handleSetAlert({type:'danger', message:response.message})
+            }
+
             setLoading(false);
             return navigate("/app")
         }
@@ -67,6 +87,9 @@ const Login = ()=>{
                     <h1 className="text-3xl text-center">ToDo</h1>
                     <Input defaultValue="" autofocus="autofocus" placeholder="Digite seu usuário" rules={{required:"Este campo é obrigatório.", maxLength:{value:"255", message:"Este campo só suporta 255 caracteres"}}} type="text" label="Usuário" name="user" control={control} />
                     <Input defaultValue="" placeholder="Digite sua senha"  rules={{required:"Este campo é obrigatório.", maxLength:{value:"255", message:"Este campo só suporta 255 caracteres"}}} type="password" label="Senha" name="password" control={control} />
+                    {_csrfToken &&
+                    <Input type="hidden" value={`${_csrfToken}`} defaultValue={`${_csrfToken}`} label="" name="_csrf" control={control}/>
+                    }
                     <div>
                         <button className="btn btn-primary">Login</button>
                     </div>

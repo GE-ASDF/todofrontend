@@ -5,7 +5,7 @@ import {RadialBarChart, PolarAngleAxis, RadialBar} from "recharts";
 export default function Dashboard(){
     const {tasks} = useTasks();
     const concluidas = tasks.length > 0 ? ((tasks.filter((task)=> task.done > 0).length / tasks.length) * 100).toFixed(2):[];
-    console.log(concluidas)
+ 
     const tarefasConcluidas = tasks.length > 0 ?  tasks.filter((task)=> task.done > 0).length:[].length;
     const tarefasAtrasadas =  tasks.length > 0 ? tasks.filter((task)=> {
         if(convertDate(new Date(task.enddate).toLocaleDateString('pt-br')) <= convertDate(new Date().toLocaleDateString('pt-br')) && !task.done){

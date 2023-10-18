@@ -6,18 +6,24 @@ import Cookies from "js-cookies";
 
 import "./style.css";
 import { useTheme } from "../../../../Contexts/ContextsLoaders/useTheme";
+import HTTP from "../../../../api/http";
+import { useLogged } from "../../../../Contexts/LoggedContext";
 export default function Body(){
     const {theme} = useTheme();
     const {showMenu, setShowMenu} = useMenu();
     const local = useLocation().pathname.split("/app").filter((l) => l);
     const navigate = useNavigate();
+    const {setUserLogged}= useLogged();
     const handleShowMenu = ()=>{
         setShowMenu(!showMenu)
     }
-    const handleLogout = ()=>{
+    const handleLogout = async ()=>{
+        const http = new HTTP("/logout");
+        await http.http();
         Cookies.removeItem("token");
-        localStorage.removeItem("logged");
+        setUserLogged('null')
         navigate("/")
+        
     }
     return(
         <>

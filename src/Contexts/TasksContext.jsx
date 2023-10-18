@@ -11,13 +11,10 @@ const TASKS_ID = 'tasks'
 export const TasksProvider = ({children})=>{
     const [task, setTask] = useState(true);
     const [tasks, setTasks] = useState([])
-    const data = useLogged();
-    const user = JSON.parse(data.user);
-
+    const {user} = useLogged();
+    const dataUser = JSON.parse(user)
     const getTasks = async ()=>{
-        const http = new HTTP('/admin/tasks/all/'+user.id)
-        
-        console.log(http)
+        const http = new HTTP('/admin/tasks/all/'+dataUser.id)
         const response = await http.http()
         if(response.error){
             setTasks([]);
