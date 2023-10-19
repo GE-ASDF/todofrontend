@@ -60,7 +60,7 @@ export default function FormAddTask({iduser, setAddTaskForm, addTaskForm}){
             <Input defaultValue="" label="Título" placeholder="Título da tarefa" name="title" rules={{required:"Este campo é obrigatório"}} control={control}></Input>
             <Input defaultValue="" label="Descrição" placeholder="Descrição da tarefa" name="description" control={control}></Input>
             <Input type="date" defaultValue="" label="Data de fim"  name="enddate" control={control} rules={{required:"Este campo é obrigatório"}}></Input>
-            <div className="flex gap-2" >
+            <div className="flex flex-col" >
                 <Select defaultValue="0" name="priority" label="Prioridade" control={control}>
                     <Option value="0">Baixa</Option>                                                           
                     <Option value="1">Média</Option>                                                           

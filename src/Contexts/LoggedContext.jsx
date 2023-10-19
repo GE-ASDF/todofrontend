@@ -9,7 +9,7 @@ export const LoggedProvider = (props)=>{
     useEffect(()=>{
         localStorage.setItem(LOGGED_KEY, userLogged);
     },[userLogged])
-
+    
     return (
         <LoggedContext.Provider value={{user: userLogged, setUserLogged}}>
             {props.children}

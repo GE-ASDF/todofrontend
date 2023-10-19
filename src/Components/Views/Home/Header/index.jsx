@@ -9,9 +9,7 @@ import { useLogged } from "../../../../Contexts/LoggedContext";
 import FormAddTask from "../FormAddTask";
 import { useTasks } from "../../../../Contexts/TasksContext";
 import { convertDate } from "../../../../utils/utils";
-import { useAlert } from "../../../../Contexts/AlertContext";
-import HTTP from "../../../../api/http";
-import { useSticky } from "../../../../Contexts/StickyContext";
+
 
 
 export default function Header(props){
