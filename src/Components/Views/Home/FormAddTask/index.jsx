@@ -54,16 +54,18 @@ export default function FormAddTask({iduser, setAddTaskForm, addTaskForm}){
     },[addTaskForm])
 
     return (
-        <div className={`absolute ${theme == "dark" ? "dark":"bg-slate-500 text-light"} border p-2 rounded-start rounded-b-lg z-10 top-6 right-12`}>
+        <div className={`absolute ${theme == "dark" ? "dark":"bg-slate-500 text-light"}  border p-2 rounded-start rounded-b-lg z-10 top-6 right-12`}>
         <form onSubmit={handleSubmit(saveTask)} className="flex flex-col gap-2">
             <h2>Add tarefa</h2>
             <Input defaultValue="" label="Título" placeholder="Título da tarefa" name="title" rules={{required:"Este campo é obrigatório"}} control={control}></Input>
             <Input defaultValue="" label="Descrição" placeholder="Descrição da tarefa" name="description" control={control}></Input>
             <Input type="date" defaultValue="" label="Data de fim"  name="enddate" control={control} rules={{required:"Este campo é obrigatório"}}></Input>
-            <div className="flex gap-2">
-                <Input type="radio" className={`form-check`} rules={{required:"Escolha uma prioridade"}} value="0" label="Baixa" name="priority" control={control}></Input>
-                <Input type="radio" className={`form-check`} rules={{required:"Escolha uma prioridade"}} value="1" label="Média" name="priority" control={control}></Input>
-                <Input type="radio" className={`form-check`} rules={{required:"Escolha uma prioridade"}} value="2" label="Alta" name="priority" control={control}></Input>
+            <div className="flex gap-2" >
+                <Select defaultValue="0" name="priority" label="Prioridade" control={control}>
+                    <Option value="0">Baixa</Option>                                                           
+                    <Option value="1">Média</Option>                                                           
+                    <Option value="2">Alta</Option>                                                           
+                </Select>
             </div>
                 <div>
                 <Select defaultValue={`${categories.length > 0 ? categories[0].id:1}`} label="Categoria" name="idcategory" control={control}>

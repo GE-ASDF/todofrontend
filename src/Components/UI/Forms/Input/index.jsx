@@ -3,7 +3,6 @@ import { useAlert } from "../../../../Contexts/AlertContext";
 const Input = (props)=>{
     const {field, fieldState} = useController(props);
     if(props.type == "radio"){
-        // const fields = field.filter(fiel => fiel != 'value')
         delete field.value
         return(
             <div className={`form-check ${fieldState.invalid ? "border border-red-700" : ""}`}>
@@ -17,7 +16,7 @@ const Input = (props)=>{
                     {props.label ?? field.name}
                 </label>
                 <div>
-                    {fieldState.invalid && <p role="alert" className="alert alert-danger ">{fieldState.error.message}</p>}
+                    {fieldState.invalid && <small>{fieldState.error.message}</small>}
                 </div>
             </div>
         )
@@ -28,7 +27,7 @@ const Input = (props)=>{
             <label htmlFor="">{props.label ?? field.name}</label>
             <input value={props.value} autoFocus={props.autofocus} type={props.type ?? "text"} className={`form-control ${props.className} ${fieldState.invalid ? "border border-red-700":""}`} placeholder={props.placeholder} {...field} name={field.name} />
             <div>
-                {fieldState.invalid && <p className="alert alert-danger ">{fieldState.error.message}</p>}
+                {fieldState.invalid && <small >{fieldState.error.message}</small>}
             </div>
         </div>
     )
