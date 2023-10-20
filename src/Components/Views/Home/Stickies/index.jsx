@@ -27,21 +27,11 @@ export default function Stickies({stickies}){
             setSticky(true);
         }
     }
-    useEffect(()=>{
-        const closeConfirmationScreen = (e)=>{
-            if(e.key.toLowerCase() == 'escape'){
-                setShowConfirmationScreen(false);
-                setSticky('')   
-            }
-        }
-        document.addEventListener("keyup", closeConfirmationScreen)
-        return ()=> removeEventListener("keyup", closeConfirmationScreen);
-    },[showConfirmationScreen, stickyId])
 
     return (
         <div className="flex gap-2 flex-wrap mt-4">
             {showConfirmationScreen &&
-              <ConfirmationScreen setShowConfirmationScreen={handleShowConfirmationScreen} id={stickyId} onClick={removeSticky} />
+              <ConfirmationScreen showConfirmationScreen={showConfirmationScreen} setShowConfirmationScreen={handleShowConfirmationScreen} id={stickyId} onClick={removeSticky} />
             }
 
             {stickies.length > 0 && stickies.map(sticky =>{
