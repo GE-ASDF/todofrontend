@@ -40,7 +40,7 @@ class aya{
         this.#createConfig(customHeaders);
         const data = await this.#fetchData();
         this.method = 'GET';        
-        this.data = data;
+        this.data = {...this.data, data};
         return this;
     }
 }

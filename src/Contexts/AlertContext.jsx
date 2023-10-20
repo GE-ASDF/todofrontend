@@ -15,7 +15,8 @@ export const AlertProvider = (props)=>{
      * @returns void
      */
     const handleSetAlert = (alert)=>{
-        setAlert([...alerts, alert])
+        setAlert((prev)=> [...prev, alert])
+
     }
 
     const closeAlert = (key)=>{
@@ -29,15 +30,17 @@ export const AlertProvider = (props)=>{
         }, 7000);
         return ()=> clearTimeout(id);
     },[alerts])
-
+  
     return (
         <AlertContext.Provider value={{handleSetAlert, alerts}}>
             {alerts.length > 0 && 
                 <div className="alert-container">
                     {alerts.map((alert, key)=>{
-                        return (
-                            <Alert key={key} onClick={()=> closeAlert(key)} type={alert.type} message={alert.message}  />
-                        )
+                        
+                            return (
+                                <Alert key={key} onClick={()=> closeAlert(key)} type={alert.type} message={alert.message}  />
+                            )
+                        
                     })}
                 </div>
             } 

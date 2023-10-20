@@ -4,16 +4,17 @@ import HTTP from "../api/http";
 import { useEffect, useState } from "react";
 import Home from "./app/Home";
 import { useLogged } from "../Contexts/LoggedContext";
+import Loader from "../Components/UI/Loader";
 
 const Template = ()=>{
     const token = Cookies.getItem("token");
     const navigate = useNavigate();
-    const http = new HTTP('/auth');
-    const {setUserLogged} = useLogged();
-
+    const {user, setUserLogged} = useLogged();
+    
     const handleLogged = async()=>{
+        const http = new HTTP('/auth');
         const response = await http.http();
-        
+        console.log(response)
         if(response.error == true){
             setUserLogged('null');
             Cookies.removeItem("token");
@@ -29,7 +30,9 @@ const Template = ()=>{
         return <Navigate to="/" />;
     }
 
-    return  <Home />
+    return <Home />
+       
+    
 }
 
 export default Template;
