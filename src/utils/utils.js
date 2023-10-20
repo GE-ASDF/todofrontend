@@ -17,7 +17,7 @@ export const normalizeString = (string)=>{
 }
 
 export const formatText = (text)=>{
-    const formattedText = text.replace(/\*(.*?)\*/g, "<b>$1</b>").replace(/\n/g, '<br/> ')
+    const formattedText = text.replace(/\*(.*?)\*/g, "<b>$1</b>").replace(/_(.*?)_/g, "<i>$1</i>").replace(/\n/g, '<br/> ')
     // const sanitizedData = () => ({
     //     __html: DOMPurify.sanitize(data)
     //   })

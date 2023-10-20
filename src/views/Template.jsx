@@ -14,7 +14,7 @@ const Template = ()=>{
     const handleLogged = async()=>{
         const http = new HTTP('/auth');
         const response = await http.http();
-        console.log(response)
+       
         if(response.error == true){
             setUserLogged('null');
             Cookies.removeItem("token");

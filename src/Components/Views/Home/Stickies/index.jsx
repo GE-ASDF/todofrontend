@@ -41,7 +41,7 @@ export default function Stickies({stickies}){
                         {sticky.title}
                         <button onClick={()=> handleShowConfirmationScreen(sticky.id)} className="btn btn-danger">X</button>
                     </div>
-                    <div style={{maxHeight:"250px", overflowY:"auto"}} dangerouslySetInnerHTML={{ __html: formatText(sticky.body)}} className="card-body" />
+                    <div style={{outline:"none", maxHeight:"250px", overflowY:"auto"}} dangerouslySetInnerHTML={{ __html: formatText(sticky.body)}} className="card-body" />
                 </div>
                 )
             })}

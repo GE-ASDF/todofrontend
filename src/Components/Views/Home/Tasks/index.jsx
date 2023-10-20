@@ -8,7 +8,6 @@ import hookDoneTask from "../../../../hooks/hookDoneTask";
 import Alert from "../../../UI/Alert";
 
 export default function Tasks({tasks,search = '',showDone, filter, detailsShow, onClick}){
-    // const {removeTask} = hookRemoveTask();
     const {done, loading} = hookDoneTask();
     const priorities = ['Baixa', 'Média', 'Alta'];
     const [page, setPage] = useState(1);
@@ -104,11 +103,14 @@ export default function Tasks({tasks,search = '',showDone, filter, detailsShow, 
         <>
             {loading && <Loader />}
             <Pagination maxPages={maxPages} setPage={setPage} page={page} itemsPerPage={itemsPerPage} />
+            <div className="row gap-2">
+
             {newTasks.length > 0 && newTasks.map(task =>{
                 return (
-                    <Task onClick={onClick} detailsShow={detailsShow} task={task} done={done} key={task.id} />
+                    <Task className="col-lg-3 col-sm-3" onClick={onClick} detailsShow={detailsShow} task={task} done={done} key={task.id} />
                     )
-            })}
+                })}
+            </div>
             
             <Pagination maxPages={maxPages} setPage={setPage} page={page} itemsPerPage={itemsPerPage} />
         </>
