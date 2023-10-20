@@ -1,23 +1,23 @@
-import { TasksProvider } from "./Contexts/TasksContext";
 import PrivateRoutes from "./Routes/PrivateRoutes"
-import {RouterProvider, createBrowserRouter} from "react-router-dom";
+import {RouterProvider, createBrowserRouter,  useNavigate, Navigate} from "react-router-dom";
 import PublicRoutes from "./Routes/PublicRoutes";
 import { AlertProvider } from "./Contexts/AlertContext";
-import { LoggedProvider } from "./Contexts/LoggedContext";
+import { useLogged } from "./Contexts/LoggedContext";
 import {ThemeProvider} from "./Contexts/ThemeContext";
+import aya from "./api/aya";
+import { useEffect } from "react";
 
 
 function App() {
-  let routes = createBrowserRouter([...PublicRoutes(), ...PrivateRoutes()])
+
+  let routes = createBrowserRouter([...PublicRoutes(), ...PrivateRoutes()]);
 
   return (
-        <LoggedProvider>
-          <ThemeProvider>
-            <AlertProvider>
-              <RouterProvider router={routes}></RouterProvider>
-            </AlertProvider>
-          </ThemeProvider>
-          </LoggedProvider>
+        <ThemeProvider>
+          <AlertProvider>
+            <RouterProvider router={routes}></RouterProvider>
+          </AlertProvider>
+        </ThemeProvider>
   )
 }
 

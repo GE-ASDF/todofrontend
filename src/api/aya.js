@@ -9,38 +9,40 @@ class aya{
         Authorization:this.#TOKEN,
         "Content-Type":"application/json",
     }
-    constructor(endpoint = '', customHeaders = {}){
-        this.endpoint = `${this.#backendURL}${endpoint}`;
-        this.method = method;
-        this.headers = {...this.#defaultHeaders, ...customHeaders}
-        this.configFetch = {credentials:'include',mode:"cors", method:this.method, headers:this.headers}
-
-        if(Object.keys(body).length > 0) this.configFetch.body = JSON.stringify(body); 
-    }
+    #configFetch;
+    
     async #fetchData(){
         try{
-            const response = await fetch(this.endpoint,this.configFetch);
+            const response = await fetch(this.endpoint,this.#configFetch);
             const data = await response.json();
-            this.data = await data;
-            return this; 
+            return await data;
         }catch(err){
             return {
                 error:true,
                 message:"Não foi possível realizar a consulta com fetch",
-                errorMessage: error,
+                errorMessage: err,
             };
         }
     }
     async post(){
-
         this.data = data;
         return this;
     }
-    async get(endpoint = '', customHeaders = {}){
 
+    #createConfig(customHeaders, body = ''){
+        this.headers = {...this.#defaultHeaders, ...customHeaders}
+        this.#configFetch = {credentials:'include',mode:"cors", method:this.method, headers:this.headers}
+        if(Object.keys(body).length > 0) this.configFetch.body = JSON.stringify(body);
+    }
+
+    async get(endpoint = '', customHeaders = {}){
+        this.endpoint = `${this.#backendURL}${endpoint}`;
+        this.#createConfig(customHeaders);
         const data = await this.#fetchData();
-        console.log("OLá")
+        this.method = 'GET';        
         this.data = data;
         return this;
     }
 }
+
+export default new aya

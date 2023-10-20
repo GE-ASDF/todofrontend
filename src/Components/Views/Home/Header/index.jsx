@@ -9,11 +9,16 @@ import { useLogged } from "../../../../Contexts/LoggedContext";
 import FormAddTask from "../FormAddTask";
 import { useTasks } from "../../../../Contexts/TasksContext";
 import { convertDate } from "../../../../utils/utils";
+import Profile from "../Profile";
 
 
 
 export default function Header(props){
     const data = useTasks();    
+    const [showProfile, setShowProfile] = useState();
+    const handleShowProfile = ()=>{
+        setShowProfile(!showProfile)
+    }
     const tasks = data.tasks.length > 0 ? data.tasks.filter((task)=>{
         if(convertDate( new Date(task.enddate).toLocaleDateString('pt-br')) <= convertDate(new Date().toLocaleDateString('pt-br')) && !task.done){
             return task;
@@ -62,10 +67,11 @@ export default function Header(props){
                         {todayTasksQtd > 0 && todayTasksQtd}
                     </span>
                 </i>
+                <i onClick={handleShowProfile} className="bi cursor-pointer bi-three-dots-vertical"></i>
                 {addTaskForm &&
                     <FormAddTask addTaskForm={addTaskForm} setAddTaskForm={setAddTaskForm} iduser={dataUser.id} />
                 }
-         
+                {showProfile && <Profile setShowProfile={setShowProfile} />}
             </div>
         </div>
     )
