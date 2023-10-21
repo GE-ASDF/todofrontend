@@ -53,8 +53,8 @@ export default function Body(){
                                 
                                 <li className="list-group-item">
                                     <Link className="d-flex gap-2" to="/app/bypriority">
-                                        <i className="bi bi-sticky"></i>
-                                        <span>Por prioridade</span>
+                                        <i  className="bi  bi-arrow-counterclockwise"></i>
+                                        <span>Pendentes</span>
                                     </Link>
                                 </li>
                                 <li className="list-group-item">
