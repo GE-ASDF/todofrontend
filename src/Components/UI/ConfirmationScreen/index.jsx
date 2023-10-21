@@ -1,4 +1,17 @@
-export default function ConfirmationScreen({setShowConfirmationScreen, id, onClick}){
+import { useEffect } from "react"
+
+export default function ConfirmationScreen({setShowConfirmationScreen, showConfirmationScreen,id, onClick}){
+
+    useEffect(()=>{
+        const closeModal = (e)=>{
+            if(e.key.toLowerCase() == 'escape'){
+                setShowConfirmationScreen(false);
+            }
+        }
+        document.addEventListener("keyup", closeModal);
+        return ()=> document.removeEventListener('keyup', closeModal);
+    },[showConfirmationScreen, id])
+
     return(
         <div className={`bg-opacity-50 z-10 flex items-center justify-center flex-col bg-black left-0 top-0 p-2 rounded absolute w-100 h-100`}>
             <div className="p-2 rounded flex  flex-col justify-between h-40 bg-light">

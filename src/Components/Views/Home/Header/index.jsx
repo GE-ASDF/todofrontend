@@ -4,18 +4,20 @@ import Menu from "../../../UI/Menu";
 import {Link, useLocation} from "react-router-dom"
 import {useTheme} from "../../../../Contexts/ContextsLoaders/useTheme"
 import {useForm} from "react-hook-form"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useLogged } from "../../../../Contexts/LoggedContext";
 import FormAddTask from "../FormAddTask";
 import { useTasks } from "../../../../Contexts/TasksContext";
 import { convertDate } from "../../../../utils/utils";
-import { useAlert } from "../../../../Contexts/AlertContext";
-import HTTP from "../../../../api/http";
-import { useSticky } from "../../../../Contexts/StickyContext";
+import Profile from "../Profile";
+
 
 
 export default function Header(props){
     const data = useTasks();    
+    const [showProfile, setShowProfile] = useState(false);
+    const [showPlusInfo, setShowPlusInfo] = useState(false);
+
     const tasks = data.tasks.length > 0 ? data.tasks.filter((task)=>{
         if(convertDate( new Date(task.enddate).toLocaleDateString('pt-br')) <= convertDate(new Date().toLocaleDateString('pt-br')) && !task.done){
             return task;
@@ -42,7 +44,15 @@ export default function Header(props){
         setTheme(themeToSet);
     }
 
-
+    useEffect(()=>{
+        const closePlusInfo = (e)=>{
+            if(e.key.toLowerCase() == 'escape'){
+                setShowPlusInfo(false)
+            }
+        }
+        document.addEventListener("keyup", closePlusInfo);
+        return ()=> document.removeEventListener("keyup", closePlusInfo)
+    },[showPlusInfo])
     
     return (
         <div className={`flex justify-between  text-white bg-orange-700 p-1`}>
@@ -64,10 +74,19 @@ export default function Header(props){
                         {todayTasksQtd > 0 && todayTasksQtd}
                     </span>
                 </i>
+                <i onClick={()=>setShowPlusInfo(!showPlusInfo)} className="bi cursor-pointer bi-three-dots-vertical"></i>
                 {addTaskForm &&
                     <FormAddTask addTaskForm={addTaskForm} setAddTaskForm={setAddTaskForm} iduser={dataUser.id} />
                 }
-         
+                {showPlusInfo &&
+                <div className={`absolute top-7 right-5 w-20 px-1 bg-slate-50 flex flex-col gap-1 rounded-ee-sm rounded-es-md rounded-ss-sm`}>
+                    <span onClick={()=> {
+                        setShowProfile(!showProfile)
+                        setShowPlusInfo(false)
+                    }} className="bg-slate-100 text-left cursor-pointer p-1 block border-b-slate-500 text-black text-xs">Perfil</span>
+                </div>
+                }
+                {showProfile && <Profile setShowProfile={setShowProfile} />}
             </div>
         </div>
     )

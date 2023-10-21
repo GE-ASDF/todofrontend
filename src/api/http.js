@@ -17,6 +17,7 @@ class HTTP{
 
         if(Object.keys(body).length > 0) this.configFetch.body = JSON.stringify(body); 
     }
+    
     async getToken(){
         try{
             const CSRF_TOKEN_AWAIT = await fetch(`${this.#backendURL}/csrfToken`, {headers:this.#defaultHeaders})

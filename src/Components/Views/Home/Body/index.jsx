@@ -52,6 +52,12 @@ export default function Body(){
                                 </li>
                                 
                                 <li className="list-group-item">
+                                    <Link className="d-flex gap-2" to="/app/bypriority">
+                                        <i className="bi bi-sticky"></i>
+                                        <span>Por prioridade</span>
+                                    </Link>
+                                </li>
+                                <li className="list-group-item">
                                     <Link className="d-flex gap-2" to="/app/stickywall">
                                         <i className="bi bi-sticky"></i>
                                         <span>Anotações</span>

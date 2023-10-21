@@ -27,31 +27,23 @@ export default function Stickies({stickies}){
             setSticky(true);
         }
     }
-    useEffect(()=>{
-        const closeConfirmationScreen = (e)=>{
-            if(e.key.toLowerCase() == 'escape'){
-                setShowConfirmationScreen(false);
-                setSticky('')   
-            }
-        }
-        document.addEventListener("keyup", closeConfirmationScreen)
-        return ()=> removeEventListener("keyup", closeConfirmationScreen);
-    },[showConfirmationScreen, stickyId])
 
     return (
         <div className="flex gap-2 flex-wrap mt-4">
             {showConfirmationScreen &&
-              <ConfirmationScreen setShowConfirmationScreen={handleShowConfirmationScreen} id={stickyId} onClick={removeSticky} />
+              <ConfirmationScreen showConfirmationScreen={showConfirmationScreen} setShowConfirmationScreen={handleShowConfirmationScreen} id={stickyId} onClick={removeSticky} />
             }
 
             {stickies.length > 0 && stickies.map(sticky =>{
                 return(
                 <div style={{minWidth:"300px", maxWidth:"300px"}} key={sticky.id} className="card bg-yellow-200">
-                    <div className="card-header flex items-center justify-between">
-                        {sticky.title}
+                    <div   className="card-header flex items-center justify-between">
+                        <span className="w-100 h-100 flex items-center outline-none" >
+                            {sticky.title}
+                        </span>
                         <button onClick={()=> handleShowConfirmationScreen(sticky.id)} className="btn btn-danger">X</button>
                     </div>
-                    <div style={{maxHeight:"250px", overflowY:"auto"}} dangerouslySetInnerHTML={{ __html: formatText(sticky.body)}} className="card-body" />
+                    <div style={{outline:"none", maxHeight:"250px", overflowY:"auto"}} dangerouslySetInnerHTML={{ __html: formatText(sticky.body)}} className="card-body" />
                 </div>
                 )
             })}

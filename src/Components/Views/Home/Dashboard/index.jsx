@@ -2,8 +2,11 @@ import { useTheme } from "../../../../Contexts/ContextsLoaders/useTheme";
 import {useTasks} from "../../../../Contexts/TasksContext";
 import { convertDate } from "../../../../utils/utils";
 import {RadialBarChart, PolarAngleAxis, RadialBar} from "recharts";
+import { useLogged } from "../../../../Contexts/LoggedContext";
 export default function Dashboard(){
     const {tasks} = useTasks();
+    const {user} = useLogged();
+    const dataUser = JSON.parse(user)
     const concluidas = tasks.length > 0 ? ((tasks.filter((task)=> task.done > 0).length / tasks.length) * 100).toFixed(2):[];
  
     const tarefasConcluidas = tasks.length > 0 ?  tasks.filter((task)=> task.done > 0).length:[].length;
@@ -16,7 +19,7 @@ export default function Dashboard(){
     const chartData = [{name:'% de conclusão', value:concluidas}]
     return (
         <div className="flex flex-wrap flex-col p-1 m-2">
-            <h1 className="sm:text-4xl md:text-5xl fw-bold">Dashboard</h1>
+            <h1 className="sm:text-4xl md:text-xl fw-bold">{dataUser?.name ? "Bem vindo, "+dataUser.name.split(" ")[0]:"Dashboard"}</h1>
             <div className={`flex  gap-2 flex-wrap rounded p-2 mt-2 ${themeCtx.theme == 'dark' ? 'dark':'bg-slate-100'}  shadow-sm`}>
                 <div className="card bg-white w-48">
                     <div className="card-header bg-blue-100">
