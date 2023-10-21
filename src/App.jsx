@@ -9,7 +9,6 @@ import {ThemeProvider} from "./Contexts/ThemeContext";
 
 function App() {
   let routes = createBrowserRouter([...PublicRoutes(), ...PrivateRoutes()])
-
   return (
         <LoggedProvider>
           <ThemeProvider>
@@ -18,7 +17,7 @@ function App() {
             </AlertProvider>
           </ThemeProvider>
           </LoggedProvider>
-  )
+  ) 
 }
 
 export default App
