@@ -1,5 +1,5 @@
 import Cookies from "js-cookies";
-import {Navigate, useNavigate} from "react-router-dom"
+import {Navigate, redirect, useLocation, useNavigate} from "react-router-dom"
 import HTTP from "../api/http";
 import { useEffect } from "react";
 import Home from "./app/Home";
@@ -10,7 +10,12 @@ const Template = ()=>{
     const token = Cookies.getItem("token");
     const navigate = useNavigate();
     const {setUserLogged} = useLogged();
-    
+    const local = useLocation().pathname.split("/app").filter(el => {
+        if(el && el != "/"){
+            return el
+        }
+    });
+
     const handleLogged = async()=>{
         const http = new HTTP('/auth');
         const response = await http.http();
@@ -29,10 +34,11 @@ const Template = ()=>{
     if(!token){
         return <Navigate to="/" />;
     }
-
+    if(local.length <= 0){
+        return <Navigate to="/app/dashboard" />
+    }
     return <Home />
        
-    
 }
 
 export default Template;

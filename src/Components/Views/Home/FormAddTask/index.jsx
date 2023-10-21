@@ -49,12 +49,25 @@ export default function FormAddTask({iduser, setAddTaskForm, addTaskForm}){
                 reset();
             }
         }
+        const closeShowModalOnOutsideClick = (e)=>{
+            if(e.target.classList.contains('form-add-task-open')){
+                setAddTaskForm(true);
+            }else{
+                if(addTaskForm && e.target.closest('.form-add-task') == null){
+                    setAddTaskForm(false)
+                }
+            }
+        }
         document.addEventListener("keyup", closeModals)
-        return ()=> removeEventListener('keyup', closeModals);
+        document.addEventListener("click", closeShowModalOnOutsideClick)
+        return ()=>{
+            document.removeEventListener('keyup', closeModals)
+            document.removeEventListener("click", closeShowModalOnOutsideClick)
+        };
     },[addTaskForm])
 
     return (
-        <div className={`absolute ${theme == "dark" ? "dark":"bg-slate-500 text-light"}  border p-2 rounded-start rounded-b-lg z-10 top-6 right-12`}>
+        <div className={`absolute ${theme == "dark" ? "dark":"bg-slate-500 text-light"}  border p-2 rounded-start rounded-b-lg z-10 top-6 right-12 form-add-task`}>
         <form onSubmit={handleSubmit(saveTask)} className="flex flex-col gap-2">
             <h2>Add tarefa</h2>
             <Input defaultValue="" label="Título" placeholder="Título da tarefa" name="title" rules={{required:"Este campo é obrigatório"}} control={control}></Input>

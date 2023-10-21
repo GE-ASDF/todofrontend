@@ -62,9 +62,24 @@ export default function StickyWall(){
                 setShowAddSticky(false)
             }
         }
+        const closeShowModalOnOutsideClick = (e)=>{
+            if(e.target.classList.contains('modal-open')){
+                setShowAddSticky(true);
+            }else{
+   
+                if(showAddSticky && e.target.closest('.mymodal') == null){
+                    setShowAddSticky(false)
+                }
+            }
+        }
         document.addEventListener("keyup", closeShowAddSticky)
-        return ()=> document.removeEventListener("keyup", closeShowAddSticky)
+        window.addEventListener("click", closeShowModalOnOutsideClick)
+        return ()=> {
+            document.removeEventListener("keyup", closeShowAddSticky)
+            window.removeEventListener("click", closeShowModalOnOutsideClick)
+        }
     },[showAddSticky])
+
     return(
         <div className="flex flex-wrap flex-col p-4">
             <h1 className="lg:text-5xl md:text-3xl text-3xl  fw-bold">Anotações</h1>
@@ -72,8 +87,8 @@ export default function StickyWall(){
             {showAddSticky &&
                 <FormAddSticky handleTypingSticky={handleTypingSticky} saveSticky={saveSticky} />
             }
-            <div onClick={handleShowAddSticky} className="rounded-full text-3xl cursor-pointer hover:text-purple-500  h-10 w-10 flex items-center justify-center absolute bottom-5  right-5">
-                <i className="bi bi-plus-circle"></i>
+            <div onClick={handleShowAddSticky} className="rounded-full  text-3xl cursor-pointer hover:text-purple-500  h-10 w-10 flex items-center justify-center absolute bottom-5  right-5">
+                <i className="bi modal-open bi-plus-circle"></i>
             </div>
         </div>
     )

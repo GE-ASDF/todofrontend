@@ -87,7 +87,7 @@ export default function Profile(props){
                         }
                     </div>
                     <div className="flex justify-end gap-1">
-                        <button onClick={handleClose} type="button" className="btn can-close btn-secondary">Fechar</button>
+                        <button onClick={handleClose} type="button" className="btn can-close bg-slate-300">Fechar</button>
                         <button className="btn btn-primary self-end">Atualizar</button>
                     </div>
                 </form>

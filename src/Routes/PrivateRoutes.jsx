@@ -6,6 +6,7 @@ import StickyWall from "../views/app/pages/StickyWall";
 import All from "../views/app/pages/All";
 import EditTask from "../views/app/pages/EditTask";
 import ByPriority from "../views/app/pages/ByPriority";
+import Dashboard from "../Components/Views/Home/Dashboard";
 
 export default function PrivateRoutes(){
     return [
@@ -13,6 +14,10 @@ export default function PrivateRoutes(){
             path:"/app",
             element:<Template />,
             children:[
+                {
+                    path:"dashboard",
+                    element:<Dashboard />
+                },
                 {
                     path:"today",
                     element:<Today />,
@@ -41,9 +46,9 @@ export default function PrivateRoutes(){
                 {
                     path:"bypriority",
                     element:<ByPriority />
-                },                
+                },           
             ]
         },
-        {path:"*", element: <Navigate to="/app" replace />}
+        {path:"*", element: <Navigate to="/app/dashboard" />}
     ]
 }

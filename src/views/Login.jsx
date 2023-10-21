@@ -46,7 +46,7 @@ const Login = ()=>{
             }
 
             setLoading(false);
-            return navigate("/app")
+            return navigate("/app/dashboard")
         }
     }
     

@@ -3,7 +3,7 @@ import { useTheme } from "../../../../Contexts/ContextsLoaders/useTheme";
 export default function FormAddSticky({handleTypingSticky, saveSticky}){
     const {theme} = useTheme();
     return(
-        <div className={`absolute ${theme == "dark" ? "dark":"bg-slate-500 text-light"} border p-2 rounded-start z-1 rounded-b-lg bottom-14 right-14`}>
+        <div className={`absolute ${theme == "dark" ? "dark":"bg-slate-500 text-light"} border p-2 rounded-start z-1 rounded-b-lg bottom-14 right-14 mymodal`}>
             <form onSubmit={saveSticky} className="flex flex-col gap-2">
                 <h2>Add anotação</h2>
                 <div className="form-group">

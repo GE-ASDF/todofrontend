@@ -4,9 +4,9 @@ import { useRef, useState } from "react";
 import hookRemoveTask from "../../../hooks/hookRemoveTask";
 
 import ConfirmationScreen from "../ConfirmationScreen";
+export const priorities = ['Baixa', 'Média', 'Alta'];
 
 export default function Task({task,onDrag,onDropTask, detailsShow, className, onClick,done}){
-    const priorities = ['Baixa', 'Média', 'Alta'];
     const themeCtx = useTheme();
     const {removeTask} = hookRemoveTask();
     const [showConfirmationScreen, setShowConfirmationScreen] = useState(false);
@@ -18,18 +18,26 @@ export default function Task({task,onDrag,onDropTask, detailsShow, className, on
         setShowConfirmationScreen(!showConfirmationScreen)
     }
 
-
-  
     return (
         <>
         {showConfirmationScreen &&
             <ConfirmationScreen showConfirmationScreen={showConfirmationScreen}  setShowConfirmationScreen={handleDeleteRegister} id={idTaskToDelete} onClick={removeTask} />        
         }
         
-        <div draggable key={task.id} onDrop={onDropTask} onDrag={onDrag} className={`flex cursor-move flex-wrap gap-2 rounded-md  flex-row border p-2 mt-4 ${className}`}>
-            <h6 className={`${task.priority == 0 ? `${themeCtx.theme == 'dark' ? 'bg-blue-700':'bg-blue-700 text-white'}`:task.priority == 1 ? `${themeCtx.theme == 'dark' ? 'bg-yellow-700 text-white':'bg-yellow-700 text-white'}`:themeCtx.theme == 'dark' ? 'bg-red-600':'bg-red-600 text-white'} p-1 rounded max-h-7`}>Prioridade: {priorities[task.priority]}</h6>
-            <div onClick={() => onClick(task.id)} className="flex w-100 flex-col">
-                <h5 className="fw-bold text-sm">{task.title}</h5>
+        <div draggable key={task.id} onDrop={onDropTask} onDrag={onDrag} className={`flex flex-wrap gap-2 rounded-md  flex-row border p-2 mt-4 ${className}`}>
+            <h6 className={`${task.priority == 0 ? `${themeCtx.theme == 'dark' ? 'bg-blue-700':'bg-blue-700 text-white'}`:task.priority == 1 ? `${themeCtx.theme == 'dark' ? 'bg-yellow-700 text-white':'bg-yellow-700 text-white'}`:themeCtx.theme == 'dark' ? 'bg-red-600':'bg-red-600 text-white'} p-2 rounded max-h-7 text-xs`} title={`${priorities[task.priority]}`}>
+                <span className="text-xs">{priorities[task.priority]}</span>
+            </h6>
+            <div className="flex w-100 flex-col">
+                <h5 onClick={() => onClick(task.id)} className="fw-bold p-1 flex justify-between items-center cursor-pointer text-sm">
+                    {task.title} 
+                    {!detailsShow.includes(task.id) &&
+                        <i className="bi bi-chevron-down"></i>
+                    }
+                    {detailsShow.includes(task.id) &&
+                        <i className="bi bi-chevron-up"></i>
+                    }
+                </h5>
                 {detailsShow.includes(task.id) && 
                     <>
                         <span className="mx-2">Descrição: {task.description}</span>
