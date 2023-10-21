@@ -1,6 +1,7 @@
 export default function FilterTask(props){
     return (
-        <div className="form-group flex-col flex items-start justify-start">
+        <>
+        <div className="form-group flex gap-2 mt-3">
             <div className="form-group">
             <span className="flex items-center justify-start">
                 Filtrar: 
@@ -12,16 +13,17 @@ export default function FilterTask(props){
                 <option value="2">Alta</option>
             </select>
             </div>
-            <div className="flex flex-col mt-2">
+            <div className="flex flex-col">
                 <label htmlFor="pesquisa" className="fw-bold">Pesquisa</label>
-                <input onChange={props.handleSetSearch} type="text" className="form-control" placeholder="pesquisa" />
+                <input autoFocus={true} onChange={props.handleSetSearch} type="text" className="form-control" placeholder="Pesquisar uma tarefa" />
             </div>
-            <div className="flex gap-2 mt-2">
+        </div>
+        <div className="flex gap-2">
                 <div className="form-group flex gap-1 items-center">
                     <label htmlFor="concluidas">Concluídas</label>
                     <input onChange={props.handleDoneChange} checked={`${props.showDone ? 'checked':''}`} type="checkbox" id="concluidas" className="form-check-input" />
                 </div>
             </div>
-        </div>
+        </>
     )
 }

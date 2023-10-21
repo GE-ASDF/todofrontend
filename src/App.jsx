@@ -4,9 +4,6 @@ import PublicRoutes from "./Routes/PublicRoutes";
 import { AlertProvider } from "./Contexts/AlertContext";
 import { useLogged } from "./Contexts/LoggedContext";
 import {ThemeProvider} from "./Contexts/ThemeContext";
-import aya from "./api/aya";
-import { useEffect } from "react";
-
 
 function App() {
 
@@ -15,7 +12,9 @@ function App() {
   return (
         <ThemeProvider>
           <AlertProvider>
-            <RouterProvider router={routes}></RouterProvider>
+       
+              <RouterProvider router={routes}></RouterProvider>
+          
           </AlertProvider>
         </ThemeProvider>
   )

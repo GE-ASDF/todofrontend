@@ -5,6 +5,7 @@ import { todayTasksLoader } from "../Loaders/todayTasksLoader";
 import StickyWall from "../views/app/pages/StickyWall";
 import All from "../views/app/pages/All";
 import EditTask from "../views/app/pages/EditTask";
+import ByPriority from "../views/app/pages/ByPriority";
 
 export default function PrivateRoutes(){
     return [
@@ -37,7 +38,10 @@ export default function PrivateRoutes(){
                     path:"stickywall",
                     element:<StickyWall />,
                 },
-                
+                {
+                    path:"bypriority",
+                    element:<ByPriority />
+                },                
             ]
         },
         {path:"*", element: <Navigate to="/app" replace />}
