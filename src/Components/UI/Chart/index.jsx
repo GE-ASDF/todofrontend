@@ -9,7 +9,7 @@ export default function Chart(){
     const {tasks} = useTasks();
     const [actualYear, setActualYear] = useState(new Date().getFullYear())
     const years = getYears(tasks);
- 
+    const [verColunas, setVerColunas] = useState([0,1]);
     const dataPerMonth = [...Array(12).keys()].map((i)=>{
         const month = new Date(actualYear, i, 1).toLocaleDateString('pt-br',{
             month:"short"
@@ -32,7 +32,13 @@ export default function Chart(){
             }).length
         }
     })
-   
+    const handleVerColunas = (id)=>{
+        if(verColunas.includes(id)){
+            setVerColunas(verColunas.filter(key => key != id))
+        }else{
+            setVerColunas([...verColunas, id])
+        }
+    }
     return(
         <div id="cart-col"  className="rounded">
             <div className="h-100 overflow-auto">
@@ -50,11 +56,19 @@ export default function Chart(){
                         </td>
                         <td>
                             <th className="flex gap-1 items-center justify-center">
-                                <div className="flex gap-1 items-center justify-center">
-                                    <div className="p-2 bg-danger rounded-sm"></div>Não concluídas
+                                <div onClick={()=>handleVerColunas(0)} className="flex gap-1 cursor-pointer items-center justify-center">
+                                    <div  className="p-1 w-5 h-5 flex justify-center items-center  border-solid border-3 border-red-500 rounded-sm">
+                                        {verColunas.includes(0) &&
+                                            <div className="p-1 rounded bg-red-500"></div>
+                                        }
+                                    </div>Não concluídas
                                 </div>
-                                <div className="flex gap-1 items-center justify-center">
-                                    <div className="p-2 bg-success rounded-sm"></div>Concluídas
+                                <div onClick={()=>handleVerColunas(1)} className="flex gap-1 cursor-pointer items-center justify-center">
+                                    <div  className="p-1 w-5 h-5 flex justify-center items-center  border-solid border-3 border-green-500 rounded-sm">
+                                        {verColunas.includes(1) &&
+                                            <div className="p-1 rounded bg-green-500"></div>
+                                        }
+                                    </div>Concluídas
                                 </div>
                             </th>
                         </td>
@@ -86,10 +100,13 @@ export default function Chart(){
                                         {data.month}
                                     </div>
                                     <div style={{zIndex:"9"}} className="flex h-100 gap-1 items-end">
-                                        <div title={`${data.month} de ${actualYear}`} style={{height: `${result}%`, width:"100%", maxWidth:"100%", transition:"all 1s ease"}} className={`${result >= 0 && result < 25 ? "bg-danger":result >= 25 && result < 50 ? "bg-warning":"bg-success"} rounded p-1 text-xs`}>{result}%</div>
-                                        <div title={`${data.month} de ${actualYear}`} style={{height: `${result2}%`, width:"100%", maxWidth:"100%", transition:"all 1s ease"}} className={`${result2 <= 0 && result2 < 25 ? "bg-success":result2 >= 25 && result2 < 50 ? "bg-warning":"bg-danger"} rounded p-1 text-xs`}>{result2}%</div>
+                                        {verColunas.includes(1) && 
+                                            <div title={`${data.month} de ${actualYear}`} style={{height: `${result}%`, width:"100%", maxWidth:"100%", transition:"all 1s ease"}} className={`${result >= 0 && result < 25 ? "bg-danger":result >= 25 && result < 50 ? "bg-warning":"bg-success"} rounded p-1 flex justify-center items-end text-xs`}>{result}%</div>
+                                        }
+                                        {verColunas.includes(0) &&
+                                            <div title={`${data.month} de ${actualYear}`} style={{height: `${result2}%`, width:"100%", maxWidth:"100%", transition:"all 1s ease"}} className={`${result2 <= 0 && result2 < 25 ? "bg-success":result2 >= 25 && result2 < 50 ? "bg-warning":"bg-danger"} rounded p-1 flex justify-center items-end text-xs`}>{result2}%</div>
+                                        }
                                     </div>
-
                                 </td>
                             </tr>
                         )
