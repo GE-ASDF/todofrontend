@@ -1,0 +1,7 @@
+#cart-col{
+    height:450px;
+    overflow-y:auto;
+    overflow-x:auto;
+    max-width:100%;
+    width:calc(100vw - 90px);
+}

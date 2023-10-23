@@ -111,7 +111,7 @@ export default function Header(){
                     </span>
                 </i>
                 {notificationsShow &&
-                    <div className={`absolute z-10 border rounded-lg max-h-64 overflow-y-auto ${themeCtx.theme == 'dark' ? 'dark':''} p-2 top-10 right-10 notifications-show-container`}>
+                    <div className={`absolute z-10 border rounded-lg max-h-64 overflow-y-auto ${themeCtx.theme == 'dark' ? 'dark':'bg-light'} p-2 top-10 right-10 notifications-show-container`}>
                         <h2 className={`fw-bold text-lg ${themeCtx.theme == 'dark' ? 'dark':"text-black"}`}>{tasks.length > 0 ? "Notificações":"Sem notificações"}</h2>
                         {tasks.length > 0 && tasks.map((task) =>{
                             return (
@@ -125,12 +125,12 @@ export default function Header(){
                     <FormAddTask addTaskForm={addTaskForm} setAddTaskForm={setAddTaskForm} iduser={dataUser.id} />
                 }
                 {showPlusInfo &&
-                <div className={`absolute z-10 top-7 py-2 right-5 w-20 px-1 bg-slate-50 flex flex-col gap-1 rounded-ee-lg rounded-es-lg rounded-ss-lg show-plus-profile`}>
-                    <span onClick={()=> {
-                        setShowProfile(!showProfile)
-                        setShowPlusInfo(false)
-                    }} className="bg-slate-100 text-left cursor-pointer p-1 block border-b-slate-500 text-black text-sm">Perfil</span>
-                </div>
+                    <div className={`absolute z-10 top-7 py-2 right-5 w-20 px-1 bg-slate-50 flex flex-col gap-1 rounded-ee-lg rounded-es-lg rounded-ss-lg show-plus-profile`}>
+                        <span onClick={()=> {
+                            setShowProfile(!showProfile)
+                            setShowPlusInfo(false)
+                        }} className="bg-slate-100 text-left cursor-pointer p-1 block border-b-slate-500 text-black text-sm">Perfil</span>
+                    </div>
                 }
                 {showProfile && <Profile setShowProfile={setShowProfile} />}
             </div>
