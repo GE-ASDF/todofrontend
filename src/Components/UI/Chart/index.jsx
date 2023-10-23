@@ -1,18 +1,9 @@
 import { useState } from "react";
 import { useTasks } from "../../../Contexts/TasksContext";
+import { getYears } from "../../../utils/utils";
 import "./style.css"
 
-export function getYears(tasks = []){
-    const oldYears = tasks.map((task)=>{
-        return new Date(task.enddate).toLocaleDateString('pt-br', {year:"numeric"})
-    })
-    const newYears = oldYears.filter( (year,index) =>{
-        if(oldYears.indexOf(year) === index){
-            return year;
-        }
-    })
-    return newYears;
-}
+
 
 export default function Chart(){
     const {tasks} = useTasks();

@@ -16,6 +16,18 @@ export const normalizeString = (string)=>{
     return string.normalize('NFD').toLowerCase();
 }
 
+export function getYears(tasks = []){
+    const oldYears = tasks.map((task)=>{
+        return new Date(task.enddate).toLocaleDateString('pt-br', {year:"numeric"})
+    })
+    const newYears = oldYears.filter( (year,index) =>{
+        if(oldYears.indexOf(year) === index){
+            return year;
+        }
+    })
+    return newYears;
+}
+
 export const formatText = (text)=>{
     const formattedText = text.replace(/\*(.*?)\*/g, "<b>$1</b>").replace(/_(.*?)_/g, "<i>$1</i>").replace(/\n/g, '<br/> ')
     // const sanitizedData = () => ({
