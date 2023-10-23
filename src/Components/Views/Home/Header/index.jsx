@@ -125,11 +125,17 @@ export default function Header(){
                     <FormAddTask addTaskForm={addTaskForm} setAddTaskForm={setAddTaskForm} iduser={dataUser.id} />
                 }
                 {showPlusInfo &&
-                    <div className={`absolute z-10 top-7 py-2 right-5 w-20 px-1 bg-slate-50 flex flex-col gap-1 rounded-ee-lg rounded-es-lg rounded-ss-lg show-plus-profile`}>
+                    <div className={`absolute z-10 top-7 py-2 right-5  px-1 bg-slate-50 flex flex-col gap-1 rounded-ee-lg rounded-es-lg rounded-ss-lg show-plus-profile`}>
                         <span onClick={()=> {
                             setShowProfile(!showProfile)
                             setShowPlusInfo(false)
-                        }} className="bg-slate-100 text-left cursor-pointer p-1 block border-b-slate-500 text-black text-sm">Perfil</span>
+                        }} className="bg-slate-100 text-left cursor-pointer p-1 block border-b-slate-500 text-black text-sm">
+                            <i className="bi bi-person-fill"></i> Perfil
+                        </span>
+                        <span onClick={()=> {
+                        }} className="bg-slate-100 text-left cursor-pointer p-1 block border-b-slate-500 text-black text-sm">
+                            <i className="bi bi-trash2-fill"></i> Excluir conta
+                        </span>
                     </div>
                 }
                 {showProfile && <Profile setShowProfile={setShowProfile} />}
