@@ -16,11 +16,13 @@ import hookDoneTask from "../../../../hooks/hookDoneTask";
 
 
 
-export default function Header(props){
+export default function Header(){
     const data = useTasks();  
     const themeCtx = useTheme()  
     const {detailsShow, showDetails} = hookShowDetails();
     const {done} = hookDoneTask();
+    const local = useLocation().pathname.split("/app").filter(el => el);
+    
     const [showProfile, setShowProfile] = useState(false);
     const [showPlusInfo, setShowPlusInfo] = useState(false);
     const tasks = data.tasks.length > 0 ? data.tasks.filter((task)=>{
@@ -28,8 +30,8 @@ export default function Header(props){
             return task;
         }
     }):[];
-    const [notificationsShow, setNotificationsShow] = useState(false);
 
+    const [notificationsShow, setNotificationsShow] = useState(false);
     const todayTasksQtd = tasks.length;
     const [addTaskForm, setAddTaskForm] = useState(false);
     const {user} = useLogged();
@@ -41,6 +43,7 @@ export default function Header(props){
     const handleShowMenu = ()=>{
         setShowMenu(!showMenu)
     }
+    
     const handleShowAddTask = ()=>{
         setAddTaskForm(!addTaskForm);
         reset();
@@ -93,7 +96,7 @@ export default function Header(props){
                 {!showMenu &&
                     <Menu onClick={handleShowMenu} />
                 }
-                <Link to="/app">
+                <Link to="/app/dashboard">
                     <i className="bi cursor-pointer bi-house-door"></i>
                 </Link>
                 {theme == 'dark' && <i onClick={handleSetTheme} className="bi cursor-pointer bi-brightness-high"></i>}
@@ -109,10 +112,10 @@ export default function Header(props){
                 </i>
                 {notificationsShow &&
                     <div className={`absolute z-10 border rounded-lg max-h-64 overflow-y-auto ${themeCtx.theme == 'dark' ? 'dark':''} p-2 top-10 right-10 notifications-show-container`}>
-                        <h2 className={`fw-bold text-lg ${themeCtx.theme == 'dark' ? 'dark':"text-black"}`}>Notificações</h2>
+                        <h2 className={`fw-bold text-lg ${themeCtx.theme == 'dark' ? 'dark':"text-black"}`}>{tasks.length > 0 ? "Notificações":"Sem notificações"}</h2>
                         {tasks.length > 0 && tasks.map((task) =>{
                             return (
-                                <Task onClick={showDetails} className={`${themeCtx.theme == "dark" ? "":"bg-light text-black"}`} key={task.id} done={done} detailsShow={detailsShow} task={task} />
+                                <Task local={local[0]} onClick={showDetails} className={`${themeCtx.theme == "dark" ? "":"bg-light text-black"}`} key={task.id} done={done} detailsShow={detailsShow} task={task} />
                             )
                         })}
                     </div>

@@ -16,7 +16,13 @@ export default function PrivateRoutes(){
             children:[
                 {
                     path:"dashboard",
-                    element:<Dashboard />
+                    element:<Dashboard />,
+                    children:[
+                        {
+                            path:"edittask/:id",
+                            element:<EditTask />
+                        }
+                    ]
                 },
                 {
                     path:"today",
@@ -45,10 +51,16 @@ export default function PrivateRoutes(){
                 },
                 {
                     path:"bypriority",
-                    element:<ByPriority />
+                    element:<ByPriority />,
+                    children:[
+                        {
+                            path:"edittask/:id",
+                            element:<EditTask />
+                        }
+                    ]
                 },           
             ]
         },
-        {path:"*", element: <Navigate to="/app/dashboard" />}
+        {path:"*", element: <Navigate to="/app/dashboard" replace />}
     ]
 }

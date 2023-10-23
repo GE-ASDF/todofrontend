@@ -5,6 +5,6 @@ import Login from "../views/Login";
 export default function PublicRoutes(){
     return [
         {path:"/",element:<Login />},
-        {path:"*", element: <Navigate to="/app/dashboard" replace />}
+        {path:"*", element: <Navigate to="/app/dashboard"  replace />}
     ]
 }

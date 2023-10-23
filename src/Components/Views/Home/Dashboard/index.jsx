@@ -3,6 +3,7 @@ import {useTasks} from "../../../../Contexts/TasksContext";
 import { convertDate } from "../../../../utils/utils";
 import {RadialBarChart, PolarAngleAxis, RadialBar} from "recharts";
 import { useLogged } from "../../../../Contexts/LoggedContext";
+import { Outlet } from "react-router-dom";
 export default function Dashboard(){
     const {tasks} = useTasks();
     const {user} = useLogged();
@@ -60,6 +61,7 @@ export default function Dashboard(){
                     </text>
                 </RadialBarChart>
             </div>
+            <Outlet />
         </div>
     )
 }
