@@ -1,10 +1,12 @@
 import { useState } from "react";
-import { Bar, BarChart, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import { Bar, BarChart, Legend, Line, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import { useTheme } from "../../../Contexts/ContextsLoaders/useTheme";
 import { useTasks } from "../../../Contexts/TasksContext";
 import { getYears } from "../../../utils/utils";
 import "./style.css"
 
 export function createDataForBarChart(tasks, actualYear){
+    
     const dataPerMonth = [...Array(12).keys()].map((i)=>{
         const month = new Date(actualYear, i, 1).toLocaleDateString('pt-br',{
             month:"short"
@@ -38,35 +40,32 @@ export function createDataForBarChart(tasks, actualYear){
 }
 
 export default function MyBarChart(){
+    const themeCtx = useTheme();
     const {tasks} = useTasks();
     const [actualYear, setActualYear] = useState(new Date().getFullYear())
     const years = getYears(tasks);
-    const [verColunas, setVerColunas] = useState([0,1]);
     const dataPerMonth = createDataForBarChart(tasks, actualYear);
-    const handleVerColunas = (id)=>{
-        if(verColunas.includes(id)){
-            setVerColunas(verColunas.filter(key => key != id))
-        }else{
-            setVerColunas([...verColunas, id])
-        }
-    }
     
     return(
-        <>
-        <select onChange={(e)=> setActualYear(e.target.value) } className="form-select w-52" defaultValue={`${actualYear}`} name="year" id="">
-        {years.map((year)=>{
-            return <option key={year} selected={`${year == actualYear ? "selected":""}`}  value={`${year}`}>{year}</option>
-        })}
-        </select>
-        <BarChart width={600} className="" height={300} data={dataPerMonth}>
-            <Bar dataKey="Feitas"/>
-            <Bar dataKey="Não feitas" />
+        <div className={`flex col-lg-6 col-sm-6 flex-col gap-2 rounded shadow-md ${themeCtx.theme == 'dark' ? 'dark':''}`}>
+        <h1>Resultado anual</h1>
+        <div className="form-group flex gap-2">
+            <label htmlFor="">Ano:</label>
+            <select onChange={(e)=> setActualYear(e.target.value) } className="form-select p-1 w-52" defaultValue={`${actualYear}`} name="year" id="">
+            {years.map((year)=>{
+                return <option key={year} selected={`${year == actualYear ? "selected":""}`}  value={`${year}`}>{year}</option>
+            })}
+            </select>
+        </div>
+        <BarChart  width={400} height={180} data={dataPerMonth}>
+            <Bar fill={`green`} dataKey="Feitas"/>
+            <Bar fill={`red`} dataKey="Não feitas" />
             <Tooltip />
-            <XAxis style={{color:"#fff"}} dataKey="month" />
+            <XAxis dataKey="month" />
             <YAxis />
             <Legend />
         </BarChart>
-        </>
+        </div>
         // <div id="cart-col"  className="rounded">
         //     <div className="h-100 overflow-auto">
 
