@@ -4,9 +4,11 @@ import HTTP from "../api/http";
 import { useEffect } from "react";
 import Home from "./app/Home";
 import { useLogged } from "../Contexts/LoggedContext";
+import { useUser } from "../Contexts/UserContext";
 
 
 const Template = ()=>{
+
     const token = Cookies.getItem("token");
     const navigate = useNavigate();
     const {setUserLogged} = useLogged();
@@ -15,7 +17,7 @@ const Template = ()=>{
             return el
         }
     });
-
+  
     const handleLogged = async()=>{
         const http = new HTTP('/auth');
         const response = await http.http();

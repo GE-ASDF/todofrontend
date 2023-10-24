@@ -31,6 +31,8 @@ export function createDataForBarChart(tasks, actualYear){
     const result = dataPerMonth.map((i) =>{
         return {
             month: i.month,
+            qtd:i.qtd,
+            doned: i.doned,
             "Feitas": i.qtd > 0 ? Math.ceil((i.doned / i.qtd) * 100):0,
             "Não feitas": i.qtd > 0 ? Math.ceil(((i.qtd - i.doned) / i.qtd) * 100):0
         }

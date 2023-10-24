@@ -18,7 +18,12 @@ export default function Dashboard(){
     const concluidas = tasks.length > 0 ? ((tasks.filter((task)=> task.done > 0).length / tasks.length) * 100).toFixed(2):[];
     const dataForBarChart = createDataForBarChart(tasks, actualYear)
     const mesMaisProdutivo = dataForBarChart.reduce((max, objeto)=>{
-        return objeto.Feitas > max.Feitas ? objeto:max;
+        if(objeto.qtd > max.qtd && objeto.doned > max.doned){
+            return objeto;
+        }else{
+            return max
+        }
+        // objeto.Feitas > max.Feitas ? objeto:max;
     }, dataForBarChart[0]); 
     const tarefasConcluidas = tasks.length > 0 ?  tasks.filter((task)=> task.done > 0).length:[].length;
     const tarefasAtrasadas =  tasks.length > 0 ? tasks.filter((task)=> {

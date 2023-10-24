@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@tanstack/react-store": "^0.2.1",
     "axios": "^1.5.1",
     "bootstrap-icons": "^1.11.1",
     "dompurify": "^3.0.6",

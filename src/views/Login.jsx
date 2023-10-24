@@ -9,10 +9,12 @@ import { useState } from "react";
 import Loader from "../Components/UI/Loader"
 import FormCreateUser from "../Components/Views/Home/FormCreateUser";
 import useGetCsrfToken from "../hooks/useGetCsrfToken";
+import { useUser } from "../Contexts/UserContext";
 
 
 const Login = ()=>{
     const [form, setForm] = useState('login');
+
     const {setUserLogged} = useLogged();
     const [loading, setLoading] = useState(false);
     const {handleSetAlert} = useAlert();

@@ -19,6 +19,11 @@ export const normalizeString = (string)=>{
 export const createTasksMetadata = (tasks)=>{
     
 }
+export const createMonths = (options)=>{
+    return [...Array(12).keys()].map((i)=>{
+        return {indice: i, month: new Date(new Date().getFullYear(), i).toLocaleDateString('pt-br', options)}
+    })
+}
 export function getYears(tasks = []){
     const oldYears = tasks.map((task)=>{
         return new Date(task.enddate).toLocaleDateString('pt-br', {year:"numeric"})
