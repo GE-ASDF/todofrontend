@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import aya from "../../../../api/aya";
 import HTTP from "../../../../api/http";
 import { useAlert } from "../../../../Contexts/AlertContext";
 import { useTheme } from "../../../../Contexts/ContextsLoaders/useTheme"
 import { useLogged } from "../../../../Contexts/LoggedContext";
 import Input from "../../../UI/Forms/Input";
-
+import "./style.css";
 
 export default function Profile(props){
     const [user, setUser] = useState(false);
@@ -67,14 +66,14 @@ export default function Profile(props){
         }
     }
     return(
-        <div onClick={handleClose} className="absolute can-close left-0 top-0 z-10 w-screen h-screen bg-slate-500 bg-opacity-50 flex justify-center items-center ">
-        <div className={`card ${themeCtx.theme == 'dark' ? 'dark':''} rounded px-8 py-2`}>
+        <div onClick={handleClose} className="mymodal absolute can-close left-0 top-0 z-10 w-screen h-screen bg-slate-500 bg-opacity-50 flex justify-center items-center ">
+        <div className={`card  ${themeCtx.theme == 'dark' ? 'text-white mymodalcontent':'text-white mymodalcontent'} rounded px-8 py-2`}>
             <div className={`card-header text-center`}>
                 <h2 className="fw-bold text-3xl">Meu perfil</h2>
             </div>
-            <div className={`card-body`}>
+            <div className={`card-body `}>
                 {user &&
-                <form onSubmit={handleSubmit(updateData)} className="flex flex-col gap-2">
+                <form onSubmit={handleSubmit(updateData)} className="flex flex-col  gap-2">
                     <div className="form-group flex gap-1 items-center">
                         <label htmlFor="">Nome:</label>
                         <Input defaultValue={user.name} value={user.name} name="name" label="" placeholder="Digite seu nome" rules={{required:"O nome é obrigatório"}} control={control}/>
