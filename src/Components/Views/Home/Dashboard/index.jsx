@@ -6,18 +6,20 @@ import { useLogged } from "../../../../Contexts/LoggedContext";
 import { Outlet } from "react-router-dom";
 import MyBarChart, { createDataForBarChart } from "../../../UI/Chart";
 import { useSticky } from "../../../../Contexts/StickyContext";
+import { useState } from "react";
+import { useEffect } from "react";
 
 export default function Dashboard(){
     const {tasks} = useTasks();
     const {stickies} = useSticky();
+    const [actualYear, setActualYear] = useState(()=> new Date().getFullYear())
     const {user} = useLogged();
     const dataUser = JSON.parse(user)
     const concluidas = tasks.length > 0 ? ((tasks.filter((task)=> task.done > 0).length / tasks.length) * 100).toFixed(2):[];
-    const dataForBarChart = createDataForBarChart(tasks, new Date().getFullYear())
+    const dataForBarChart = createDataForBarChart(tasks, actualYear)
     const mesMaisProdutivo = dataForBarChart.reduce((max, objeto)=>{
         return objeto.Feitas > max.Feitas ? objeto:max;
     }, dataForBarChart[0]); 
-
     const tarefasConcluidas = tasks.length > 0 ?  tasks.filter((task)=> task.done > 0).length:[].length;
     const tarefasAtrasadas =  tasks.length > 0 ? tasks.filter((task)=> {
         if(convertDate(new Date(task.enddate).toLocaleDateString('pt-br')) <= convertDate(new Date().toLocaleDateString('pt-br')) && !task.done){
@@ -28,6 +30,7 @@ export default function Dashboard(){
     const chartData = [{name:'% de conclusão', value:concluidas}]
     const resultByNow = chartData[0].value
     const phrases = ['Não está nada bom 👎', 'Está melhorando... 👏', 'Mostre como faz! 💪', 'INCRÍVEL! Você é o rei da produtividade. 👍']
+
     return (
         <div className="flex flex-wrap flex-col">
             <h1 className="sm:text-4xl md:text-xl fw-bold">{dataUser?.name ? "Bem vindo, "+dataUser.name.split(" ")[0]:"Dashboard"}</h1>
@@ -46,7 +49,6 @@ export default function Dashboard(){
                     </div>
                     <div className="card-body">
                         <h4 className="text-2xl fw-bold">{tarefasConcluidas}</h4>
-
                     </div>
                 </div>
                 <div className="card bg-white w-48">
@@ -67,7 +69,9 @@ export default function Dashboard(){
                 </div>
             </div>
             <div className="row p-2">
-                <h1 className="p-2 my-3 rounded w-100 bg-slate-500 text-white">Seu mês mais produtivo foi {mesMaisProdutivo.month}</h1>
+                <h1 className="p-2 my-3 flex justify-between rounded w-100 bg-slate-500 text-white">
+                        Seu mês mais produtivo foi: {mesMaisProdutivo.month}
+                </h1>
                 <div className="col-lg-6 col-sm-6">
                 <h1>{
                 resultByNow >= 0 && resultByNow < 24 ?
@@ -87,8 +91,7 @@ export default function Dashboard(){
                     </text>
                 </RadialBarChart>
                 </div>
-                
-                <MyBarChart></MyBarChart>
+                <MyBarChart actualYear={actualYear} setActualYear={setActualYear}> </MyBarChart>
             </div>
             <Outlet />
         </div>

@@ -38,10 +38,9 @@ export function createDataForBarChart(tasks, actualYear){
     return result;
 }
 
-export default function MyBarChart(){
+export default function MyBarChart({actualYear, setActualYear}){
     const themeCtx = useTheme();
     const {tasks} = useTasks();
-    const [actualYear, setActualYear] = useState(new Date().getFullYear())
     const years = getYears(tasks);
     const dataPerMonth = createDataForBarChart(tasks, actualYear);
     
@@ -52,7 +51,7 @@ export default function MyBarChart(){
             <label htmlFor="">Ano:</label>
             <select onChange={(e)=> setActualYear(e.target.value) } className="form-select p-1 w-52" defaultValue={`${actualYear}`} name="year" id="">
             {years.map((year)=>{
-                return <option key={year} selected={`${year == actualYear ? "selected":""}`}  value={`${year}`}>{year}</option>
+                return <option key={year} selected={`${year == actualYear ? "selected":""}`}  defaultValue={`${year}`} value={`${year}`}>{year}</option>
             })}
             </select>
         </div>
