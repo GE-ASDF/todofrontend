@@ -6,7 +6,6 @@ import { getYears } from "../../../utils/utils";
 import "./style.css"
 
 export function createDataForBarChart(tasks, actualYear){
-    
     const dataPerMonth = [...Array(12).keys()].map((i)=>{
         const month = new Date(actualYear, i, 1).toLocaleDateString('pt-br',{
             month:"short"

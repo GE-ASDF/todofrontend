@@ -16,6 +16,9 @@ export const normalizeString = (string)=>{
     return string.normalize('NFD').toLowerCase();
 }
 
+export const createTasksMetadata = (tasks)=>{
+    
+}
 export function getYears(tasks = []){
     const oldYears = tasks.map((task)=>{
         return new Date(task.enddate).toLocaleDateString('pt-br', {year:"numeric"})

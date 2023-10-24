@@ -3,6 +3,7 @@
     background-image: 
         radial-gradient(at 47% 33%, hsl(0.00, 64%, 19%) 0, transparent 59%), 
         radial-gradient(at 82% 65%, hsl(216.82, 28.999999999999996%, 28.999999999999996%) 0, transparent 55%);
+    
 }
 .mymodal{
     backdrop-filter: blur(21px) saturate(147%);
