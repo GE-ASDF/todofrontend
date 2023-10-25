@@ -8,7 +8,7 @@ export const StickyContext = createContext();
 
 
 export const StickyProvider = ({children})=>{
-    const [sticky, setSticky] = useState(true);
+    const [sticky, setSticky] = useState(false);
     const {user} = useLogged();
     const dataUser = JSON.parse(user)
     const stickies = useStickies(dataUser.id)

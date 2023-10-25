@@ -13,6 +13,7 @@ import { useEffect } from "react";
 import Stickies from "../../../Components/Views/Home/Stickies";
 import { useStickies } from "../../../utils/queries";
 import Loader from "../../../Components/UI/Loader";
+import { useRef } from "react";
 
 export default function StickyWall(){
     const {handleSetAlert} = useAlert();
@@ -20,14 +21,48 @@ export default function StickyWall(){
     const[showAddSticky, setShowAddSticky] = useState(false)
     const dataUser = JSON.parse(user);
     const stickies = useSticky();
+    const [itemsPerPage, setItemsPerPage] = useState(10);
+    const [currentPage, setCurrentPage] = useState(1);
+    const data = !stickies.stickies.isLoading && stickies.stickies.data;
+    const [paginated, setPaginated] = useState([]) 
+    const containerRef = useRef(null)
+    useEffect(()=>{
+        setPaginated(()=>{
+            if(data){
+                if(currentPage == 1){
+                    return data.slice(0, itemsPerPage)
+                }else{
+                    return data.slice(currentPage - currentPage, data.length)
+                }
+            }
+        })
+    },[data])
 
+    useEffect(()=>{
+        const container = containerRef.current;
+        const handleScroll = (e)=>{
+            if(container.scrollTop + container.clientHeight >= container.scrollHeight - 10){
+                setCurrentPage(currentPage + 1);
+            }
+        }
+        container.addEventListener("scroll", handleScroll)
+        loadStickies()
+        return ()=> container.removeEventListener("scroll", handleScroll)
+    },[currentPage])
+    const loadStickies = ()=>{
+        const startIndex = (currentPage - 1) * itemsPerPage;
+        const endIndex = startIndex + itemsPerPage;
+        const paginatedItems = data && data.slice(startIndex, endIndex);
+        if(paginatedItems){
+            setPaginated([...paginated, ...paginatedItems])
+        }
+    }
     const [sticky, setSticky] = useState({
         iduser: dataUser.id,
         title:'',
         body:'',
     })
 
-    const data = useSticky();
     const handleTypingSticky = (e)=>{
         if(e.target.value.length <= 1024){
             setSticky({...sticky, [e.target.name]:e.target.value.trim()})
@@ -40,7 +75,6 @@ export default function StickyWall(){
     }
     const saveSticky = async (e)=>{
         e.preventDefault();
-   
         if(!sticky.title || !sticky.body){
             handleSetAlert({type:'danger', message:`O campo de título e anotação não podem estar vazios.`})
             return;
@@ -52,13 +86,14 @@ export default function StickyWall(){
             return;
         }else if(response.error == false){
             handleSetAlert({type:'success', message:response.message})
-            data.setSticky(true);
+            stickies.setSticky(true);
             return;
         }
     }
     const handleShowAddSticky = ()=>{
         setShowAddSticky(!showAddSticky)
     }
+
     useEffect(()=>{
         const closeShowAddSticky = (e)=>{
             if(e.key.toLowerCase() == 'escape'){
@@ -82,16 +117,15 @@ export default function StickyWall(){
             window.removeEventListener("click", closeShowModalOnOutsideClick)
         }
     },[showAddSticky])
-    const handleLoadStickies = ()=>{
-        
-    }
+
     return(
-        <div className="flex flex-wrap flex-col p-4">
-            <h1 className="lg:text-5xl md:text-3xl text-3xl  fw-bold">Anotações</h1>
+        <div ref={containerRef} className={`flex overflow-y-auto overflow-x-hidden h-100 flex-col p-4 `}>
+            <h1 className="lg:text-5xl md:text-3xl text-3xl  fw-bold">Anotações ({data && data.length})</h1>
+            <h2>Mostrando ({paginated && paginated.length})</h2>
             {/* {stickies.stickies.isLoading && <Loader />} */}
             {stickies.stickies.isLoading && <p>Carregando dados...</p>}
-            {!stickies.stickies.isLoading &&
-                <Stickies stickies={stickies.stickies.data} />
+            {paginated &&
+                <Stickies stickies={paginated} />
             }
             {showAddSticky &&
                 <FormAddSticky handleTypingSticky={handleTypingSticky} saveSticky={saveSticky} />
@@ -99,6 +133,8 @@ export default function StickyWall(){
             <div onClick={handleShowAddSticky} className="rounded-full  text-3xl cursor-pointer hover:text-purple-500  h-10 w-10 flex items-center justify-center absolute bottom-5  right-5">
                 <i className="bi modal-open bi-plus-circle"></i>
             </div>
+    
+            }
         </div>
     )
 }

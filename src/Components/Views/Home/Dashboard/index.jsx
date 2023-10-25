@@ -11,7 +11,6 @@ import { useState } from "react";
 export default function Dashboard(){
     const {tasks} = useTasks();
     const {stickies} = useSticky();
-    
     const [actualYear, setActualYear] = useState(()=> new Date().getFullYear())
     const {user} = useLogged();
     const dataUser = JSON.parse(user)
@@ -78,7 +77,8 @@ export default function Dashboard(){
             </div>
             <div className="row p-2">
                 <h1 className="p-2 my-3 flex justify-between rounded w-100 bg-slate-500 text-white">
-                        Seu mês mais produtivo foi: {mesMaisProdutivo.month}
+                    {mesMaisProdutivo['Não feitas'] != 100 && <p>Seu mês mais produtivo foi: {mesMaisProdutivo.month}</p>}
+                    {mesMaisProdutivo['Não feitas'] == 100 && <p>Ainda não há tarefas concluídas.</p>}
                 </h1>
                 <div className="col-lg-6 col-sm-6">
                 <h1>{

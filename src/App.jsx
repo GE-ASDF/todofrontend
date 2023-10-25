@@ -9,11 +9,11 @@ function App() {
   let routes = createBrowserRouter([...PublicRoutes(),  ...PrivateRoutes()]);
 
   return (
-        <ThemeProvider>
-          <AlertProvider>
-              <RouterProvider router={routes}></RouterProvider>
-            </AlertProvider>
-          </ThemeProvider>
+    <ThemeProvider>
+      <AlertProvider>
+          <RouterProvider router={routes}></RouterProvider>
+        </AlertProvider>
+      </ThemeProvider>
   ) 
 }
 
