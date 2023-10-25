@@ -17,7 +17,26 @@ class HTTP{
 
         if(Object.keys(body).length > 0) this.configFetch.body = JSON.stringify(body); 
     }
-    
+    setEndPoint(endpoint){
+        this.endpoint = endpoint;
+        return this;
+    }
+    setMethod(method){
+        this.method = method;
+        return this;
+    }
+    setBody(body){
+        this.body = body;
+        return this; 
+    }
+    setCustomHeaders(customHeaders){
+        this.customHeaders = customHeaders;
+        return this;
+    }
+    #createConfig(){
+        this.configFetch = {credentials:'include',mode:"cors", method:this.method, headers:this.headers}
+        if(Object.keys(this.body).length > 0) this.configFetch.body = JSON.stringify(this.body); 
+    }
     async getToken(){
         try{
             const CSRF_TOKEN_AWAIT = await fetch(`${this.#backendURL}/csrfToken`, {headers:this.#defaultHeaders})

@@ -18,15 +18,11 @@ export default function Today(){
     const {filter, handleSetFilter} = hookSetFilter();
     const [search, setSearch] = useState('');
     const [showDone, setDoneShow] = useState(true);
-
-    useEffect(()=>{
-        const taskss = data.tasks.length > 0 ? data.tasks.filter((task)=>{
-                if(convertDate( new Date(task.enddate).toLocaleDateString('pt-br')) == convertDate(new Date().toLocaleDateString('pt-br'))){
-                    return task;
-                }
-        }):[];
-        return ()=> setTasks(taskss)
-    },[data])
+    const taskss = !data.tasks.isFetching ? data.tasks.data.filter((task)=>{
+            if(convertDate( new Date(task.enddate).toLocaleDateString('pt-br')) == convertDate(new Date().toLocaleDateString('pt-br'))){
+                return task;
+            }
+    }):[];
     const handleSetSearch = (e)=>{
         setSearch(normalizeString(e.target.value))
     }
@@ -35,13 +31,13 @@ export default function Today(){
     }
     return (
         <div className="flex flex-wrap flex-col p-4">
-        {loading && <Loader />}
+        {data.tasks.isLoading && <Loader />}
         <h1 className="sm:text-2xl md:text-5xl fw-bold">Tasks de hoje</h1>
-            {tasks.length > 0 &&
-                <>
-            <FilterTask showDone={showDone} handleDoneChange={handleDoneChange} handleSetSearch={handleSetSearch} handleSetFilter={handleSetFilter} />
-            <Tasks showDone={showDone}  search={search} filter={filter} tasks={tasks} done={done} detailsShow={detailsShow} onClick={showDetails} />
-                </>
+            {taskss && taskss.length > 0 &&
+            <>
+                <FilterTask showDone={showDone} handleDoneChange={handleDoneChange} handleSetSearch={handleSetSearch} handleSetFilter={handleSetFilter} />
+                <Tasks showDone={showDone}  search={search} filter={filter} tasks={taskss} done={done} detailsShow={detailsShow} onClick={showDetails} />
+            </>
             }
         <Outlet />
         </div>

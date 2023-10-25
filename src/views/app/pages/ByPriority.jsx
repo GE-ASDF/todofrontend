@@ -14,27 +14,26 @@ export default function ByPriority(){
     const {handleSetAlert} =  useAlert();
 
     const [taskDragged, setTaskDragged] = useState('');
-    const {setTask} = useTasks();
+    const {setTask, tasks} = useTasks();
     const [showOnly, setShowOnly] = useState([0,1,2]);
     const themeCtx = useTheme();
     const [showInfoTask, setShowInfoTask] = useState([0,1,2]);
-    const {tasks} = useTasks();
     const {detailsShow, showDetails} = hookShowDetails();
-    const baixa = tasks.filter((task)=>{
+    const baixa = !tasks.isLoading ? tasks.data.filter((task)=>{
         if(task.priority == 0 && task.done == 0){
             return task;
         }
-    })
-    const media = tasks.filter((task)=>{
+    }):[]
+    const media = !tasks.isLoading ? tasks.data.filter((task)=>{
         if(task.priority == 1 && task.done == 0){
             return task;
         }
-    })
-    const alta = tasks.filter((task)=>{
+    }):[]
+    const alta = !tasks.isLoading ? tasks.data.filter((task)=>{
         if(task.priority == 2 && task.done == 0){
             return task;
         }
-    })
+    }):[]
     const openInformation = (id)=>{
         if(showInfoTask.includes(id)){
             setShowInfoTask(()=> showInfoTask.filter((info) => info != id))

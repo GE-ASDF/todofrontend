@@ -4,28 +4,29 @@ import HTTP from "../api/http";
 import { useEffect } from "react";
 import Home from "./app/Home";
 import { useLogged } from "../Contexts/LoggedContext";
-import { useUser } from "../Contexts/UserContext";
+import { useUser } from "../utils/queries";
+import Loader from "../Components/UI/Loader";
 
 
 const Template = ()=>{
-
     const token = Cookies.getItem("token");
     const navigate = useNavigate();
     const {setUserLogged} = useLogged();
+    const query = useUser();
+
     const local = useLocation().pathname.split("/app").filter(el => {
         if(el && el != "/"){
             return el
         }
     });
-  
+
     const handleLogged = async()=>{
-        const http = new HTTP('/auth');
-        const response = await http.http();
-       
-        if(response.error == true){
-            setUserLogged('null');
-            Cookies.removeItem("token");
-            return navigate("/")
+        if(!query.isLoading && !query.isError){
+            if(query.data.error == true){
+                setUserLogged('null');
+                Cookies.removeItem("token");
+                return navigate("/")
+            }
         }
     }
 
@@ -36,10 +37,20 @@ const Template = ()=>{
     if(!token){
         return <Navigate to="/" />;
     }
+
     if(local.length <= 0){
         return <Navigate to="/app/dashboard" />
     }
-    return <Home />
+
+    return (
+        <>
+        {query.isLoading && <Loader />}
+        {query.isError && <p>Ocorreu um erro ao buscar os dados do usuário.</p>}
+        {!query.isLoading && !query.isError && 
+            <Home />
+        }
+        </>
+    )
        
 }
 

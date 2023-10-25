@@ -5,48 +5,36 @@ import {useNavigate} from "react-router-dom"
 import {useForm} from "react-hook-form";
 import { useAlert } from "../Contexts/AlertContext";
 import { useLogged } from "../Contexts/LoggedContext";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Loader from "../Components/UI/Loader"
 import FormCreateUser from "../Components/Views/Home/FormCreateUser";
 import useGetCsrfToken from "../hooks/useGetCsrfToken";
-import { useUser } from "../Contexts/UserContext";
-
+import { useUser } from "../utils/queries";
+import {authenticate as auth, getUser} from "../utils/api"
 
 const Login = ()=>{
     const [form, setForm] = useState('login');
-
     const {setUserLogged} = useLogged();
     const [loading, setLoading] = useState(false);
     const {handleSetAlert} = useAlert();
     const navigate = useNavigate();
     const {_csrfToken} = useGetCsrfToken();
+    const {control, handleSubmit, reset} = useForm();
 
-    const {control, handleSubmit, reset} = useForm({
-        user:'',
-        password:'',
-    });
-
-    
-    console.log(_csrfToken)
     const authenticate = async()=>{ 
         setLoading(true);
-        const http = new HTTP("/auth", 'POST', control._formValues);
-        const response = await http.http();
-        if(response.error){
-            handleSetAlert({type:'danger', message:response.message})
+        const user = await auth(control._formValues);
+        if(user.error){
+            handleSetAlert({type:'danger', message:user.message})
             setLoading(false);
         }else{
-            Cookies.setItem('token',response.token);
-    
-            const httpNew = new HTTP('/auth');
-            const verifiyng = await httpNew.http();
-
+            Cookies.setItem('token',user.token);
+            const verifiyng = await getUser();
             if(verifiyng.error == false){
-                setUserLogged(JSON.stringify(response.user))
+                setUserLogged(JSON.stringify(user.user))
             }else{
-                handleSetAlert({type:'danger', message:response.message})
+                handleSetAlert({type:'danger', message:user.message})
             }
-
             setLoading(false);
             return navigate("/app/dashboard")
         }

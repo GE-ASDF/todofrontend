@@ -7,26 +7,26 @@ import { Outlet } from "react-router-dom";
 import MyBarChart, { createDataForBarChart } from "../../../UI/Chart";
 import { useSticky } from "../../../../Contexts/StickyContext";
 import { useState } from "react";
-import { useEffect } from "react";
 
 export default function Dashboard(){
     const {tasks} = useTasks();
     const {stickies} = useSticky();
+    
     const [actualYear, setActualYear] = useState(()=> new Date().getFullYear())
     const {user} = useLogged();
     const dataUser = JSON.parse(user)
-    const concluidas = tasks.length > 0 ? ((tasks.filter((task)=> task.done > 0).length / tasks.length) * 100).toFixed(2):[];
-    const dataForBarChart = createDataForBarChart(tasks, actualYear)
-    const mesMaisProdutivo = dataForBarChart.reduce((max, objeto)=>{
+    const concluidas = !tasks.isLoading ? ((tasks.data.filter((task)=> task.done > 0).length / tasks.data.length) * 100).toFixed(2):[];
+    const dataForBarChart = !tasks.isFetching ? createDataForBarChart(tasks.data, actualYear):[];
+    const mesMaisProdutivo = !tasks.isFetching ? dataForBarChart.reduce((max, objeto)=>{
         if(objeto.qtd > max.qtd && objeto.doned > max.doned){
             return objeto;
         }else{
             return max
         }
         // objeto.Feitas > max.Feitas ? objeto:max;
-    }, dataForBarChart[0]); 
-    const tarefasConcluidas = tasks.length > 0 ?  tasks.filter((task)=> task.done > 0).length:[].length;
-    const tarefasAtrasadas =  tasks.length > 0 ? tasks.filter((task)=> {
+    }, dataForBarChart[0]):[]; 
+    const tarefasConcluidas = !tasks.isLoading ? tasks.data.filter((task)=> task.done > 0).length:[].length;
+    const tarefasAtrasadas =  !tasks.isLoading ? tasks.data.filter((task)=> {
         if(convertDate(new Date(task.enddate).toLocaleDateString('pt-br')) <= convertDate(new Date().toLocaleDateString('pt-br')) && !task.done){
             return task;
         }
@@ -37,6 +37,7 @@ export default function Dashboard(){
     const phrases = ['Não está nada bom 👎', 'Está melhorando... 👏', 'Mostre como faz! 💪', 'INCRÍVEL! Você é o rei da produtividade. 👍']
 
     return (
+        <>
         <div className="flex flex-wrap flex-col">
             <h1 className="sm:text-4xl md:text-xl fw-bold">{dataUser?.name ? "Bem vindo, "+dataUser.name.split(" ")[0]:"Dashboard"}</h1>
             <div className={`flex gap-2 flex-wrap rounded  mt-2 ${themeCtx.theme == 'dark' ? 'dark':'bg-slate-100'}  shadow-sm`}>
@@ -45,7 +46,7 @@ export default function Dashboard(){
                         <span>Qtd. tarefas</span>
                     </div>
                     <div className={`card-body`}>
-                        <h4 className="text-2xl fw-bold">{tasks.length ?? 0}</h4>
+                        <h4 className="text-2xl fw-bold">{!tasks.isLoading ? tasks.data.length:0}</h4>
                     </div>
                 </div>
                 <div className="card bg-white w-48">
@@ -69,7 +70,9 @@ export default function Dashboard(){
                         <span>Anotações</span>
                     </div>
                     <div className="card-body">
-                        <h4 className="text-2xl fw-bold">{stickies.length}</h4>
+                        <h4 className="text-2xl fw-bold">
+                            {!stickies.isLoading && !stickies.isFetching && stickies.data ? stickies.data.length:0}
+                        </h4>
                     </div>
                 </div>
             </div>
@@ -99,6 +102,7 @@ export default function Dashboard(){
                 <MyBarChart actualYear={actualYear} setActualYear={setActualYear}> </MyBarChart>
             </div>
             <Outlet />
-        </div>
+            </div>
+        </>
     )
 }

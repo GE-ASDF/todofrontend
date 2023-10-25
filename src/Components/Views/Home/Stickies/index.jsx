@@ -4,6 +4,7 @@ import { formatText } from "../../../../utils/utils"
 import ConfirmationScreen from "../../../UI/ConfirmationScreen"
 import HTTP from "../../../../api/http";
 import { useAlert } from "../../../../Contexts/AlertContext";
+import { useStickies } from "../../../../utils/queries";
 
 
 export default function Stickies({stickies}){
@@ -15,6 +16,7 @@ export default function Stickies({stickies}){
         setStickyId(id);
         setShowConfirmationScreen(!showConfirmationScreen)
     }
+
     const removeSticky = async ()=>{
         const http = new HTTP('/admin/sticky/delete/'+stickyId);
         const response = await http.http();
@@ -34,7 +36,7 @@ export default function Stickies({stickies}){
               <ConfirmationScreen showConfirmationScreen={showConfirmationScreen} setShowConfirmationScreen={handleShowConfirmationScreen} id={stickyId} onClick={removeSticky} />
             }
 
-            {stickies.length > 0 && stickies.map(sticky =>{
+            {stickies && stickies.map(sticky =>{
                 return(
                 <div style={{minWidth:"300px", maxWidth:"300px"}} key={sticky.id} className="card bg-yellow-200">
                     <div   className="card-header flex items-center justify-between">

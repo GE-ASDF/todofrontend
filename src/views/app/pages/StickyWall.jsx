@@ -11,12 +11,15 @@ import { useAlert } from "../../../Contexts/AlertContext";
 import FormAddSticky from "../../../Components/Views/Home/FormAddSticky";
 import { useEffect } from "react";
 import Stickies from "../../../Components/Views/Home/Stickies";
+import { useStickies } from "../../../utils/queries";
+import Loader from "../../../Components/UI/Loader";
 
 export default function StickyWall(){
     const {handleSetAlert} = useAlert();
     const {user} = useLogged();
     const[showAddSticky, setShowAddSticky] = useState(false)
     const dataUser = JSON.parse(user);
+    const stickies = useSticky();
 
     const [sticky, setSticky] = useState({
         iduser: dataUser.id,
@@ -79,11 +82,17 @@ export default function StickyWall(){
             window.removeEventListener("click", closeShowModalOnOutsideClick)
         }
     },[showAddSticky])
-
+    const handleLoadStickies = ()=>{
+        
+    }
     return(
         <div className="flex flex-wrap flex-col p-4">
             <h1 className="lg:text-5xl md:text-3xl text-3xl  fw-bold">Anotações</h1>
-            <Stickies stickies={data.stickies} />
+            {/* {stickies.stickies.isLoading && <Loader />} */}
+            {stickies.stickies.isLoading && <p>Carregando dados...</p>}
+            {!stickies.stickies.isLoading &&
+                <Stickies stickies={stickies.stickies.data} />
+            }
             {showAddSticky &&
                 <FormAddSticky handleTypingSticky={handleTypingSticky} saveSticky={saveSticky} />
             }

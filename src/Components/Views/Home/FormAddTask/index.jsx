@@ -4,7 +4,6 @@ import HTTP from "../../../../api/http";
 import Input, { Select, Option } from "../../../UI/Forms/Input"
 import { useEffect, useState } from "react";
 import { useTheme } from "../../../../Contexts/ContextsLoaders/useTheme";
-import { useLogged } from "../../../../Contexts/LoggedContext";
 import { useTasks } from "../../../../Contexts/TasksContext";
 
 export default function FormAddTask({iduser, setAddTaskForm, addTaskForm}){

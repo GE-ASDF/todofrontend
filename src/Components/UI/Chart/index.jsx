@@ -4,6 +4,7 @@ import { useTheme } from "../../../Contexts/ContextsLoaders/useTheme";
 import { useTasks } from "../../../Contexts/TasksContext";
 import { getYears } from "../../../utils/utils";
 import "./style.css"
+import Loader from "../Loader";
 
 export function createDataForBarChart(tasks, actualYear){
     const dataPerMonth = [...Array(12).keys()].map((i)=>{
@@ -43,9 +44,9 @@ export function createDataForBarChart(tasks, actualYear){
 export default function MyBarChart({actualYear, setActualYear}){
     const themeCtx = useTheme();
     const {tasks} = useTasks();
-    const years = getYears(tasks);
-    const dataPerMonth = createDataForBarChart(tasks, actualYear);
-    
+    const years = !tasks.isFetching ? getYears(tasks.data):[];
+    const dataPerMonth = !tasks.isFetching ? createDataForBarChart(tasks.data, actualYear):[];
+
     return(
         <div className={`flex col-lg-6 col-sm-6 flex-col gap-2 rounded shadow-md ${themeCtx.theme == 'dark' ? 'dark':''}`}>
         <h1>Resultado anual</h1>
@@ -57,6 +58,10 @@ export default function MyBarChart({actualYear, setActualYear}){
             })}
             </select>
         </div>
+        <div className="relative">
+        {tasks.isLoading && <p>Carregando gráfico</p>}
+        {tasks.isError && <p>Não foi possível carregar o gráfico.</p>}
+        
         <BarChart  width={400} height={180} data={dataPerMonth}>
             <Bar fill={`green`} dataKey="Feitas"/>
             <Bar fill={`red`} dataKey="Não feitas" />
@@ -65,6 +70,7 @@ export default function MyBarChart({actualYear, setActualYear}){
             <YAxis />
             <Legend />
         </BarChart>
+        </div>
         </div>
         // <div id="cart-col"  className="rounded">
         //     <div className="h-100 overflow-auto">

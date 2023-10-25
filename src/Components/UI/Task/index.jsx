@@ -17,7 +17,7 @@ export default function Task({task,onDrag,onDropTask,local, detailsShow, classNa
         setIdTaskToDelete(id);
         setShowConfirmationScreen(!showConfirmationScreen)
     }
-    console.log(local)
+
     return (
         <>
         {showConfirmationScreen &&

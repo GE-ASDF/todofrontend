@@ -25,7 +25,7 @@ export default function Header(){
     
     const [showProfile, setShowProfile] = useState(false);
     const [showPlusInfo, setShowPlusInfo] = useState(false);
-    const tasks = data.tasks.length > 0 ? data.tasks.filter((task)=>{
+    const tasks = !data.tasks.isFetching ? data.tasks.data.filter((task)=>{
         if(convertDate( new Date(task.enddate).toLocaleDateString('pt-br')) <= convertDate(new Date().toLocaleDateString('pt-br')) && !task.done){
             return task;
         }
