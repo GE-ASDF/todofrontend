@@ -20,17 +20,21 @@ const api = axios.create({
  * @returns {Promise<Tasks[]>} 
  */
 export const getTasks = async(userId)=>{
+    const token = Cookies.getItem("token");
+
     try{
-        const result = await api.get(`/admin/tasks/all/${userId}`);   
+        const result = await api.get(`/admin/tasks/all/${userId}`, {headers: {Authorization:token}});   
         return result.data;
     }catch(error){
         return {error: true, message:"Erro ao tentar fazer a solicitação."}
     }
 }
 
-export const getStickies = async(userId)=>{
+export const getStickies = async(limit = 0)=>{
+    const token = Cookies.getItem("token");
+
     try{
-        const result = await api.get(`/admin/sticky/all/${userId}`);   
+        const result = await api.get(`/admin/sticky/all/${limit}`,{headers: {Authorization:token}});   
         return result.data;
     }catch(error){
         return {error: true, message:"Erro ao tentar fazer a solicitação."}

@@ -22,10 +22,9 @@ export default function Header(){
     const {detailsShow, showDetails} = hookShowDetails();
     const {done} = hookDoneTask();
     const local = useLocation().pathname.split("/app").filter(el => el);
-    
     const [showProfile, setShowProfile] = useState(false);
     const [showPlusInfo, setShowPlusInfo] = useState(false);
-    const tasks = !data.tasks.isFetching ? data.tasks.data.filter((task)=>{
+    const tasks = !data.tasks.isLoading && !data.tasks.isFetching && data.tasks.data ? data.tasks.data.filter((task)=>{
         if(convertDate( new Date(task.enddate).toLocaleDateString('pt-br')) <= convertDate(new Date().toLocaleDateString('pt-br')) && !task.done){
             return task;
         }

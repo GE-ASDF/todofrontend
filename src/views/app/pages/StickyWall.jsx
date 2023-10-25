@@ -14,49 +14,44 @@ import Stickies from "../../../Components/Views/Home/Stickies";
 import { useStickies } from "../../../utils/queries";
 import Loader from "../../../Components/UI/Loader";
 import { useRef } from "react";
+import { getStickies } from "../../../utils/api";
 
 export default function StickyWall(){
     const {handleSetAlert} = useAlert();
     const {user} = useLogged();
     const[showAddSticky, setShowAddSticky] = useState(false)
     const dataUser = JSON.parse(user);
-    const stickies = useSticky();
-    const [itemsPerPage, setItemsPerPage] = useState(10);
     const [currentPage, setCurrentPage] = useState(1);
-    const data = !stickies.stickies.isLoading && stickies.stickies.data;
+    const [maxPages, setMaxPages] = useState(1)
     const [paginated, setPaginated] = useState([]) 
+    const [totalStickies, setTotalStickies] = useState(0)
     const containerRef = useRef(null)
+    const stickies = useSticky();
+
+    const getMoreStickies = async()=>{
+        const stickies = await getStickies(currentPage);
+        setPaginated(stickies.sticky);      
+        setMaxPages(stickies.maxPages)
+        setTotalStickies(stickies.totalStickies)
+    }
     useEffect(()=>{
-        setPaginated(()=>{
-            if(data){
-                if(currentPage == 1){
-                    return data.slice(0, itemsPerPage)
-                }else{
-                    return data.slice(currentPage - currentPage, data.length)
-                }
-            }
-        })
-    },[data])
+        getMoreStickies()
+    },[])
 
     useEffect(()=>{
         const container = containerRef.current;
-        const handleScroll = (e)=>{
+        const handleScroll = ()=>{
             if(container.scrollTop + container.clientHeight >= container.scrollHeight - 10){
                 setCurrentPage(currentPage + 1);
             }
         }
-        container.addEventListener("scroll", handleScroll)
-        loadStickies()
-        return ()=> container.removeEventListener("scroll", handleScroll)
-    },[currentPage])
-    const loadStickies = ()=>{
-        const startIndex = (currentPage - 1) * itemsPerPage;
-        const endIndex = startIndex + itemsPerPage;
-        const paginatedItems = data && data.slice(startIndex, endIndex);
-        if(paginatedItems){
-            setPaginated([...paginated, ...paginatedItems])
+        if(maxPages >= currentPage){
+            container.addEventListener("scroll", handleScroll)
         }
-    }
+        getMoreStickies();
+        return ()=> container.removeEventListener("scroll", handleScroll)
+    },[currentPage, maxPages, stickies.sticky])
+
     const [sticky, setSticky] = useState({
         iduser: dataUser.id,
         title:'',
@@ -118,13 +113,12 @@ export default function StickyWall(){
         }
     },[showAddSticky])
 
+    console.log
     return(
         <div ref={containerRef} className={`flex overflow-y-auto overflow-x-hidden h-100 flex-col p-4 `}>
-            <h1 className="lg:text-5xl md:text-3xl text-3xl  fw-bold">Anotações ({data && data.length})</h1>
-            <h2>Mostrando ({paginated && paginated.length})</h2>
-            {/* {stickies.stickies.isLoading && <Loader />} */}
-            {stickies.stickies.isLoading && <p>Carregando dados...</p>}
-            {paginated &&
+            <h1 className="lg:text-5xl md:text-3xl text-3xl  fw-bold">Anotações ({totalStickies})</h1>
+            <h2>Mostrando: {paginated.length}</h2>
+            {paginated.length > 0 &&
                 <Stickies stickies={paginated} />
             }
             {showAddSticky &&
@@ -133,8 +127,6 @@ export default function StickyWall(){
             <div onClick={handleShowAddSticky} className="rounded-full  text-3xl cursor-pointer hover:text-purple-500  h-10 w-10 flex items-center justify-center absolute bottom-5  right-5">
                 <i className="bi modal-open bi-plus-circle"></i>
             </div>
-    
-            }
         </div>
     )
 }

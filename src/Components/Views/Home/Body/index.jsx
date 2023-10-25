@@ -21,6 +21,7 @@ export default function Body(){
         const http = new HTTP("/logout");
         await http.http();
         Cookies.removeItem("token");
+        Cookies.removeItem("LOGIN_USER");
         setUserLogged('null')
         navigate("/")
         

@@ -5,4 +5,4 @@ export const useTasks = (id)=> useQuery({queryKey:["tasks"], queryFn: async()=> 
 
 export const useUser = ()=> useQuery({queryKey:['user'], queryFn: async()=> await getUser()})
 
-export const useStickies = (id)=> useQuery({queryKey:['stickies'], queryFn: async()=> await getStickies(id)})
+export const useStickies = (page = 0)=> useQuery({queryKey:['stickies'], queryFn: async()=> await getStickies(page)})

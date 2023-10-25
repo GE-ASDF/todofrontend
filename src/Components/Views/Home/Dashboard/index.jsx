@@ -14,9 +14,9 @@ export default function Dashboard(){
     const [actualYear, setActualYear] = useState(()=> new Date().getFullYear())
     const {user} = useLogged();
     const dataUser = JSON.parse(user)
-    const concluidas = !tasks.isLoading ? ((tasks.data.filter((task)=> task.done > 0).length / tasks.data.length) * 100).toFixed(2):[];
-    const dataForBarChart = !tasks.isFetching ? createDataForBarChart(tasks.data, actualYear):[];
-    const mesMaisProdutivo = !tasks.isFetching ? dataForBarChart.reduce((max, objeto)=>{
+    const concluidas = !tasks.isLoading && !tasks.isFetching && tasks.data && ((tasks.data.filter((task)=> task.done > 0).length / tasks.data.length) * 100).toFixed(2);
+    const dataForBarChart = !tasks.isFetching  && tasks.data  ? createDataForBarChart(tasks.data, actualYear):[];
+    const mesMaisProdutivo = !tasks.isFetching && tasks.data ? dataForBarChart.reduce((max, objeto)=>{
         if(objeto.qtd > max.qtd && objeto.doned > max.doned){
             return objeto;
         }else{
@@ -24,12 +24,12 @@ export default function Dashboard(){
         }
         // objeto.Feitas > max.Feitas ? objeto:max;
     }, dataForBarChart[0]):[]; 
-    const tarefasConcluidas = !tasks.isLoading ? tasks.data.filter((task)=> task.done > 0).length:[].length;
-    const tarefasAtrasadas =  !tasks.isLoading ? tasks.data.filter((task)=> {
+    const tarefasConcluidas = !tasks.isLoading && !tasks.isFetching && tasks.data.filter((task)=> task.done > 0).length;
+    const tarefasAtrasadas =  !tasks.isLoading && !tasks.isFetching && tasks.data.filter((task)=> {
         if(convertDate(new Date(task.enddate).toLocaleDateString('pt-br')) <= convertDate(new Date().toLocaleDateString('pt-br')) && !task.done){
             return task;
         }
-    }).length:[].length;
+    }).length;
     const themeCtx = useTheme();
     const chartData = [{name:'% de conclusão', value:concluidas}]
     const resultByNow = chartData[0].value
@@ -70,7 +70,7 @@ export default function Dashboard(){
                     </div>
                     <div className="card-body">
                         <h4 className="text-2xl fw-bold">
-                            {!stickies.isLoading && !stickies.isFetching && stickies.data ? stickies.data.length:0}
+                            {!stickies.isLoading && !stickies.isFetching && stickies.data ? stickies.data.totalStickies:0}
                         </h4>
                     </div>
                 </div>
