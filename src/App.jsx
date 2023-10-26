@@ -13,7 +13,7 @@ function App() {
       <AlertProvider>
           <RouterProvider router={routes}></RouterProvider>
         </AlertProvider>
-      </ThemeProvider>
+      </ThemeProvider> 
   ) 
 }
 

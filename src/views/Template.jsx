@@ -1,14 +1,15 @@
-import Cookies from "js-cookies";
-import {Navigate, redirect, useLocation, useNavigate} from "react-router-dom"
-import HTTP from "../api/http";
+import {Navigate, redirect, useLocation} from "react-router-dom"
 import { useEffect } from "react";
 import Home from "./app/Home";
-import { useLogged } from "../Contexts/LoggedContext";
 import { useUser } from "../utils/queries";
-import Loader from "../Components/UI/Loader";
-
 
 const Template = ()=>{
+   const query = useUser();
+
+   useEffect(()=>{
+    query.refetch();    
+   })
+
     const local = useLocation().pathname.split("/app").filter(el => {
         if(el && el != "/"){
             return el
@@ -17,8 +18,17 @@ const Template = ()=>{
     if(local.length <= 0){
         return <Navigate to="/app/dashboard" />
     }
+    
     return (
-        <Home />
+        <>
+            {!query.isLoading && !query.data.error &&
+                <Home />
+            }
+            {
+                !query.isLoading && !query.isRefetching && !query.isFetching && query.data.error &&
+                <Navigate to="/" />
+            }
+        </>
     )
 }
 

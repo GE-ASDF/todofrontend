@@ -3,10 +3,12 @@ import HTTP from "../../../../api/http";
 import { useAlert } from "../../../../Contexts/AlertContext";
 import useGetCsrfToken from "../../../../hooks/useGetCsrfToken";
 import Input from "../../../UI/Forms/Input";
+import { useCsrfToken } from "../../../../utils/queries";
 
-export default function FormCreateUser({setLoading, setForm}){
+export default function FormCreateUser({setForm}){
     const {handleSetAlert} = useAlert();
-    const {_csrfToken, getCsrfToken} = useGetCsrfToken();
+    const csrfToken = useCsrfToken();
+
     const {control, handleSubmit, reset} = useForm({
         name:'',
         user:'',
@@ -14,7 +16,6 @@ export default function FormCreateUser({setLoading, setForm}){
     });
 
     const cadastre = async ()=>{
-        setLoading(true);
         const http = new HTTP("/admin/users/create", 'POST', control._formValues);
         const response = await http.http();
         if(response.error){
@@ -30,7 +31,6 @@ export default function FormCreateUser({setLoading, setForm}){
             }
         }else if(response.error == false){
             handleSetAlert({type:'success', message:response.message})
-            setLoading(false);
             reset();
             if(setForm){
                 setForm('login')
@@ -49,8 +49,8 @@ export default function FormCreateUser({setLoading, setForm}){
                     <Input defaultValue=""  placeholder="Digite seu usuário" rules={{required:"Este campo é obrigatório.", maxLength:{value:"255", message:"Este campo só suporta 255 caracteres"}}} type="text" label="Usuário" name="user" control={control} />
                     <Input defaultValue="" placeholder="Digite sua senha"  rules={{required:"Este campo é obrigatório.", maxLength:{value:"255", message:"Este campo só suporta 255 caracteres"}}} type="password" label="Senha" name="password" control={control} />
                 </div>
-                    {_csrfToken &&
-                        <Input defaultValue={`${_csrfToken}`} placeholder="Digite sua senha"  rules={{required:"Este campo é obrigatório.", maxLength:{value:"255", message:"Este campo só suporta 255 caracteres"}}} type="hidden" label="" name="_csrf" control={control} />
+                    {!csrfToken.isLoading &&
+                        <Input defaultValue={`${csrfToken.data.csrfToken}`} placeholder="Digite sua senha"  rules={{required:"Este campo é obrigatório.", maxLength:{value:"255", message:"Este campo só suporta 255 caracteres"}}} type="hidden" label="" name="_csrf" control={control} />
                     }
                 <div>
                     <button className="btn btn-primary">Cadastrar</button>

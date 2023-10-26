@@ -1,5 +1,4 @@
-import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
-import Dashboard from "../Dashboard";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 import Menu from "../../../UI/Menu";
 import {useMenu} from "../../../../Contexts/MenuContext";
 import Cookies from "js-cookies";
@@ -8,23 +7,23 @@ import "./style.css";
 import { useTheme } from "../../../../Contexts/ContextsLoaders/useTheme";
 import HTTP from "../../../../api/http";
 import { useLogged } from "../../../../Contexts/LoggedContext";
+import { useLogoutMutation } from "../../../../utils/mutations";
 export default function Body(){
     const {theme} = useTheme();
     const {showMenu, setShowMenu} = useMenu();
-    const local = useLocation().pathname.split("/app").filter((l) => l);
     const navigate = useNavigate();
     const {setUserLogged}= useLogged();
+    const logoutMutation = useLogoutMutation();
     const handleShowMenu = ()=>{
         setShowMenu(!showMenu)
     }
     const handleLogout = async ()=>{
-        const http = new HTTP("/logout");
-        await http.http();
-        Cookies.removeItem("token");
-        Cookies.removeItem("LOGIN_USER");
-        setUserLogged('null')
-        navigate("/")
-        
+        logoutMutation.mutate('', {onSuccess:()=>{
+            Cookies.removeItem("token");
+            Cookies.removeItem("LOGIN_USER");
+            setUserLogged('null')
+            navigate("/")
+        }})
     }
     return(
         <>

@@ -15,14 +15,12 @@ import { useStickies } from "../../../utils/queries";
 import Loader from "../../../Components/UI/Loader";
 import { useRef } from "react";
 import { getStickies } from "../../../utils/api";
+import { useAddStickyMutation } from "../../../utils/mutations";
 
 export default function StickyWall(){
     const [currentPage, setCurrentPage] = useState(1);
     const data = useStickies(currentPage);
-    const {handleSetAlert} = useAlert();
-    const {user} = useLogged();
     const[showAddSticky, setShowAddSticky] = useState(false)
-    const dataUser = JSON.parse(user);
     const [maxPages, setMaxPages] = useState(1)
     const [paginated, setPaginated] = useState([]) 
     const [totalStickies, setTotalStickies] = useState(0)
@@ -35,6 +33,7 @@ export default function StickyWall(){
         setMaxPages(data.data.maxPages)
         setTotalStickies(data.data.totalStickies)
     }
+
     useEffect(()=>{
         getMoreStickies()
     },[data.data])
@@ -48,44 +47,12 @@ export default function StickyWall(){
                 }
             }
         }
-            container.addEventListener("scroll", handleScroll)
+        container.addEventListener("scroll", handleScroll)
         getMoreStickies();
         return ()=> container.removeEventListener("scroll", handleScroll)
     },[currentPage, data.maxPages, stickies.sticky])
 
-    const [sticky, setSticky] = useState({
-        iduser: dataUser.id,
-        title:'',
-        body:'',
-    })
-
-    const handleTypingSticky = (e)=>{
-        if(e.target.value.length <= 1024){
-            setSticky({...sticky, [e.target.name]:e.target.value.trim()})
-        }else{
-            setSticky({...sticky, [e.target.name]:''})
-            e.target.value = ''
-            handleSetAlert({type:"danger", message:"O campo só pode ter 1024 caracteres."})
-            return;
-        }
-    }
-    const saveSticky = async (e)=>{
-        e.preventDefault();
-        if(!sticky.title || !sticky.body){
-            handleSetAlert({type:'danger', message:`O campo de título e anotação não podem estar vazios.`})
-            return;
-        }
-        const http = new HTTP('/admin/sticky/create', 'POST', sticky);
-        const response = await http.http();
-        if(response.error){
-            handleSetAlert({type:'danger', message:`Não foi possível inserir a anotação. Verifique os dados e tente novamente.`})
-            return;
-        }else if(response.error == false){
-            handleSetAlert({type:'success', message:response.message})
-            stickies.setSticky(true);
-            return;
-        }
-    }
+    
     const handleShowAddSticky = ()=>{
         setShowAddSticky(!showAddSticky)
     }
@@ -114,7 +81,6 @@ export default function StickyWall(){
         }
     },[showAddSticky])
 
-    console.log
     return(
         <div ref={containerRef} className={`flex overflow-y-auto overflow-x-hidden h-100 flex-col p-4 `}>
             <h1 className="lg:text-5xl md:text-3xl text-3xl  fw-bold">Anotações ({totalStickies})</h1>
@@ -123,7 +89,7 @@ export default function StickyWall(){
                 <Stickies stickies={paginated} />
             }
             {showAddSticky &&
-                <FormAddSticky handleTypingSticky={handleTypingSticky} saveSticky={saveSticky} />
+                <FormAddSticky />
             }
             <div onClick={handleShowAddSticky} className="rounded-full  text-3xl cursor-pointer hover:text-purple-500  h-10 w-10 flex items-center justify-center absolute bottom-5  right-5">
                 <i className="bi modal-open bi-plus-circle"></i>

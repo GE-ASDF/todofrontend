@@ -13,22 +13,17 @@ export default function Dashboard(){
     const [actualYear, setActualYear] = useState(()=> new Date().getFullYear())
     const {user} = useLogged();
     const dataUser = JSON.parse(user)
-    const dataForBarChart = !tasks.isFetching  && tasks.data ? createDataForBarChart(tasks.data, actualYear):[];
-    const mesMaisProdutivo = !tasks.isFetching && tasks.data ? dataForBarChart.reduce((max, objeto)=>{
-        if(objeto.qtd > max.qtd && objeto.doned > max.doned){
-            return objeto;
-        }else{
-            return max
-        }
-        // objeto.Feitas > max.Feitas ? objeto:max;
-    }, dataForBarChart[0]):[]; 
+    const dataForBarChart = !tasks.isFetching  && !tasks.data.error ? createDataForBarChart(tasks.data, actualYear):[];
+    const mesMaisProdutivo = !tasks.isFetching && !tasks.data.error ? dataForBarChart.reduce((max, objeto)=>{ return objeto.Feitas > max.Feitas ? objeto:max; }, dataForBarChart[0]):[]; 
     const themeCtx = useTheme();
     const chartData = [{name:'% de conclusão', value: !dashboard.isLoading && dashboard.data.percentDoned}]
     const resultByNow = chartData[0].value
     const phrases = ['Não está nada bom 👎', 'Está melhorando... 👏', 'Mostre como faz! 💪', 'INCRÍVEL! Você é o rei da produtividade. 👍']
+    
     useEffect(()=>{
         dashboard.refetch();
     })
+   
     return (
         <>
         <div className="flex flex-wrap flex-col">

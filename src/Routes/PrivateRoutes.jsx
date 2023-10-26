@@ -13,7 +13,6 @@ export default function PrivateRoutes(){
         {
             path:"/app",
             element:<Template />,
-            errorElement:<Navigate to="/" />,
             children:[
                 {
                     path:"dashboard",
