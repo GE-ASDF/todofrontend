@@ -1,21 +1,19 @@
 import { useTheme } from "../../../../Contexts/ContextsLoaders/useTheme";
 import {useTasks} from "../../../../Contexts/TasksContext";
-import { convertDate } from "../../../../utils/utils";
 import {RadialBarChart, PolarAngleAxis, RadialBar} from "recharts";
 import { useLogged } from "../../../../Contexts/LoggedContext";
 import { Outlet } from "react-router-dom";
 import MyBarChart, { createDataForBarChart } from "../../../UI/Chart";
-import { useSticky } from "../../../../Contexts/StickyContext";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useDashboard } from "../../../../utils/queries";
 
 export default function Dashboard(){
+    const dashboard = useDashboard()
     const {tasks} = useTasks();
-    const {stickies} = useSticky();
     const [actualYear, setActualYear] = useState(()=> new Date().getFullYear())
     const {user} = useLogged();
     const dataUser = JSON.parse(user)
-    const concluidas = !tasks.isLoading && !tasks.isFetching && tasks.data && ((tasks.data.filter((task)=> task.done > 0).length / tasks.data.length) * 100).toFixed(2);
-    const dataForBarChart = !tasks.isFetching  && tasks.data  ? createDataForBarChart(tasks.data, actualYear):[];
+    const dataForBarChart = !tasks.isFetching  && tasks.data ? createDataForBarChart(tasks.data, actualYear):[];
     const mesMaisProdutivo = !tasks.isFetching && tasks.data ? dataForBarChart.reduce((max, objeto)=>{
         if(objeto.qtd > max.qtd && objeto.doned > max.doned){
             return objeto;
@@ -24,17 +22,13 @@ export default function Dashboard(){
         }
         // objeto.Feitas > max.Feitas ? objeto:max;
     }, dataForBarChart[0]):[]; 
-    const tarefasConcluidas = !tasks.isLoading && !tasks.isFetching && tasks.data.filter((task)=> task.done > 0).length;
-    const tarefasAtrasadas =  !tasks.isLoading && !tasks.isFetching && tasks.data.filter((task)=> {
-        if(convertDate(new Date(task.enddate).toLocaleDateString('pt-br')) <= convertDate(new Date().toLocaleDateString('pt-br')) && !task.done){
-            return task;
-        }
-    }).length;
     const themeCtx = useTheme();
-    const chartData = [{name:'% de conclusão', value:concluidas}]
+    const chartData = [{name:'% de conclusão', value: !dashboard.isLoading && dashboard.data.percentDoned}]
     const resultByNow = chartData[0].value
     const phrases = ['Não está nada bom 👎', 'Está melhorando... 👏', 'Mostre como faz! 💪', 'INCRÍVEL! Você é o rei da produtividade. 👍']
-
+    useEffect(()=>{
+        dashboard.refetch();
+    })
     return (
         <>
         <div className="flex flex-wrap flex-col">
@@ -45,7 +39,7 @@ export default function Dashboard(){
                         <span>Qtd. tarefas</span>
                     </div>
                     <div className={`card-body`}>
-                        <h4 className="text-2xl fw-bold">{!tasks.isLoading ? tasks.data.length:0}</h4>
+                        <h4 className="text-2xl fw-bold">{!dashboard.isLoading && dashboard.data.totalTasks}</h4>
                     </div>
                 </div>
                 <div className="card bg-white w-48">
@@ -53,7 +47,7 @@ export default function Dashboard(){
                         <span>Concluídas</span>
                     </div>
                     <div className="card-body">
-                        <h4 className="text-2xl fw-bold">{tarefasConcluidas}</h4>
+                        <h4 className="text-2xl fw-bold">{!dashboard.isLoading && dashboard.data.qtdTasksDoned}</h4>
                     </div>
                 </div>
                 <div className="card bg-white w-48">
@@ -61,7 +55,7 @@ export default function Dashboard(){
                         <span>Atrasadas</span>
                     </div>
                     <div className="card-body">
-                        <h4 className="text-2xl fw-bold">{tarefasAtrasadas}</h4>
+                        <h4 className="text-2xl fw-bold">{!dashboard.isLoading && dashboard.data.qtdLateTasks}</h4>
                     </div>
                 </div>
                 <div className="card bg-white w-48">
@@ -70,7 +64,7 @@ export default function Dashboard(){
                     </div>
                     <div className="card-body">
                         <h4 className="text-2xl fw-bold">
-                            {!stickies.isLoading && !stickies.isFetching && stickies.data ? stickies.data.totalStickies:0}
+                            {!dashboard.isLoading && dashboard.data.totalStickies}
                         </h4>
                     </div>
                 </div>

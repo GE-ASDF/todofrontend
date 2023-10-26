@@ -47,8 +47,8 @@ export const getStickies = async(limit = 0)=>{
  * @returns {Promise<User>}
  */
 export const getUser = async()=>{
+    const token = Cookies.getItem("token");
     try{
-        const token = Cookies.getItem("token");
         const result = await api.get("/auth", {headers: {Authorization:token}});
         return result.data;
     }catch(error){
@@ -60,6 +60,16 @@ export const authenticate = async(data)=>{
     try{
         const user = await api.post("/auth", data);
         return user.data;
+    }catch(error){
+        return {error: true, message:"Erro ao tentar fazer a solicitação."}
+    }
+}
+
+export const dashboard = async()=>{
+    const token = Cookies.getItem("token");
+    try{
+        const dashboard = await api.get("/admin/dashboard", {headers: {Authorization:token}});
+        return dashboard.data;
     }catch(error){
         return {error: true, message:"Erro ao tentar fazer a solicitação."}
     }

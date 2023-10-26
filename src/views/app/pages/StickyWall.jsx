@@ -17,11 +17,12 @@ import { useRef } from "react";
 import { getStickies } from "../../../utils/api";
 
 export default function StickyWall(){
+    const [currentPage, setCurrentPage] = useState(1);
+    const data = useStickies(currentPage);
     const {handleSetAlert} = useAlert();
     const {user} = useLogged();
     const[showAddSticky, setShowAddSticky] = useState(false)
     const dataUser = JSON.parse(user);
-    const [currentPage, setCurrentPage] = useState(1);
     const [maxPages, setMaxPages] = useState(1)
     const [paginated, setPaginated] = useState([]) 
     const [totalStickies, setTotalStickies] = useState(0)
@@ -29,28 +30,28 @@ export default function StickyWall(){
     const stickies = useSticky();
 
     const getMoreStickies = async()=>{
-        const stickies = await getStickies(currentPage);
-        setPaginated(stickies.sticky);      
-        setMaxPages(stickies.maxPages)
-        setTotalStickies(stickies.totalStickies)
+        data.refetch();
+        setPaginated(data.data.sticky);      
+        setMaxPages(data.data.maxPages)
+        setTotalStickies(data.data.totalStickies)
     }
     useEffect(()=>{
         getMoreStickies()
-    },[])
+    },[data.data])
 
     useEffect(()=>{
         const container = containerRef.current;
         const handleScroll = ()=>{
             if(container.scrollTop + container.clientHeight >= container.scrollHeight - 10){
-                setCurrentPage(currentPage + 1);
+                if(maxPages >= currentPage){
+                    setCurrentPage(currentPage + 1);
+                }
             }
         }
-        if(maxPages >= currentPage){
             container.addEventListener("scroll", handleScroll)
-        }
         getMoreStickies();
         return ()=> container.removeEventListener("scroll", handleScroll)
-    },[currentPage, maxPages, stickies.sticky])
+    },[currentPage, data.maxPages, stickies.sticky])
 
     const [sticky, setSticky] = useState({
         iduser: dataUser.id,
@@ -126,6 +127,11 @@ export default function StickyWall(){
             }
             <div onClick={handleShowAddSticky} className="rounded-full  text-3xl cursor-pointer hover:text-purple-500  h-10 w-10 flex items-center justify-center absolute bottom-5  right-5">
                 <i className="bi modal-open bi-plus-circle"></i>
+            </div>
+            <div className="form-group flex justify-start mt-2">
+                {totalStickies > paginated.length &&
+                    <button onClick={()=> setCurrentPage(currentPage + 1)} className="btn btn-secondary">Carregar mais</button>
+                }
             </div>
         </div>
     )

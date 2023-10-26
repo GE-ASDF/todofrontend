@@ -9,52 +9,17 @@ import Loader from "../Components/UI/Loader";
 
 
 const Template = ()=>{
-    const token = Cookies.getItem("token");
-    const navigate = useNavigate();
-    const {setUserLogged} = useLogged();
-    const query = useUser();
-    const LOGIN_USER = Cookies.getItem("LOGIN_USER");
-    
-
     const local = useLocation().pathname.split("/app").filter(el => {
         if(el && el != "/"){
             return el
         }
     });
-
-    const handleLogged = async()=>{
-
-        if(!query.isLoading && !query.isError){
-            if(query.data.error == true){
-                setUserLogged('null');
-                Cookies.removeItem("token");
-                return navigate("/")
-            }
-        }
-    }
-
-    useEffect(()=>{
-        handleLogged()
-    })
- 
-    if(!token){
-        return <Navigate to="/" />;
-    }
-
     if(local.length <= 0){
         return <Navigate to="/app/dashboard" />
     }
-
     return (
-        <>
-        {query.isLoading && <Loader />}
-        {query.isError && <p>Ocorreu um erro ao buscar os dados do usuário.</p>}
-        {!query.isLoading && !query.isError && 
-            <Home />
-        }
-        </>
+        <Home />
     )
-       
 }
 
 export default Template;
