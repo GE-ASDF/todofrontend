@@ -3,15 +3,15 @@ import {todayTasksLoader} from "../Loaders/todayTasksLoader";
 import HTTP from "../api/http";
 import { useLogged } from "./LoggedContext";
 import { useTasks as queryTasks } from "../utils/queries";
+import { Navigate } from "react-router-dom";
 export const TasksContext = createContext();
 const TASKS_ID = 'tasks'
 
 
 export const TasksProvider = ({children})=>{
     const [task, setTask] = useState(true);
-    const {user} = useLogged();
-    const dataUser = JSON.parse(user)
-    const query = queryTasks(dataUser.id)
+    let query = queryTasks()
+
     useEffect(()=>{
         query.refetch();
         setTask(false);

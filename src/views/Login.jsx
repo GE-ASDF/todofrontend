@@ -26,10 +26,9 @@ const Login = ()=>{
                 if(response.error){
                     handleSetAlert({type:'danger', message:response.message})
                 }else{
-                    Cookies.setItem('token', response.token);
-                    userLoggedMutation.mutate({token: response.user.token}, {
+                    Cookies.setItem("token", response.user.token)
+                    userLoggedMutation.mutate('', {
                         onSuccess:(verifiyng)=>{
-                            console.log(verifiyng)
                             if(verifiyng.error == false){
                                 setUserLogged(JSON.stringify(response.user))
                                 return navigate("/app/dashboard")

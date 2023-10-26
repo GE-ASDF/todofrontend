@@ -8,6 +8,7 @@ import { useTheme } from "../../../../Contexts/ContextsLoaders/useTheme";
 import HTTP from "../../../../api/http";
 import { useLogged } from "../../../../Contexts/LoggedContext";
 import { useLogoutMutation } from "../../../../utils/mutations";
+import { removeCookies } from "../../../../utils/utils";
 export default function Body(){
     const {theme} = useTheme();
     const {showMenu, setShowMenu} = useMenu();
@@ -19,8 +20,7 @@ export default function Body(){
     }
     const handleLogout = async ()=>{
         logoutMutation.mutate('', {onSuccess:()=>{
-            Cookies.removeItem("token");
-            Cookies.removeItem("LOGIN_USER");
+            removeCookies();
             setUserLogged('null')
             navigate("/")
         }})

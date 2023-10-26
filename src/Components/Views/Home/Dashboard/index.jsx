@@ -6,6 +6,8 @@ import { Outlet } from "react-router-dom";
 import MyBarChart, { createDataForBarChart } from "../../../UI/Chart";
 import { useEffect, useState } from "react";
 import { useDashboard } from "../../../../utils/queries";
+import { useUserLoggedMutation } from "../../../../utils/mutations";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function Dashboard(){
     const dashboard = useDashboard()
@@ -16,10 +18,10 @@ export default function Dashboard(){
     const dataForBarChart = !tasks.isFetching  && !tasks.data.error ? createDataForBarChart(tasks.data, actualYear):[];
     const mesMaisProdutivo = !tasks.isFetching && !tasks.data.error ? dataForBarChart.reduce((max, objeto)=>{ return objeto.Feitas > max.Feitas ? objeto:max; }, dataForBarChart[0]):[]; 
     const themeCtx = useTheme();
-    const chartData = [{name:'% de conclusão', value: !dashboard.isLoading && dashboard.data.percentDoned}]
+    const chartData = [{name:'% de conclusão', value: !dashboard.isLoading && !isNaN(dashboard.data.percentDoned) ? dashboard.data.percentDoned:0 }]
     const resultByNow = chartData[0].value
     const phrases = ['Não está nada bom 👎', 'Está melhorando... 👏', 'Mostre como faz! 💪', 'INCRÍVEL! Você é o rei da produtividade. 👍']
-    
+
     useEffect(()=>{
         dashboard.refetch();
     })

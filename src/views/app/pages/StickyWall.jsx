@@ -84,8 +84,8 @@ export default function StickyWall(){
     return(
         <div ref={containerRef} className={`flex overflow-y-auto overflow-x-hidden h-100 flex-col p-4 `}>
             <h1 className="lg:text-5xl md:text-3xl text-3xl  fw-bold">Anotações ({totalStickies})</h1>
-            <h2>Mostrando: {paginated.length}</h2>
-            {paginated.length > 0 &&
+            <h2>Mostrando: {paginated && paginated.length}</h2>
+            {paginated && paginated.length > 0 &&
                 <Stickies stickies={paginated} />
             }
             {showAddSticky &&

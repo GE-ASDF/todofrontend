@@ -19,10 +19,10 @@ const api = axios.create({
  * @param {number} userId 
  * @returns {Promise<Tasks[]>} 
  */
-export const getTasks = async(userId)=>{
+export const getTasks = async()=>{
     const token = Cookies.getItem("token");
     try{
-        const result = await api.get(`/admin/tasks/all/${userId}`, {headers: {Authorization:token}});   
+        const result = await api.get(`/admin/tasks/all`, {headers: {Authorization:token}});   
         return result.data;
     }catch(error){
         return {error: true, message:"Erro ao tentar fazer a solicitação."}
@@ -45,10 +45,10 @@ export const getStickies = async(limit = 0)=>{
  * @param {Object} data 
  * @returns {Promise<User>}
  */
-export const getUser = async(token2 = '')=>{
+export const getUser = async()=>{
     const token = Cookies.getItem("token");
     try{
-        const result = await api.get("/auth", {headers: {Authorization:token ?? token2}});
+        const result = await api.get("/auth", {headers: {Authorization:token}});
         return result.data;
     }catch(error){
         return {error: true, message:"Erro ao tentar fazer a solicitação."}
@@ -113,7 +113,7 @@ export const getCsrfToken = async()=>{
 export const dashboard = async()=>{
     const token = Cookies.getItem("token");
     try{
-        const dashboard = await api.get("/admin/dashboard", {headers: {Authorization:token}});
+        const dashboard = await api.get("/admin/dashboard", {headers:{Authorization:token}});
         return dashboard.data;
     }catch(error){
         return {error: true, message:"Erro ao tentar fazer a solicitação."}

@@ -7,10 +7,10 @@ import { Providers } from './utils/providers.jsx'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <Providers>
       <LoggedProvider>
-        <App />
+        <Providers>
+            <App />
+        </Providers>
       </LoggedProvider>
-    </Providers>
   </React.StrictMode>,
 )

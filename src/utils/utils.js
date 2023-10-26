@@ -1,3 +1,4 @@
+import Cookies from "js-cookies"
 export const dateISOString = ()=>{
     const date = new Date();
     const brazilian = new Date(date.getTime() - date.getTimezoneOffset() * 60000).toISOString();
@@ -42,4 +43,9 @@ export const formatText = (text)=>{
     //     __html: DOMPurify.sanitize(data)
     //   })
     return formattedText; 
+}
+
+export const removeCookies = ()=>{
+    Cookies.removeItem("token")
+    Cookies.removeItem("LOGIN_USER")
 }

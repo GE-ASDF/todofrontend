@@ -7,20 +7,24 @@ import All from "../views/app/pages/All";
 import EditTask from "../views/app/pages/EditTask";
 import ByPriority from "../views/app/pages/ByPriority";
 import Dashboard from "../Components/Views/Home/Dashboard";
+import RootBoundary from "../views/ErrorBoundary";
 
 export default function PrivateRoutes(){
     return [
         {
             path:"/app",
             element:<Template />,
+            errorElement:<RootBoundary />,
             children:[
                 {
                     path:"dashboard",
                     element:<Dashboard />,
+                    errorElement:<RootBoundary />,
                     children:[
                         {
                             path:"edittask/:id",
-                            element:<EditTask />
+                            element:<EditTask />,
+                            errorElement:<RootBoundary />,
                         }
                     ]
                 },
@@ -28,34 +32,47 @@ export default function PrivateRoutes(){
                     path:"today",
                     element:<Today />,
                     loader: todayTasksLoader,
+                    errorElement:<RootBoundary />,
                     children:[
                         {
                             path:"edittask/:id",
-                            element:<EditTask />
+                            element:<EditTask />,
+                            errorElement:<RootBoundary />,
+
                         }
                     ]
                 },
                 {
                     path:"all",
                     element:<All />,
+                    errorElement:<RootBoundary />,
+
                     children:[
                         {
                             path:"edittask/:id",
-                            element:<EditTask />
+                            element:<EditTask />,
+                            errorElement:<RootBoundary />,
+
                         }
                     ]
                 },
                 {
                     path:"stickywall",
                     element:<StickyWall />,
+                    errorElement:<RootBoundary />,
+
                 },
                 {
                     path:"bypriority",
                     element:<ByPriority />,
+                    errorElement:<RootBoundary />,
+
                     children:[
                         {
                             path:"edittask/:id",
-                            element:<EditTask />
+                            element:<EditTask />,
+                            errorElement:<RootBoundary />,
+
                         }
                     ]
                 },           

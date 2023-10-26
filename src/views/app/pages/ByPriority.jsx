@@ -4,15 +4,16 @@ import HTTP from "../../../api/http";
 import Task from "../../../Components/UI/Task";
 import { useAlert } from "../../../Contexts/AlertContext";
 import { useTheme } from "../../../Contexts/ContextsLoaders/useTheme";
+import { useLogged } from "../../../Contexts/LoggedContext";
 import { useTasks } from "../../../Contexts/TasksContext"
 import hookDoneTask from "../../../hooks/hookDoneTask";
 import hookShowDetails from "../../../hooks/hookShowDetails";
+import { removeCookies } from "../../../utils/utils";
 
 
 export default function ByPriority(){
     const {done} = hookDoneTask();
     const {handleSetAlert} =  useAlert();
-
     const [taskDragged, setTaskDragged] = useState('');
     const {setTask, tasks} = useTasks();
     const [showOnly, setShowOnly] = useState([0,1,2]);
@@ -68,10 +69,20 @@ export default function ByPriority(){
     const onDropTask = (e, prev)=>{
         
     }
+
+    if(!tasks.isLoading){
+        if(tasks.data.error && tasks.data.type == 'not logged'){
+            setUserLogged(null)
+            removeCookies();
+            return <Navigate to="/" />
+        }
+    }
     return(
+        
         <div style={{maxHeight:"100vh", height:"calc(100vh - 60px)", overflowY:"auto", overflowX:"hidden"}} className="p-4">
         <h1 className="sm:text-2xl md:text-5xl fw-bold mb-4">Pendentes ({baixa.length + media.length + alta.length})</h1>
-
+        {!tasks.isLoading && 
+            <>
             <div className="flex justify-center mb-4 gap-2">
                 <span onClick={()=> setShowOnly([0,1,2])} className="btn btn-light">Todos</span>
                 <span onClick={()=> handleSetShowOnly(0)} className="btn bg-blue-700 text-white">Baixa</span>
@@ -112,6 +123,9 @@ export default function ByPriority(){
                 </div>
                 }
             </div>
+            </>
+            }
+
            <Outlet />
 
         </div>
