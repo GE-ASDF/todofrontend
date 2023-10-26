@@ -26,6 +26,7 @@ const Login = ()=>{
                 if(response.error){
                     handleSetAlert({type:'danger', message:response.message})
                 }else{
+                    Cookies.removeItem("token")
                     Cookies.setItem("token", response.user.token)
                     userLoggedMutation.mutate('', {
                         onSuccess:(verifiyng)=>{

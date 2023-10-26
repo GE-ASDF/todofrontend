@@ -92,7 +92,7 @@ export const authenticate = async(data)=>{
 }
 
 export const logout = async()=>{
-    const token = Cookies.getItem("token"); 
+    const token = Cookies.getItem("token", {headers:{Authorization:token}}); 
     try{
         const logout = await api.get("/logout");
         return logout.data;

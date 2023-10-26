@@ -6,7 +6,7 @@ import {ThemeProvider} from "./Contexts/ThemeContext";
 
 
 function App() {
-  let routes = createBrowserRouter([...PublicRoutes(),  ...PrivateRoutes()]);
+  const routes = createBrowserRouter([...PublicRoutes(),  ...PrivateRoutes()]);
 
   return (
     <ThemeProvider>

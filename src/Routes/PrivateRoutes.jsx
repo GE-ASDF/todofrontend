@@ -46,7 +46,6 @@ export default function PrivateRoutes(){
                     path:"all",
                     element:<All />,
                     errorElement:<RootBoundary />,
-
                     children:[
                         {
                             path:"edittask/:id",

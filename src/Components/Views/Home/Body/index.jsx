@@ -19,12 +19,12 @@ export default function Body(){
         setShowMenu(!showMenu)
     }
     const handleLogout = async ()=>{
-        logoutMutation.mutate('', {onSuccess:()=>{
-            removeCookies();
-            setUserLogged('null')
-            navigate("/")
-        }})
+        logoutMutation.mutate('')
+        setUserLogged('null')
+        removeCookies();
+        navigate("/")
     }
+    
     return(
         <>
         <div className="flex  w-100 h-100">    

@@ -3,7 +3,7 @@ import Home from "./app/Home";
 import { useUser } from "../utils/queries";
 import { useLogged } from "../Contexts/LoggedContext";
 import { useQueryClient } from "@tanstack/react-query";
-
+import Cookies from "js-cookies";
 
 const Template = ()=>{
      const query = useUser();
@@ -24,11 +24,11 @@ const Template = ()=>{
             setUserLogged(JSON.stringify(query.data.user))
         }
     }
-    
+
     return (
         <>
             {!query.isLoading && !query.data.error &&
-                <Home />
+                <Home  />
             }
             {
                 !query.isLoading && !query.isRefetching && !query.isFetching && query.data.error &&
