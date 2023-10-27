@@ -8,12 +8,13 @@ import EditTask from "../views/app/pages/EditTask";
 import ByPriority from "../views/app/pages/ByPriority";
 import Dashboard from "../Components/Views/Home/Dashboard";
 import RootBoundary from "../views/ErrorBoundary";
+import RequireAuth from "../views/RequireAuth";
 
 export default function PrivateRoutes(){
     return [
         {
             path:"/app",
-            element:<Template />,
+            element:<RequireAuth><Template /></RequireAuth>,
             errorElement:<RootBoundary />,
             children:[
                 {

@@ -6,6 +6,7 @@ import { useTheme } from "../../../../Contexts/ContextsLoaders/useTheme";
 import { useTasks } from "../../../../Contexts/TasksContext";
 import { useAddTaskMutation } from "../../../../utils/mutations";
 import { useCategories } from "../../../../utils/queries";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function FormAddTask({iduser, setAddTaskForm, addTaskForm}){
     const addTaskMutation = useAddTaskMutation();

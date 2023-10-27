@@ -9,8 +9,10 @@ import HTTP from "../../../../api/http";
 import { useLogged } from "../../../../Contexts/LoggedContext";
 import { useLogoutMutation } from "../../../../utils/mutations";
 import { removeCookies } from "../../../../utils/utils";
+import { useQueryClient } from "@tanstack/react-query";
 export default function Body(){
     const {theme} = useTheme();
+    const queryClient = useQueryClient();
     const {showMenu, setShowMenu} = useMenu();
     const navigate = useNavigate();
     const {setUserLogged}= useLogged();
@@ -19,10 +21,12 @@ export default function Body(){
         setShowMenu(!showMenu)
     }
     const handleLogout = async ()=>{
-        logoutMutation.mutate('')
-        setUserLogged('null')
-        removeCookies();
-        navigate("/")
+        logoutMutation.mutate()
+        if(logoutMutation.status != 'pending'){
+            removeCookies();
+            setUserLogged('null')
+            navigate("/")
+        }
     }
     
     return(

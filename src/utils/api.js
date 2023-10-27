@@ -91,6 +91,15 @@ export const authenticate = async(data)=>{
     }
 }
 
+export const createUser = async(data)=>{
+    try{
+        const user = await api.post("/admin/users/create", data);
+        return user.data;
+    }catch(error){
+        return {error: true, message:"Erro ao tentar fazer a solicitação."}
+    }
+}
+
 export const logout = async()=>{
     const token = Cookies.getItem("token", {headers:{Authorization:token}}); 
     try{

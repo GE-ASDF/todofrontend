@@ -19,21 +19,22 @@ const Template = ()=>{
         return <Navigate to="/app/dashboard" />
     }
 
-    if(!query.isLoading){
-        if(!query.data.error){
-            setUserLogged(JSON.stringify(query.data.user))
-        }
-    }
+    // if(!query.isLoading){
+    //     if(!query.data.error){
+    //         setUserLogged(JSON.stringify(query.data.user))
+    //     }
+    // }
 
     return (
         <>
-            {!query.isLoading && !query.data.error &&
+        <Home />
+            {/* {!query.isLoading && !query.data.error &&
                 <Home  />
-            }
-            {
+            } */}
+            {/* {
                 !query.isLoading && !query.isRefetching && !query.isFetching && query.data.error &&
                 <Navigate to="/" />
-            }
+            } */}
         </>
     )
 }

@@ -10,8 +10,10 @@ import FormCreateUser from "../Components/Views/Home/FormCreateUser";
 import {authenticate as auth, getUser} from "../utils/api"
 import { useAuthenticateMutation, useUserLoggedMutation } from "../utils/mutations";
 import { useCsrfToken } from "../utils/queries";
+import { useQueryClient } from "@tanstack/react-query";
 
 const Login = ()=>{
+    const queryClient = useQueryClient();
     const [form, setForm] = useState('login');
     const authenticateMutation = useAuthenticateMutation();
     const {setUserLogged} = useLogged();
