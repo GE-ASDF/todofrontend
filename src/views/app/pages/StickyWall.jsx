@@ -67,7 +67,6 @@ export default function StickyWall(){
             if(e.target.classList.contains('modal-open')){
                 setShowAddSticky(true);
             }else{
-   
                 if(showAddSticky && e.target.closest('.mymodal') == null){
                     setShowAddSticky(false)
                 }

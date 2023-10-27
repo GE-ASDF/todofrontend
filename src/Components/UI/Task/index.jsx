@@ -61,7 +61,7 @@ export default function Task({task,onDrag,onDropTask,local, detailsShow, classNa
                     {task.done == 0 && <span className="btn btn-sm btn-warning" title="Pendente" onClick={()=> done(task.id)}>{task.done == 0 && <i  className="bi  bi-arrow-counterclockwise"></i>}</span>}
                     {task.done > 0 && <span className="btn btn-sm btn-success" title="Concluída" onClick={()=> done(task.id)}>{task.done > 0 && <i  className="bi bi-check-lg"></i>}</span>}
                     <span className="btn btn-sm btn-danger" title="Remover" onClick={()=> handleDeleteRegister(task.id)}><i  className="bi bi-x-lg"></i></span>
-                    <Link title="Editar" className="btn btn-sm btn-primary" to={`${local ? `/app${local}/edittask/${task.id}`:`edittask/${task.id}`}`}><i  className="bi bi-pencil-square"></i></Link>
+                    <Link title="Editar" className="btn btn-sm btn-primary btn-edit" to={`${local ? `/app${local}/edittask/${task.id}`:`edittask/${task.id}`}`}><i  className="bi btn-edit bi-pencil-square"></i></Link>
                 </div>
             </div>
             </>

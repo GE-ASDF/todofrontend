@@ -55,6 +55,16 @@ export const getUser = async()=>{
     }
 }
 
+export const getTask = async (id)=>{
+    const token = Cookies.getItem("token");
+    try{
+        const task = await api.get(`/admin/tasks/task/${id}`, {headers:{Authorization:token}});
+        return task.data;
+    }catch(error){
+        return {error: true, message:"Erro ao tentar fazer a solicitação."}
+    }
+}
+
 export const addTask = async(data)=>{
     const token = Cookies.getItem("token");
     try{

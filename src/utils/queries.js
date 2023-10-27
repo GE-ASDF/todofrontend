@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { dashboard, getCategories, getCsrfToken, getStickies, getTasks, getUser } from "./api";
+import { dashboard, getCategories, getCsrfToken, getStickies, getTask, getTasks, getUser } from "./api";
 
 export const useTasks = ()=> useQuery({queryKey:["tasks"], queryFn: async()=> await getTasks()})
 
@@ -13,3 +13,4 @@ export const useCategories =()=> useQuery({queryKey:['categories'], queryFn:getC
 
 export const useCsrfToken = ()=> useQuery({queryKey:['csrfToken'], queryFn:getCsrfToken})
 
+export const useTask = (id) => useQuery({queryKey:['task'], queryFn:async()=> await getTask(id)})

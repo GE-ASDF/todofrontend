@@ -14,7 +14,7 @@ export default function PrivateRoutes(){
     return [
         {
             path:"/app",
-            element:<RequireAuth><Template /></RequireAuth>,
+            element: <RequireAuth> <Template /> </RequireAuth>,
             errorElement:<RootBoundary />,
             children:[
                 {
