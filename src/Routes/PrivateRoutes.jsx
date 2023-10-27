@@ -19,19 +19,19 @@ export default function PrivateRoutes(){
             children:[
                 {
                     path:"dashboard",
-                    element:<Dashboard />,
+                    element:<RequireAuth><Dashboard /></RequireAuth> ,
                     errorElement:<RootBoundary />,
                     children:[
                         {
                             path:"edittask/:id",
-                            element:<EditTask />,
+                            element:<RequireAuth><EditTask /></RequireAuth>,
                             errorElement:<RootBoundary />,
                         }
                     ]
                 },
                 {
                     path:"today",
-                    element:<Today />,
+                    element:<RequireAuth><Today /></RequireAuth>,
                     loader: todayTasksLoader,
                     errorElement:<RootBoundary />,
                     children:[
@@ -45,7 +45,7 @@ export default function PrivateRoutes(){
                 },
                 {
                     path:"all",
-                    element:<All />,
+                    element:<RequireAuth><All /></RequireAuth>,
                     errorElement:<RootBoundary />,
                     children:[
                         {
@@ -58,13 +58,13 @@ export default function PrivateRoutes(){
                 },
                 {
                     path:"stickywall",
-                    element:<StickyWall />,
+                    element:<RequireAuth><StickyWall /></RequireAuth>,
                     errorElement:<RootBoundary />,
 
                 },
                 {
                     path:"bypriority",
-                    element:<ByPriority />,
+                    element:<RequireAuth><ByPriority /></RequireAuth>,
                     errorElement:<RootBoundary />,
 
                     children:[

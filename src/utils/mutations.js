@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import { addTask, addSticky, authenticate, logout, getUser, createUser } from "./api";
+import { addTask, addSticky, authenticate, logout, getUser, createUser, updateTask } from "./api";
 
 export const useAddTaskMutation = ()=>{
     const mutation = useMutation({
@@ -39,6 +39,13 @@ export const useUserLoggedMutation = ()=>{
 export const useCreateUserMutation = ()=>{
     const mutation = useMutation({
         mutationFn:createUser
+    })
+    return mutation;
+}
+
+export const useUpdateTaskMutation = ()=>{
+    const mutation = useMutation({
+        mutationFn:updateTask,
     })
     return mutation;
 }

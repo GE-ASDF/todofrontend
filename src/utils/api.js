@@ -101,6 +101,16 @@ export const authenticate = async(data)=>{
     }
 }
 
+export const updateTask = async(data)=>{
+    const token = Cookies.getItem("token"); 
+    try{
+        const task = await api.post("/admin/tasks/update", data, {headers:{Authorization:token}});
+        return task.data;
+    }catch(error){
+        return {error: true, message:"Erro ao tentar fazer a solicitação."}
+    }
+}
+
 export const createUser = async(data)=>{
     try{
         const user = await api.post("/admin/users/create", data);

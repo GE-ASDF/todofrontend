@@ -1,5 +1,5 @@
 .container-edittask {
-    background-color: #111927;
+    background-color: rgba(17, 25, 390,.1);
     background-image: 
         radial-gradient(at 47% 33%, hsl(329.17, 100%, 28.000000000000004%) 0, transparent 59%), 
         radial-gradient(at 82% 65%, hsl(218.00, 39%, 11%) 0, transparent 55%);

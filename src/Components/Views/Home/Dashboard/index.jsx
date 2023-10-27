@@ -6,8 +6,6 @@ import { Outlet } from "react-router-dom";
 import MyBarChart, { createDataForBarChart } from "../../../UI/Chart";
 import { useEffect, useState } from "react";
 import { useDashboard } from "../../../../utils/queries";
-import { useUserLoggedMutation } from "../../../../utils/mutations";
-import { useQueryClient } from "@tanstack/react-query";
 
 export default function Dashboard(){
     const dashboard = useDashboard()

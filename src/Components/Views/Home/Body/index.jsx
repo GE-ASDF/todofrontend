@@ -1,18 +1,14 @@
 import { Link, Outlet, useNavigate } from "react-router-dom";
+import "./style.css";
 import Menu from "../../../UI/Menu";
 import {useMenu} from "../../../../Contexts/MenuContext";
 import Cookies from "js-cookies";
-
-import "./style.css";
 import { useTheme } from "../../../../Contexts/ContextsLoaders/useTheme";
-import HTTP from "../../../../api/http";
 import { useLogged } from "../../../../Contexts/LoggedContext";
 import { useLogoutMutation } from "../../../../utils/mutations";
-import { removeCookies } from "../../../../utils/utils";
-import { useQueryClient } from "@tanstack/react-query";
+
 export default function Body(){
     const {theme} = useTheme();
-    const queryClient = useQueryClient();
     const {showMenu, setShowMenu} = useMenu();
     const navigate = useNavigate();
     const {setUserLogged}= useLogged();
@@ -23,7 +19,8 @@ export default function Body(){
     const handleLogout = async ()=>{
         logoutMutation.mutate()
         if(logoutMutation.status != 'pending'){
-            removeCookies();
+            Cookies.removeItem("LOGIN_USER")
+            Cookies.removeItem("token")
             setUserLogged('null')
             navigate("/")
         }

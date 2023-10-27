@@ -53,9 +53,9 @@ export default function MyBarChart({actualYear, setActualYear}){
         <div className="form-group flex gap-2">
             <label htmlFor="">Ano:</label>
             <select onChange={(e)=> setActualYear(e.target.value) } className="form-select p-1 w-52" defaultValue={`${actualYear}`} name="year" id="">
-            {years.map((year)=>{
-                return <option key={year} selected={`${year == actualYear ? "selected":""}`} defaultValue={`${year}`} value={`${year}`}>{year}</option>
-            })}
+                {years.map((year)=>{
+                    return <option key={year} selected={`${year == actualYear ? "selected":""}`} value={`${year}`}>{year}</option>
+                })}
             </select>
         </div>
         <div className="relative">
